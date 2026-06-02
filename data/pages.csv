@@ -1,0 +1,520 @@
+url,traffic_pct,keywords,traffic,traffic_change,answer_engines,top_keyword,primary_intent,llm_prompts
+https://pureforyou.com/,14.62,683,4910,-2491,"gemini, google, google-ai, search-gpt",pure encapsulations,Informational,26
+https://smartq.pureforyou.com/products/39410161811490/magnesium-glycinate,13.55,572,4551,1013,google,pure encapsulations magnesium glycinate,Informational,24
+https://smartq.pureforyou.com/products/39251840991266/o-n-e-multivitamin,6.02,131,2024,247,google,pure encapsulations o.n.e. multivitamin,Informational,7
+https://smartq.pureforyou.com/products/39406461747234/b-complex-plus,3.63,104,1219,82,"google, google-ai",pure encapsulations b-complex plus,Informational,7
+https://smartq.pureforyou.com/products/40638309761058/prenatal-nutrients,2.63,57,884,677,"gemini, google, google-ai",prenatus,Informational,4
+https://smartq.pureforyou.com/products/33055632228386/l-tyrosine,2.27,24,763,417,google,l tyrosine tyrosine,Informational,5
+https://smartq.pureforyou.com/products/39406546288674/vitamin-d3,2.21,40,745,189,google,pure encapsulations vitamin d3,Informational,1
+https://smartq.pureforyou.com/products/33055633408034/l-glutamine-powder,2,46,672,563,google,l glutamine powder,Informational,6
+https://smartq.pureforyou.com/products/43700732919842/dao-enzyme,1.83,50,616,-20,google,dao supplement,Informational,7
+https://smartq.pureforyou.com/products/33055646777378/dgl-plus-60,1.57,39,528,-8,"google, google-ai",dgl,Informational,6
+https://smartq.pureforyou.com/products/32040736817186/digestive-enzymes-ultra,1.56,66,526,202,google,pure encapsulations digestive enzymes,Informational,4
+https://smartq.pureforyou.com/products/33055559319586/carbcrave-complex-90,1.41,6,475,475,,pure encapsulations carbcrave complex 90 capsules,Informational,0
+https://smartq.pureforyou.com/products/32040779776034/panax-ginseng,1.11,5,374,373,,panax ginseng,Informational,0
+https://smartq.pureforyou.com/products/32040791375906/thyroid-support-complex,1.1,183,371,47,"google, search-gpt",thyroid support,Informational,9
+https://smartq.pureforyou.com/products/33055608307746/magnesium-glycinate-liquid,1.06,59,357,161,google,magnesium glycinate liquid,Informational,10
+https://smartq.pureforyou.com/products/33055636029474/hyaluronic-acid-60,1.03,72,346,256,"gemini, google, google-ai",hyaluronic acid supplements,Informational,13
+https://smartq.pureforyou.com/products/32040753659938/magnesium-citrate,1.02,101,343,-61,"google, google-ai",magnesium citrate capsules,Informational,3
+https://smartq.pureforyou.com/products/39400274690082/hm-complex,0.97,5,328,328,,pure encapsulations hm complex 90 capsules,Informational,0
+https://smartq.pureforyou.com/products/33055646941218/copper-glycinate,0.89,26,300,279,"google, google-ai",copper supplement,Informational,2
+https://smartq.pureforyou.com/products/33055606439970/magnesium-powder,0.86,66,291,143,google,magnesium citrate powder,Informational,6
+https://smartq.pureforyou.com/products/33055612108834/macular-support-formula-60,0.84,13,284,245,google-ai,pure encapsulations macular support formula 60 capsules,Informational,1
+https://smartq.pureforyou.com/products/43591436894242/vitamin-d3-k2,0.81,119,273,-62,"gemini, google, google-ai, search-gpt",pure encapsulations d3 k2,Informational,8
+https://smartq.pureforyou.com/products/33055655788578/b-complex-liquid,0.8,68,269,-158,"google, google-ai",liquid b complex,Informational,10
+https://smartq.pureforyou.com/products/33055587205154/peptic-care-zinc-l-carnosine,0.77,39,259,142,google,zinc carnosine,Informational,11
+https://smartq.pureforyou.com/products/33055656804386/amino-replete,0.75,16,255,215,gemini,pure amino,Informational,1
+https://smartq.pureforyou.com/products/33055629115426/liposomal-glutathione-liquid,0.74,43,251,-89,google,glutathione liquid form,Informational,6
+https://smartq.pureforyou.com/products/32040751693858/liposomal-vitamin-c,0.74,96,249,16,google,liposomal vitamin c liquid,Informational,6
+https://smartq.pureforyou.com/products/33055634260002/l-arginine,0.71,27,240,192,google-ai,l-arginine dietary supplement,Informational,3
+https://smartq.pureforyou.com/products/33055630295074/liposomal-glutathione-30,0.67,86,227,-612,google,liposomal glutathione,Informational,8
+https://smartq.pureforyou.com/products/39354440515618/nac-600-mg-90-capsules,0.65,60,220,79,google,nac 600mg,Informational,14
+https://smartq.pureforyou.com/products/32931091349538/one-omega,0.62,72,211,-77,google,pure encapsulations omega 3,Informational,4
+https://smartq.pureforyou.com/products/39382136717346/amino-nr-1,0.59,3,200,198,,pure amino,"Commercial, Informational",0
+https://smartq.pureforyou.com/products/41066154983458/berberine-ultrasorb,0.56,18,191,-24,"gemini, google, google-ai",pure berberine,Informational,7
+https://smartq.pureforyou.com/products/33055646318626/dhea-25-mg-60,0.56,23,191,-115,google,pure encapsulations dhea,Informational,2
+https://smartq.pureforyou.com/products/32040795439138/zinc-30,0.55,29,187,-16,google,pure encapsulations zinc,Informational,1
+https://smartq.pureforyou.com/products/39354424459298/iron-c,0.55,36,187,20,google,pure encapsulations iron,Informational,3
+https://smartq.pureforyou.com/collections/vitamins-minerals,0.55,57,187,-44,"gemini, google, google-ai",pure vitamin,Informational,13
+https://smartq.pureforyou.com/products/39741657153570/mens-nutrients-180,0.52,21,177,-25,"google-ai, search-gpt",pure encapsulations men's nutrients,Informational,4
+https://smartq.pureforyou.com/products/39406543536162/calcium-citrate,0.51,36,172,55,,pure encapsulations calcium citrate,Informational,0
+https://smartq.pureforyou.com/products/33055557615650/vitamin-c-chewables,0.46,51,155,68,google,vitamin c chewables,Informational,2
+https://smartq.pureforyou.com/products/32040780267554/potassium-citrate,0.46,8,155,155,,potassium citrate,Informational,0
+https://smartq.pureforyou.com/products/33055654182946/buffered-ascorbic-acid-powder-8,0.42,40,144,85,google,pure encapsulations - buffered ascorbic acid,Informational,2
+https://smartq.pureforyou.com/products/44341136982050/pure-creatine,0.42,18,144,72,google,creatine pure,"Commercial, Informational",2
+https://smartq.pureforyou.com/products/32040776990754/nac-900-mg,0.42,22,143,-61,google,pure encapsulations nac,Informational,6
+https://smartq.pureforyou.com/products/33055559221282/cortisol-calm-60,0.42,26,142,37,"gemini, google, google-ai, search-gpt",cortisol calm,Informational,18
+https://smartq.pureforyou.com/products/33055689211938/ashwagandha,0.42,17,142,35,google,pure encapsulations ashwagandha,Informational,1
+https://smartq.pureforyou.com/products/33055586451490/polyphenol-nutrients-180,0.41,22,139,-10,google,polyphenol supplements,Informational,7
+https://smartq.pureforyou.com/products/32040787968034/sr-coq10-with-pqq,0.41,23,138,65,google,pure encapsulations pqq coq10,Informational,6
+https://smartq.pureforyou.com/products/33055660703778/5-htp-50-mg-60,0.41,14,138,132,"google, google-ai",5-htp 100 mg pure encapsulations,Informational,6
+https://smartq.pureforyou.com/products/33055651561506/calcium-with-vitamin-d3,0.39,140,132,60,google,calcium a vitamin d,Informational,2
+https://smartq.pureforyou.com/products/39410173149218/probiotic-g-i,0.35,15,118,75,"google, google-ai",pure encapsulations probiotic,Informational,2
+https://smartq.pureforyou.com/products/41055422054434/biotin-complex-hair-skin-60s,0.34,17,116,-10,"google, google-ai",pure encapsulations biotin complex hair & skin,Informational,4
+https://smartq.pureforyou.com/products/33055651266594/chaste-tree-vitex-60,0.33,37,111,53,"google, google-ai",chaste tree berry,Informational,3
+https://smartq.pureforyou.com/products/33055574786082/relora-60,0.32,10,108,30,google,relora,Informational,2
+https://smartq.pureforyou.com/products/33055653560354/calcium-magnesium-citrate-90,0.32,55,108,95,google,calcium magnesium supplement,Informational,4
+https://smartq.pureforyou.com/products/33055659884578/acai-600,0.31,25,107,3,"google, google-ai",acai supplement,Informational,12
+https://smartq.pureforyou.com/products/33055645564962/dl-phenylalanine-90,0.3,30,104,-14,google,phenylalanine supplement,Informational,1
+https://smartq.pureforyou.com/products/33055601229858/melatonin-60,0.3,17,101,11,google,pure melatonin,Informational,4
+https://smartq.pureforyou.com/products/33055565185058/d-mannose-powder-176,0.29,15,100,65,google,d mannose powder,Informational,4
+https://smartq.pureforyou.com/products/39354438484002/melatonin-3-mg-180-capsules,0.29,4,99,2,,pure encapsulations melatonin,Informational,0
+https://smartq.pureforyou.com/products/33055612141602/macular-support-formula-60,0.28,8,97,4,,pure encapsulations macular support,Informational,0
+https://smartq.pureforyou.com/products/33055632883746/l-theanine-60,0.28,26,97,-22,"gemini, google-ai",pure encapsulations l theanine,Informational,4
+https://smartq.pureforyou.com/products/32040735965218/curcumin-500-with-bioperine,0.27,61,92,-10,"google, google-ai",curcumin piperine supplement,Informational,8
+https://smartq.pureforyou.com/products/39406542520354/b12-folate,0.26,62,88,14,google,pure encapsulations b12,Informational,3
+https://smartq.pureforyou.com/products/33055635210274/inositol-powder,0.26,23,88,6,google,inositol powder,Informational,1
+https://smartq.pureforyou.com/products/32040787574818/same-60,0.25,7,87,76,,pure encapsulations same 60 capsules,Informational,0
+https://smartq.pureforyou.com/products/32040737734690/dim-detox,0.25,21,87,-42,"gemini, google",dim detox,Informational,2
+https://smartq.pureforyou.com/products/32040732033058/best-rest-formula,0.25,26,87,36,google,pure encapsulations best rest,Commercial,4
+https://smartq.pureforyou.com/products/33055592087586/motilpro,0.25,39,87,-128,google,motilpro,Informational,4
+https://smartq.pureforyou.com/products/44297548202018/pure-sleep,0.25,4,86,-5,"gemini, search-gpt",pure sleep,Informational,3
+https://smartq.pureforyou.com/products/33055634685986/ip6-inositol-hexaphosphate,0.25,25,84,-8,google,ip6,Informational,1
+https://smartq.pureforyou.com/products/39444930887714/calcium-k-d,0.24,19,82,-12,google,pure encapsulations calcium,Informational,1
+https://smartq.pureforyou.com/products/32040734031906/coq10-120-mg,0.24,14,81,-6,google-ai,pure encapsulations coq10,Informational,1
+https://smartq.pureforyou.com/products/32944646193186/curcumin,0.24,16,81,-10,google,pure encapsulations curcumin,Informational,2
+https://smartq.pureforyou.com/products/33055638093858/glycine,0.23,35,80,56,google,pure encapsulations glycine 180 capsules,Informational,1
+https://smartq.pureforyou.com/products/39710206656546/puregenomics-multivitamin,0.23,17,79,-10,"gemini, google, google-ai",pure methylated multivitamin,Informational,4
+https://smartq.pureforyou.com/products/33055573737506/saccharomyces-boulardii,0.22,54,77,39,google-ai,saccharomyces boulardii probiotic,Informational,2
+https://smartq.pureforyou.com/products/33055588319266/optiferin-c,0.22,16,75,-74,"gemini, google, google-ai, search-gpt",optiferin c,Informational,6
+https://smartq.pureforyou.com/collections/womens-formulas,0.22,26,74,37,gemini,pure multivitamin for women,Informational,1
+https://smartq.pureforyou.com/products/32040786821154/quercetin,0.22,4,74,22,google-ai,pure encapsulations quercetin,Informational,1
+https://smartq.pureforyou.com/products/32040780300322/potassium-citrate,0.21,19,71,62,,potassium citrate supplement,Informational,0
+https://smartq.pureforyou.com/products/33055645958178/digestion-gb-90,0.2,49,70,1,google,pure encapsulations digestion gb,Informational,4
+https://smartq.pureforyou.com/products/33055632523298/l-tryptophan-90,0.2,11,70,67,google,tryptophan supplement,Informational,1
+https://smartq.pureforyou.com/products/39741659709474/womens-nutrients-180,0.2,9,68,-1,search-gpt,pure encapsulations women's nutrients,Informational,1
+https://smartq.pureforyou.com/products/33055586123810/potassium-magnesium-aspartate-90,0.19,59,67,-8,"google, google-ai",magnesium and potassium,Informational,6
+https://smartq.pureforyou.com/collections/cellular-health-longevity,0.19,63,67,-16,"google, google-ai",cellular health supplements,Informational,5
+https://smartq.pureforyou.com/products/33055593168930/methylcobalamin-60,0.19,23,67,-22,google,pure vitamin b12,Informational,2
+https://smartq.pureforyou.com/collections/vision-support,0.19,31,67,-5,,vision support,Informational,0
+https://smartq.pureforyou.com/products/33055645663266/dimpro-100-60,0.19,25,67,-37,"google, google-ai",dim pro pure encapsulations,Informational,5
+https://smartq.pureforyou.com/products/32040730689570/athletic-pure-pack-30,0.17,6,58,7,,pure encapsulations athletic pure pack,Informational,0
+https://smartq.pureforyou.com/products/33055585402914/probiotic-50b,0.16,13,55,-41,google,pure encapsulations pure probiotic,Informational,1
+https://smartq.pureforyou.com/products/33055588778018/nutrient-950-without-copper-iron-iodine,0.15,98,53,-19,google,multivitamin no iodine,Informational,8
+https://smartq.pureforyou.com/products/40744026800162/inositol-complex,0.15,16,52,0,google,pure encapsulations inositol,Informational,2
+https://smartq.pureforyou.com/products/33055587926050/p5p-50-60,0.15,37,51,-48,google,p5p b6,Informational,7
+https://smartq.pureforyou.com/products/33055590023202/nutrient-950-90,0.15,7,51,-11,"gemini, google-ai, search-gpt",pure encapsulations nutrient 950,Informational,4
+https://smartq.pureforyou.com/products/33055565545506/cranberry-d-mannose-90,0.15,52,51,28,,mannose cranberry,Informational,0
+https://smartq.pureforyou.com/products/33096561066018/nac-glycine-powder,0.14,47,50,13,google,nac glycine,Informational,3
+https://smartq.pureforyou.com/products/33055578980386/purelean-fiber,0.14,10,49,-2,google,purelean fiber,Informational,1
+https://smartq.pureforyou.com/collections/mens-formulas,0.14,8,48,46,,pure encapsulations men's multivitamin,Informational,0
+https://smartq.pureforyou.com/products/33055642222626/folic-acid,0.14,25,48,30,google,400 micrograms of folic acid,Informational,3
+https://smartq.pureforyou.com/products/39630117666850/alpha-lipoic-acid-600-mg,0.13,11,47,4,,pure encapsulations alpha lipoic acid,Informational,0
+https://smartq.pureforyou.com/products/33055573114914/selenium-selenomethionine-60,0.13,60,47,-7,google,selenomethionine supplement,Informational,1
+https://smartq.pureforyou.com/products/33055567609890/zinc-liquid,0.13,34,46,-15,"gemini, google",zinc liquid,Informational,3
+https://smartq.pureforyou.com/products/39699859472418/cognimag-1,0.13,13,46,-12,google,cognimag pure encapsulations,Informational,1
+https://smartq.pureforyou.com/products/32040748023842/junior-nutrients,0.13,5,45,1,"gemini, google-ai",pure encapsulations junior nutrients,Informational,4
+https://smartq.pureforyou.com/products/33055569346594/vitamin-e-90,0.13,25,44,17,google,pure vitamin e,Informational,1
+https://smartq.pureforyou.com/products/32040742486050/hair-skin-nails-ultra,0.13,45,44,6,google-ai,pure encapsulations hair skin nails,Informational,3
+https://smartq.pureforyou.com/collections/pure-surplus-offers,0.12,10,43,0,"gemini, google, google-ai",pureforyou discount code,Informational,3
+https://smartq.pureforyou.com/products/33064560525346/neuropure,0.12,12,43,0,"gemini, google, google-ai",pure neuropure,Informational,6
+https://smartq.pureforyou.com/collections/all,0.12,24,42,-3,"gemini, google, google-ai, search-gpt",pure products,Informational,7
+https://smartq.pureforyou.com/products/42756074209314/nr-longevity,0.12,55,42,-36,,pure nad supplement,Informational,0
+https://smartq.pureforyou.com/products/33055651495970/caprylic-acid-120,0.12,16,42,19,"gemini, google",caprylic acid,Informational,2
+https://smartq.pureforyou.com/products/33055636750370/homocysteine-factors-60,0.12,12,41,11,"gemini, google",homocysteine supplement,Informational,2
+https://smartq.pureforyou.com/products/33055571607586/systemic-enzyme-complex,0.11,20,40,9,,systemic enzymes,Informational,0
+https://smartq.pureforyou.com/products/33055647596578/collagen-js-60,0.11,24,40,-11,"gemini, google-ai",pure collagen,Informational,3
+https://smartq.pureforyou.com/login,0.11,2,40,0,,pureforyou login,"Transactional, Navigational",0
+https://pureforyou.com/pages/contact-us,0.11,48,39,18,,pure encapsulations customer service,Informational,0
+https://smartq.pureforyou.com/products/33055637798946/grapefruit-seed-extract-60,0.11,44,39,-24,google,grapefruit seed extract,Informational,6
+https://smartq.pureforyou.com/collections/blood-sugar,0.11,61,39,29,"google, google-ai",blood sugar support supplements,Informational,4
+https://smartq.pureforyou.com/products/33055633014818/l-methionine,0.11,17,39,38,google,methionine supplement,Informational,1
+https://smartq.pureforyou.com/products/33055571083298/ubiquinol-qh-200,0.11,19,38,28,,ubiquinol supplement,Informational,0
+https://smartq.pureforyou.com/products/39354414202914/cholestepure-plus-ii,0.1,17,36,-16,"gemini, google",cholestepure plus,Informational,4
+https://smartq.pureforyou.com/products/33055641731106/gi-fortify,0.1,7,36,4,"google, google-ai",gi fortify,Informational,3
+https://smartq.pureforyou.com/products/33055655657506/b6-complex-60,0.1,14,34,-10,google,b6 complex,Informational,1
+https://smartq.pureforyou.com/products/33055595462690/melatonin-liquid,0.1,7,34,23,,melatonin liquid,Informational,0
+https://smartq.pureforyou.com/products/33055644254242/essential-aminos,0.09,14,33,19,"gemini, google-ai",pure encapsulations essential aminos,Informational,2
+https://smartq.pureforyou.com/products/32944647995426/liver-gi-detox,0.09,20,33,-25,google,liver gi detox pure encapsulations,Informational,3
+https://smartq.pureforyou.com/products/39354441891874/nitric-oxide-ultra-capsules,0.09,7,33,-6,,pure encapsulations nitric oxide,Informational,0
+https://smartq.pureforyou.com/products/33055565447202/cranberry-ns-90,0.09,36,33,-9,google,pure cranberry,Informational,3
+https://smartq.pureforyou.com/products/33055626330146/lithium-orotate-5-mg-90,0.09,65,33,-9,google,pure encapsulations lithium orotate,Informational,2
+https://smartq.pureforyou.com/products/33055587565602/pantethine-60,0.09,5,31,31,,pantethine,Informational,0
+https://smartq.pureforyou.com/products/40550555025442/athletic-nutrients,0.09,6,31,-32,google,athletic nutrients,Informational,1
+https://smartq.pureforyou.com/products/44791806656546/efa-essentials,0.09,15,31,0,google,efa supplement,Informational,1
+https://smartq.pureforyou.com/products/33055554863138/zinc-chewables,0.09,13,31,-6,google,zinc chewable tablets,Informational,2
+https://smartq.pureforyou.com/products/33055633244194/l-lysine-90,0.09,19,31,-18,"gemini, google, google-ai, search-gpt",l lysine pure,Informational,4
+https://smartq.pureforyou.com/products/32040732262434/betaine-hcl-pepsin,0.08,39,30,-9,,hcl and pepsin,Informational,0
+https://smartq.pureforyou.com/products/33055656083490/astaxanthin-60,0.08,15,30,-4,,pure encapsulations astaxanthin,Informational,0
+https://smartq.pureforyou.com/products/32040768241698/mens-pure-pack,0.08,53,29,6,"gemini, google, google-ai",male vitamin packs,Informational,5
+https://smartq.pureforyou.com/products/33055655395362/bcaa-powder,0.08,14,29,22,,bcaa powder,Informational,0
+https://smartq.pureforyou.com/products/33055646416930/dhea-10-mg-60,0.08,12,28,7,google,pure encapsulations dhea 10 mg,Informational,1
+https://smartq.pureforyou.com/products/33055676432418/b12-liquid,0.07,15,26,-47,google,pure encapsulations b12 liquid,Informational,1
+https://smartq.pureforyou.com/products/39359797657634/renual,0.07,8,24,-10,"gemini, google-ai",renual,Informational,2
+https://smartq.pureforyou.com/products/33055671910434/puredefense-with-nac,0.06,5,23,-25,google,pure defense with nac,Informational,1
+https://smartq.pureforyou.com/products/39375529050146/longevity-nutrients-1,0.06,12,23,20,,pure encapsulations longevity nutrients 120 capsules,Informational,0
+https://smartq.pureforyou.com/products/33055693045794/joint-complex,0.06,8,22,-3,,pure encapsulations joint complex,Informational,0
+https://smartq.pureforyou.com/products/33055585697826/probiomood,0.06,3,22,0,,probio mood,Informational,0
+https://smartq.pureforyou.com/products/32040794882082/womens-pure-pack,0.06,34,22,-2,"gemini, google-ai",women's pure pack,Informational,3
+https://smartq.pureforyou.com/products/32040794423330/vitamin-d3-vegan-liquid,0.06,6,22,-6,"google, google-ai",vegan liquid supplement,Informational,2
+https://smartq.pureforyou.com/products/33055654936610/boron-glycinate,0.06,19,21,-57,google,pure encapsulations boron,Informational,1
+https://smartq.pureforyou.com/products/39406546485282/zinc-15,0.06,9,21,1,google,pure encapsulations zinc 15,Informational,2
+https://smartq.pureforyou.com/products/32040784625698/puremelt-b12-folate,0.06,9,21,-3,"gemini, google-ai, search-gpt",pure encapsulations b12 folate,Informational,4
+https://smartq.pureforyou.com/products/32040772370466/methylassist,0.06,13,21,-2,google,pure encapsulations methylfolate,Informational,3
+https://smartq.pureforyou.com/products/33055642157090/gaba-60,0.05,11,20,-22,"gemini, google, google-ai",pure encapsulations gaba,Informational,6
+https://smartq.pureforyou.com/products/33055577571362/r-lipoic-acid-stabilized-60,0.05,10,20,20,google,r lipoic acid,Informational,1
+https://smartq.pureforyou.com/products/33055560925218/epa-dha-essentials-90,0.05,12,20,5,"gemini, google-ai",pure encapsulations epa dha essentials,Informational,3
+https://smartq.pureforyou.com/products/33055560761378/glucose-support-formula-60,0.05,11,19,-11,google,glucose support formula,Informational,1
+https://smartq.pureforyou.com/products/39361650753570/hist-reset,0.05,10,19,0,"gemini, google, google-ai",hist reset,Informational,8
+https://smartq.pureforyou.com/products/32040738291746/electrolyte-energy-formula,0.05,11,18,5,,pure encapsulations electrolyte,Commercial,0
+https://smartq.pureforyou.com/products/33055641370658/gi-integrity-120,0.05,10,18,0,"google, google-ai",gi integrity,Informational,2
+https://smartq.pureforyou.com/products/33055590285346/nsk-sd-60,0.05,19,18,-1,,pure encapsulations nattokinase,Informational,0
+https://smartq.pureforyou.com/products/33055570133026/ultranutrient,0.05,9,17,-7,,pure encapsulations ultranutrient,Informational,0
+https://smartq.pureforyou.com/products/33055589597218/nutrient-950-with-vitamin-k,0.05,4,17,15,"gemini, google-ai, search-gpt",multivitamin containing vitamin k,Informational,6
+https://smartq.pureforyou.com/products/33055653527586/calcium-magnesium-citrate-malate,0.05,17,17,-2,,calcium citrate malate,Informational,0
+https://smartq.pureforyou.com/products/32040794259490/vitamin-d3-liquid,0.05,19,17,-9,"gemini, google, google-ai",pure encapsulations vit d liquid,Informational,7
+https://smartq.pureforyou.com/products/33055574917154/reduced-glutathione-60,0.04,9,16,-3,google,reduced glutathione,Informational,3
+https://smartq.pureforyou.com/products/33055642255394/folate-400,0.04,7,16,8,,pure encapsulations folate,Informational,0
+https://smartq.pureforyou.com/products/33055567446050/coq10-30-mg-120,0.04,8,16,-2,,coq10 30mg,Informational,0
+https://smartq.pureforyou.com/products/33055634587682/iron-liquid,0.04,13,16,-11,"gemini, google-ai",pure encapsulations iron liquid,Informational,2
+https://smartq.pureforyou.com/products/33055583404066/prostaflo,0.04,20,16,-19,,prostaflo,Informational,0
+https://smartq.pureforyou.com/products/41167724052514/liposomal-vitamin-c-1,0.04,24,16,16,,c liposomal vitamin,Informational,0
+https://smartq.pureforyou.com/products/33055565381666/curcumasorb-mind,0.04,4,16,0,"gemini, google, google-ai",curcumasorb mind,Informational,4
+https://smartq.pureforyou.com/collections/mental-health-stress-support,0.04,34,15,4,,best supplements for mental health,Informational,0
+https://smartq.pureforyou.com/products/44791607853090/saw-palmetto-320-120,0.04,5,15,1,,pure saw palmetto,Informational,0
+https://smartq.pureforyou.com/products/33055572066338/sunbutyrate-tg-liquid,0.04,18,15,4,"gemini, google",pure encapsulations sunbutyrate,Informational,3
+https://smartq.pureforyou.com/products/33055634063394/l-carnitine-60,0.04,6,15,2,,l carnitine pure,Informational,0
+https://smartq.pureforyou.com/products/33055586025506/potassium-magnesium-citrate-180,0.04,33,15,-71,google,potassium and magnesium citrate,Informational,2
+https://smartq.pureforyou.com/products/39400289599522/growth-hormone-support,0.04,32,15,-3,,human growth hormone supplement,Informational,0
+https://smartq.pureforyou.com/products/39644643229730/gluten-dairy-digest,0.04,4,15,2,google,gluten digest,Informational,1
+https://smartq.pureforyou.com/products/33055589924898/nutrient-950-a-without-copper-iron,0.04,5,15,10,gemini,pure encapsulations nutrient 950,Informational,1
+https://smartq.pureforyou.com/collections/liver-detoxification,0.04,26,15,7,"google, search-gpt",liver pure,Informational,3
+https://smartq.pureforyou.com/products/33055658901538/adrenal,0.04,34,14,-7,,pure encapsulations adrenal,Informational,0
+https://smartq.pureforyou.com/blog/556445368354/what-are-the-benefits-of-coq10,0.04,84,14,11,google,what is co q ten good for,Informational,1
+https://smartq.pureforyou.com/products/40461954711586/choline-bitartrate,0.04,14,14,10,,choline bitartrate,Informational,0
+https://smartq.pureforyou.com/products/43231157321762/rapid-calm,0.03,4,13,0,,rapid calm pure encapsulations,Informational,0
+https://smartq.pureforyou.com/products/39402714103842/emotional-wellness,0.03,5,13,-2,"gemini, google-ai",pure encapsulations emotional wellness,Informational,2
+https://smartq.pureforyou.com/products/44791808196642/vitamin-a-carotenoids,0.03,14,13,11,,pure encapsulations vitamin a,Informational,0
+https://smartq.pureforyou.com/products/40181748564002/digestive-enzyme-chewables,0.03,10,13,-13,google,digestive enzymes chewable,Informational,3
+https://smartq.pureforyou.com/products/43781004492834/muscle-repair,0.03,2,13,6,google,muscle pure,Informational,1
+https://smartq.pureforyou.com/products/39406545305634/pomegranate-plus,0.03,6,13,0,,pomeg plus,Informational,0
+https://smartq.pureforyou.com/collections/weight-management,0.03,15,13,-4,,pure encapsulations weight loss,Informational,0
+https://smartq.pureforyou.com/products/32040728166434/ascorbic-acid-capsules,0.03,10,13,-5,google,pure vitamin c supplement,Informational,2
+https://smartq.pureforyou.com/products/33055650152482/chromium-picolinate-200-mcg-60,0.03,14,12,-5,,chromium picolinate 200 mcg,Informational,0
+https://smartq.pureforyou.com/products/33055654969378/borage-oil-60,0.03,21,12,2,"google, search-gpt",borage oil supplements,Informational,6
+https://smartq.pureforyou.com/products/33055585665058/probiotic-5,0.03,6,12,5,,pure encapsulations probiotic 5,Informational,0
+https://smartq.pureforyou.com/products/39403571019810/l-glutamine-500-mg,0.03,3,12,0,,l glutamine pure encapsulations,Informational,0
+https://smartq.pureforyou.com/products/33055582453794/puregenomics-b-complex,0.03,7,12,-16,google-ai,puregenomics b complex,Informational,1
+https://smartq.pureforyou.com/products/33055565643810/coq10-l-carnitine-fumarate,0.03,19,12,-5,google,coq10 with l carnitine,Informational,2
+https://smartq.pureforyou.com/products/39628424118306/pureprobiotic,0.03,8,12,12,,pure encapsulations probiotic,Informational,0
+https://smartq.pureforyou.com/products/33055613648930/maca-3-60,0.03,17,12,0,"google, google-ai",maca 3,Informational,6
+https://smartq.pureforyou.com/products/33055573475362/saw-palmetto-plus-60,0.03,7,12,-1,,pure encapsulations saw palmetto,Informational,0
+https://smartq.pureforyou.com/products/42756074209314/nr-longevity%E2%80%8B,0.03,5,11,11,google,nad pure encapsulations,Informational,1
+https://smartq.pureforyou.com/products/33055598772258/melatonin-20-60,0.03,17,11,10,google,melatonin 20 mg,Informational,2
+https://smartq.pureforyou.com/products/40699732885538/mitochondria-atp120s,0.03,25,11,-2,google-ai,mitochondrial atp,Informational,1
+https://smartq.pureforyou.com/products/33055557713954/phosphatidylcholine,0.03,19,11,0,,phosphatidylcholine pure encapsulations,Informational,0
+https://smartq.pureforyou.com/products/33055638880290/glucosamine-chondroitin-with-msm-60,0.03,36,11,-7,,chondroitin glucosamine with msm,Informational,0
+https://smartq.pureforyou.com/products/44791803936802/metabolic-xtra-90,0.03,5,11,0,,metabolic xtra,Informational,0
+https://smartq.pureforyou.com/products/39406543470626/bcaa-capsules-90,0.03,7,11,0,,bcaa capsules,"Commercial, Informational",0
+https://smartq.pureforyou.com/products/32040741961762/green-tea-extract-decaffeinated,0.03,37,11,4,google,pure encapsulations green tea extract,Informational,3
+https://smartq.pureforyou.com/collections/childrens-formulas,0.03,4,11,0,google-ai,kids multivitamin with magnesium,Informational,1
+https://smartq.pureforyou.com/products/32040787247138/resveratrol-extra,0.03,15,11,0,,resveratrol extra,Informational,0
+https://smartq.pureforyou.com/products/32040780103714/perilla-extract-90,0.03,7,11,0,,perilla extract benefits,Informational,0
+https://smartq.pureforyou.com/products/33055569575970/vitamin-d3-250-60,0.02,9,10,-2,google,pure encapsulations vitamin d3 10 000 iu,Informational,2
+https://smartq.pureforyou.com/products/39337319039010/vitamin-d3-vegan,0.02,30,10,0,,d3 supplement vegan,Informational,0
+https://smartq.pureforyou.com/products/33055659556898/adenosyl-hydroxy-b12-90,0.02,20,10,-3,,hydroxy b12 and adenosyl b12,Informational,0
+https://smartq.pureforyou.com/blog/561239916578/types-of-magnesium-which-one-is-the-best,0.02,105,10,-1,"google, google-ai",magnesium l threonate pure encapsulations,"Commercial, Informational",14
+https://smartq.pureforyou.com/products/33055647105058/colostrum-40-igg,0.02,7,10,1,google,pure encapsulations colostrum,Informational,2
+https://smartq.pureforyou.com/products/32040791572514/ubiquinol-qh-100-mg,0.02,15,10,5,,ubiquinol coq10,Informational,0
+https://smartq.pureforyou.com/products/33055569903650/vitamin-a,0.02,7,10,1,,vitamin a 10000 iu,Informational,0
+https://smartq.pureforyou.com/products/33055646253090/dhea-5-mg-60,0.02,11,10,-5,,dhea 5 mg,Informational,0
+https://smartq.pureforyou.com/products/32040731934754/benfomax,0.02,14,10,-10,,benfomax,Informational,0
+https://smartq.pureforyou.com/products/32889991921698/ultra-pure-pack,0.02,11,9,0,,pure encapsulations ultra pure pack,Informational,0
+https://smartq.pureforyou.com/products/33054553210914/iodine-potassium-iodide,0.02,37,9,2,,pure encapsulations iodine supplement,Informational,0
+https://smartq.pureforyou.com/products/33055558959138/purelean-pure-pack-30,0.02,7,9,-7,,purelean pure pack,Informational,0
+https://smartq.pureforyou.com/products/33055639306274/glucofunction-90,0.02,1,9,9,,pure glucofunction hair,Informational,0
+https://smartq.pureforyou.com/glossary/559136833570/larginine,0.02,24,9,8,,,,0
+https://smartq.pureforyou.com/products/33055631179810/ligament-restore-240,0.02,16,9,-5,google,pure encapsulations ligament restore,Informational,1
+https://smartq.pureforyou.com/products/33055579176994/puregenomics-ultramultivitamin,0.02,2,9,4,,puregenomics ultra multivitamin,Informational,0
+https://smartq.pureforyou.com/products/33055574065186/rhodiola-rosea-90,0.02,15,9,-15,"google, google-ai",rhodiola rosea pure,Informational,3
+https://smartq.pureforyou.com/products/39410165514274/osteobalance-210,0.02,3,9,0,"gemini, google-ai",pure encapsulations osteobalance,Informational,2
+https://smartq.pureforyou.com/products/39403570987042/l-glutamine-500-mg,0.02,10,9,7,,pure encapsulations l glutamine,Informational,0
+https://smartq.pureforyou.com/products/41436137881634/magnesium-gummy,0.02,6,9,4,,magnesium gummy vitamins,Informational,0
+https://smartq.pureforyou.com/products/33055644418082/epo-evening-primrose-oil-100,0.02,56,8,-39,google,epo supplement,Informational,1
+https://smartq.pureforyou.com/products/33055659950114/ac-formula-ii,0.02,8,8,2,"google, google-ai",ac formula,Informational,4
+https://smartq.pureforyou.com/products/33055582814242/purecell,0.02,7,8,-17,google-ai,purecell,Informational,1
+https://smartq.pureforyou.com/products/39628621512738/vitamin-d3-25-60,0.02,27,8,-9,google,vitamin d 25mcg,Informational,1
+https://smartq.pureforyou.com/products/33055654608930/boswellia-akba-60,0.02,9,8,-5,,boswellia akba,Informational,0
+https://smartq.pureforyou.com/products/33055585796130/pregnenolone-30-mg-60,0.02,6,8,-3,google,pure encapsulations pregnenolone,Informational,1
+https://smartq.pureforyou.com/products/32040734261282/coriolus-extract-60,0.02,13,8,-31,google,coriolus mushroom,Informational,2
+https://smartq.pureforyou.com/products/33055583240226/ps-100-phosphatidylserine-60,0.02,6,8,-12,,ps100 supplement,Informational,0
+https://smartq.pureforyou.com/blog/558918500386/lactobacillus-rhamnosus-with-immune-support-probiotics,0.02,13,8,1,,lactobacillus rhamnosus lr 32 vs gg,"Commercial, Informational",0
+https://smartq.pureforyou.com/products/33055572951074/silymarin-60,0.02,4,7,-6,,pure encapsulations milk thistle,Informational,0
+https://smartq.pureforyou.com/products/33055654379554/bromelain-2400-60,0.02,3,7,-4,google-ai,pure bromelain supplement,Informational,1
+https://smartq.pureforyou.com/products/32040792981538/vitamin-d3-10-mcg-120,0.02,24,7,-6,,how much is 10mcg of vitamin d3,Informational,0
+https://smartq.pureforyou.com/products/33055582879778/pure-tranquility-liquid,0.02,4,7,-3,google,pure tranquility,Informational,1
+https://smartq.pureforyou.com/products/33055577636898/q-gel-100-hydrosoluble-coq10,0.02,5,7,4,,coenzyme q10 gel,Informational,0
+https://smartq.pureforyou.com/products/39354427932706/innate-immune-support,0.02,5,7,0,"google-ai, search-gpt",innate immune support,Informational,2
+https://smartq.pureforyou.com/products/32040787705890/sereniten-plus,0.01,4,6,-5,,sereniten plus,Informational,0
+https://smartq.pureforyou.com/products/33055585894434/pregnenolone-10-mg-60,0.01,16,6,-1,,pregnenolone 10mg,Informational,0
+https://smartq.pureforyou.com/products/33055591923746/msm-powder,0.01,15,6,5,,pure msm powder,Informational,0
+https://smartq.pureforyou.com/products/32040780169250/phyto-adr,0.01,4,6,0,gemini,phyto adr,Informational,1
+https://smartq.pureforyou.com/products/33055651659810/calcium-mcha-180,0.01,3,6,2,google,calcium mcha,Informational,1
+https://smartq.pureforyou.com/products/33055655264290/beta-sitosterol-90,0.01,16,6,-25,google-ai,beta-sitosterol supplement,Informational,1
+https://smartq.pureforyou.com/products/44791812128802/puregg,0.01,14,6,-4,,lactobacillus gg,Informational,0
+https://smartq.pureforyou.com/products/40975256191010/folate-5-000-plus,0.01,3,6,-9,gemini,methylfolate pure encapsulations,Informational,1
+https://smartq.pureforyou.com/products/33055622397986/lutein-zeaxanthin-60,0.01,21,6,-47,,pure encapsulations lutein zeaxanthin,Informational,0
+https://smartq.pureforyou.com/products/32889796984866/menovive,0.01,7,6,1,"gemini, google, google-ai",pure encapsulations menopause,Informational,4
+https://smartq.pureforyou.com/products/33055560630306/daily-stress-formula-90,0.01,6,6,0,,pure encapsulations daily stress formula,Informational,0
+https://smartq.pureforyou.com/products/33055628165154/liquinutrients,0.01,3,6,1,,pure encapsulations liquid multivitamin,Informational,0
+https://pureforyou.com/pages/pure-encapsulations-perks,0.01,21,5,2,"google, google-ai, search-gpt",pure encapsulations discount,Informational,7
+https://smartq.pureforyou.com/products/44791800168482/seroplus,0.01,2,5,2,google,seroplus,Informational,1
+https://smartq.pureforyou.com/products/33055590645794/niacitol-500-mg-60,0.01,2,5,-5,gemini,pure encapsulations niacin,Informational,1
+https://pureforyou.com/pages/ambassador-program,0.01,2,5,0,,pure encapsulations affiliate program,Commercial,0
+https://smartq.pureforyou.com/products/33055578685474/pureresponse-multivitamin,0.01,2,5,0,"gemini, google-ai",pure response multivitamin,Informational,5
+https://smartq.pureforyou.com/products/32040765095970/memory-pro,0.01,6,5,-1,gemini,pure encapsulations memory pro,Informational,2
+https://smartq.pureforyou.com/products/44791819075618/energy-xtra,0.01,4,5,1,"gemini, google-ai",energy xtra pure encapsulations,Informational,3
+https://smartq.pureforyou.com/products/39400265383970/disc-flex,0.01,9,5,0,,pure encapsulations disc flex,Informational,0
+https://smartq.pureforyou.com/products/44226066087970/femivive,0.01,1,5,0,,femivive,Informational,0
+https://smartq.pureforyou.com/products/43230988828706/daily-calm,0.01,6,5,0,google,pure encapsulations saffron,Informational,1
+https://smartq.pureforyou.com/products/33055656738850/antioxidant-formula,0.01,4,5,-19,,oxidant formula,Informational,0
+https://smartq.pureforyou.com/products/33055633637410/l-carnosine-60,0.01,17,5,-17,,carnosine supplement,Informational,0
+https://smartq.pureforyou.com/products/32889526681634/adipolean-ii,0.01,5,5,-6,"gemini, google, google-ai, search-gpt",adipolean ii,Informational,9
+https://smartq.pureforyou.com/products/33055571443746/trace-minerals,0.01,9,5,0,"gemini, google, google-ai",pure encapsulations trace minerals,Informational,4
+https://smartq.pureforyou.com/products/39410171084834/daily-immune,0.01,6,4,-5,"google-ai, search-gpt",pure encapsulations daily immune,Informational,3
+https://smartq.pureforyou.com/products/33055653658658/calcium-d-glucarate-60,0.01,3,4,0,,pure encapsulations calcium d glucarate,Informational,0
+https://smartq.pureforyou.com/products/39354439794722/melatonin-sr,0.01,8,4,-6,google-ai,pure encapsulations melatonin sr,Informational,1
+https://smartq.pureforyou.com/products/33055658606626/ai-enzymes,0.01,12,4,-2,google,vegan digestive enzymes,Informational,2
+https://smartq.pureforyou.com/products/33055587729442/pancreatic-vegenzymes,0.01,11,4,0,google,pure encapsulations pancreatic enzymes,Informational,1
+https://smartq.pureforyou.com/products/33055572688930/strontium-citrate-90,0.01,7,4,0,,strontium pure,Informational,0
+https://smartq.pureforyou.com/products/33055589761058/nutrient-950-with-nac,0.01,1,4,4,,pure encapsulations 950,Informational,0
+https://smartq.pureforyou.com/products/40355741433890/brain-reset,0.01,6,4,-6,"gemini, google-ai",brain reset pure encapsulations,Informational,4
+https://smartq.pureforyou.com/collections/immune,0.01,3,4,3,"google-ai, search-gpt",pure encapsulations immune support,Informational,3
+https://smartq.pureforyou.com/products/33055655591970/bacopa-monnieri,0.01,9,4,0,,pure encapsulations bacopa,Informational,0
+https://smartq.pureforyou.com/products/33055654051874/cal-mag-d-liquid,0,31,3,-9,,cal d mag,Informational,0
+https://smartq.pureforyou.com/products/32040784756770/purenutrients-epa-dha-gummy,0,17,3,-6,,dha gummies,Informational,0
+https://smartq.pureforyou.com/products/33055570264098/ultramag-magnesium,0,11,3,-10,google,ultra mag,Informational,3
+https://smartq.pureforyou.com/products/33055592349730/mineral-650,0,2,3,3,,pure encapsulations mineral 650,Informational,0
+https://smartq.pureforyou.com/products/33055590416418/nitric-oxide-support,0,7,3,1,google,pure nitric oxide powder,Informational,1
+https://smartq.pureforyou.com/products/33055571476514/taurine-500-60,0,11,3,0,,pure encapsulations taurine,Informational,0
+https://smartq.pureforyou.com/products/32040794751010/vitamin-d3-vesisorb,0,2,3,0,,vesisorb vitamin d,Informational,0
+https://smartq.pureforyou.com/products/33064561016866/multi-t-d-60,0,1,3,0,,pure encapsulations multi t/d,Informational,0
+https://smartq.pureforyou.com/collections/cardiovascular-health,0,5,3,-7,google,cardio support supplement,Informational,1
+https://smartq.pureforyou.com/drug-nutrient-interactions,0,14,3,0,"gemini, google-ai",medication and supplement interaction checker,Informational,2
+https://smartq.pureforyou.com/products/33055604703266/manganese-aspartate-citrate,0,13,3,-1,,manganese pure,Informational,0
+https://smartq.pureforyou.com/products/32040732557346/black-currant-seed-oil,0,17,3,2,,best black currant seed oil,"Commercial, Informational",0
+https://smartq.pureforyou.com/products/40301416579106/puredefense-collagen-w-bone-broth,0,11,3,-2,google,bone broth and collagen powder,Informational,1
+https://smartq.pureforyou.com/products/33055587368994/pantothenic-acid,0,2,3,0,,pure encapsulations pantothenic acid,Informational,0
+https://smartq.pureforyou.com/products/39326397235234/purelean-protein,0,5,3,0,,pure encapsulations protein powder,Commercial,0
+https://smartq.pureforyou.com/products/33055642976290/folate-1000,0,14,3,-16,,pure folate supplement,Informational,0
+https://pureforyou.com/pages/ambassador-register,0,1,3,0,,pure encapsulations affiliate program,Commercial,0
+https://smartq.pureforyou.com/products/33055642026018/garlic-complex,0,4,3,1,,pure garlic supplement,Informational,0
+https://smartq.pureforyou.com/products/44791813799970/nrf2-detox,0,2,3,3,gemini,nrf2 detox,Informational,1
+https://smartq.pureforyou.com/blog/558918434850/arabinogalactan-and-its-role-in-gut-health,0,7,3,2,google,arabinogalactans,Informational,1
+https://smartq.pureforyou.com/products/33055578456098/pycnogenol-30,0,27,3,-19,google,pycnogenol supplements,Informational,2
+https://smartq.pureforyou.com/products/33055586517026/poly-prebiotic-powder,0,15,2,-23,"gemini, google-ai",pure encapsulations poly prebiotic powder,Informational,4
+https://smartq.pureforyou.com/products/39421634871330/puregg,0,30,2,0,,pure encapsulations puregg 25b,Informational,0
+https://smartq.pureforyou.com/products/33055660146722/7-keto-dhea-25-mg-60,0,45,2,0,,dhea 7 keto dhea,Informational,0
+https://smartq.pureforyou.com/products/39644225208354/cogniphos,0,1,2,0,,cogniphos,Informational,0
+https://smartq.pureforyou.com/products/33055587762210/pancreatic-enzyme-formula-60,0,51,2,-21,,otc pancreatic enzymes,Informational,0
+https://smartq.pureforyou.com/products/32931079389218/muscle-cramp-tension-formula,0,14,2,0,,supplements for muscle tension,Informational,0
+https://smartq.pureforyou.com/products/33055585337378/probiotic-imm,0,1,2,0,,probiotic imm,Informational,0
+https://smartq.pureforyou.com/products/33055592644642/microdefense-with-oregano,0,2,2,-1,"gemini, google-ai, search-gpt",microdefense with oregano,Informational,4
+https://pureforyou.com/pages/faqs,0,51,2,-2,"gemini, google, google-ai, search-gpt",pure encapsulations near me,Informational,26
+https://smartq.pureforyou.com/products/32040790392866/th2-modulator-120,0,1,2,0,,th2 modulator,Informational,0
+https://smartq.pureforyou.com/products/33055571673122/synergy-k-60,0,5,2,0,,synergy k,Informational,0
+https://smartq.pureforyou.com/collections/gut-health,0,18,2,1,gemini,pure gut pro,Informational,1
+https://smartq.pureforyou.com/products/33055659032610/adr-formula,0,3,2,-17,gemini,pure encapsulations adr formula,Informational,1
+https://smartq.pureforyou.com/products/32040733507618/cognitive-aminos,0,3,2,-32,google-ai,pure aminos,Informational,1
+https://smartq.pureforyou.com/products/33055592251426/mineral-650-without-copper-iron,0,3,2,1,google,pure encapsulations mineral 650,Informational,1
+https://smartq.pureforyou.com/products/39628372344866/prosoothe-ii,0,6,2,0,google,pms essentials,Informational,1
+https://smartq.pureforyou.com/products/33055570034722/uric-acid-formula,0,18,2,-26,,uric acid formula supplement,Informational,0
+https://smartq.pureforyou.com/products/33055608209442/magnesium-liquid,0,16,2,1,,pure encapsulations magnesium liquid,Informational,0
+https://smartq.pureforyou.com/products/32040781152290/purebiome-intensive,0,6,1,-3,,pure probiotic,Informational,0
+https://smartq.pureforyou.com/collections/october-promo,0,4,1,0,,pure encapsulations promo,Transactional,0
+https://smartq.pureforyou.com/products/40461964673058/quercetin-ultrasorb,0,1,1,0,,quercetin ultrasorb,Informational,0
+https://smartq.pureforyou.com/products/33055637930018/grape-pip-500-mg,0,8,1,0,,grape pip,Informational,0
+https://smartq.pureforyou.com/products/33055592022050/msm-capsules-250,0,7,1,-17,,pure msm,Informational,0
+https://smartq.pureforyou.com/products/33055646679074/dha-ultimate-60,0,1,1,0,,pure dha,Informational,0
+https://smartq.pureforyou.com/products/33055633997858/l-carnitine-fumarate,0,4,1,1,,l-carnitine fumarate,Informational,0
+https://smartq.pureforyou.com/products/33055572820002/sp-ultimate-90,0,1,1,0,google-ai,prostate pure,Informational,2
+https://smartq.pureforyou.com/survey,0,29,1,0,,pureforyou login,"Transactional, Navigational",0
+https://smartq.pureforyou.com/products/33055618990114/lvr-formula-60,0,2,1,0,,lvr supplement,Informational,0
+https://smartq.pureforyou.com/products/33055628394530/lipotropic-detox,0,9,1,0,,lipotropic detox,"Commercial, Informational",0
+https://pureforyou.com/pages/pure-encapsulations-reviews,0,10,1,1,"google-ai, search-gpt",pure encapsulations reviews,"Commercial, Informational",3
+https://smartq.pureforyou.com/blog/556931219490/chemistry-of-calm-the-benefits-of-gaba,0,47,1,1,google,,,1
+https://smartq.pureforyou.com/products/33055654871074/boswellia-60,0,2,1,0,,boswellia pure encapsulations,Informational,0
+https://smartq.pureforyou.com/products/33055649693730/cinnamon-ws,0,1,1,-1,,pure encapsulations cinnamon ws,Informational,0
+https://smartq.pureforyou.com/products/33055660802082/5-htp-100-mg-60,0,2,1,0,,pure encapsulations 5 htp 100mg,Informational,0
+https://pureforyou.com/pages/pure-ambassadors-post-guidelines,0,1,1,0,gemini,pure encapsulations affiliate program,Commercial,1
+https://smartq.pureforyou.com/products/33055573344290/selenium-citrate-60,0,2,1,-1,"google, google-ai",selenium citrate,"Commercial, Informational",2
+https://smartq.pureforyou.com/,0,17,1,-5,google-ai,personalized supplements quiz,"Transactional, Navigational",1
+https://smartq.pureforyou.com/products/39406544945186/essential-c-flavonoids,0,7,1,0,,pure encapsulations ester c,Informational,0
+https://smartq.pureforyou.com/products/44791798693922/pureprobiotic,0,2,1,-1,gemini,pureprobiotic,Informational,1
+https://smartq.pureforyou.com/blog/561125326882/menopause-what-vitamins-should-i-take,0,11,1,0,"gemini, google-ai",pure encapsulations menopause,Informational,3
+https://smartq.pureforyou.com/products/33055651168290/cholestepure-90,0,1,1,-1,google-ai,cholestepure ingredients,Informational,1
+https://smartq.pureforyou.com/products/33055559483426/heartburn-essentials-90,0,1,1,0,"gemini, search-gpt",pure encapsulations heartburn essentials,Informational,2
+https://smartq.pureforyou.com/products/40273549688866/emulsisorb-k2-d3-liquid,0,1,1,0,,pure encapsulations d3 k2 liquid,Informational,0
+https://smartq.pureforyou.com/collections/multivitamins,0,7,1,-1,"gemini, google, google-ai",vitamins without magnesium stearate,Informational,4
+https://puredev.pureforyou.com/,0,1,0,0,google-ai,pureforyou login,"Transactional, Navigational",1
+https://smartq.pureforyou.com/products/32040791670818/ultra-b-complex-w-pqq,0,0,0,0,,,,0
+https://smartq.pureforyou.com/collections/gut-health/page-3,0,2,0,0,,,,0
+https://smartq.pureforyou.com/collections/gut-health/page-6,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/39375428976674/purelean-nutrients-1,0,1,0,-1,,,,0
+https://smartq.pureforyou.com/blog/562794987554/understanding-the-gutbrain-axis-and-the-microbiome,0,0,0,0,,,,0
+https://smartq.pureforyou.com/collections/general-health-wellness,0,1,0,0,,,,0
+https://pureforyou.com/pages/pure-encapsulations%C2%AE-loyalty-rewards-program-terms-and-conditions,0,1,0,0,search-gpt,,,1
+https://smartq.pureforyou.com/products/33055655231522/bilberry-160-mg,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/32889928187938/detox-pure-pack,0,10,0,0,,detox packets,Commercial,0
+https://smartq.pureforyou.com/glossary/558937276450/coq10,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/41021149872162/emulsisorb-a-liquid,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/32040781348898/puredefense-chewables,0,3,0,-1,,puredefense,Navigational,0
+https://smartq.pureforyou.com/blog/565151301666/navigating-histamine-intolerance-your-guide-to-a-low-histamine-diet,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/33055574097954/rhodiola-rosea-90,0,0,0,-3,google-ai,,,1
+https://smartq.pureforyou.com/products/33055569018914/wheybasics,0,27,0,0,,,,0
+https://smartq.pureforyou.com/products/44364154503202/lipid,0,1,0,0,,lipid support,Informational,0
+https://smartq.pureforyou.com/blog/556943638562/antioxidants-what-are-they-and-how-do-they-protect-us,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055660015650/7-keto-dhea-50-mg-60,0,7,0,-5,,7 keto dhea 50mg,Informational,0
+https://smartq.pureforyou.com/products/40744192180258/best-rest-gummy,0,0,0,0,,,,0
+https://smartq.pureforyou.com/collections/energy-fatigue,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/32040784920610/purepals-with-iron,0,4,0,0,,,,0
+https://smartq.pureforyou.com/products/33055557746722/alpha-lipoic-acid-100,0,4,0,0,,alpha lipoic acid 100 mg,Informational,0
+https://smartq.pureforyou.com/collections/womens-formulas/:context,0,1,0,0,,female formulations,Informational,0
+https://smartq.pureforyou.com/products/33055586648098/policosanol-20-mg-60,0,3,0,0,,,,0
+https://smartq.pureforyou.com/products/40225781776418/pro-resolve-omega,0,4,0,0,,,,0
+https://smartq.pureforyou.com/pages/collections/collections/liver-detoxification,0,1,0,0,,,,0
+https://smartq.pureforyou.com/glossary/558937473058/folate,0,2,0,0,,,,0
+https://smartq.pureforyou.com/products/33055644090402/eyeprotect-basics,0,3,0,0,,eye protect,Informational,0
+https://smartq.pureforyou.com/products/33055639273506/glucofunction-90,0,1,0,0,google,pure gluco,Informational,1
+https://smartq.pureforyou.com/products/32040738947106/ginkgo-50,0,2,0,-2,google,pure ginko biloba,Informational,1
+https://smartq.pureforyou.com/products/33055639470114/ginger-extract,0,5,0,-7,,pure encapsulations ginger extract,Informational,0
+https://smartq.pureforyou.com/products/32040777744418/o-n-e-multivitamin,0,0,0,-1,,,,0
+https://smartq.pureforyou.com/products/32889980157986/energize-plus-pure-pack,0,7,0,0,google-ai,pure energizing,Commercial,1
+https://smartq.pureforyou.com/products/44791805116450/essential-c-flavonoids,0,1,0,0,,,,0
+https://smartq.pureforyou.com/collections/cardiometabolic-health-metabolism,0,0,0,0,,,,0
+https://smartq.pureforyou.com/blog/557687701538/discover-nutrients-for-men-such-as-saw-palmetto,0,1,0,0,,,,0
+https://smartq.pureforyou.com/collections/healthfocusarea---reproductive/pms/fertility/collections/collections/immune,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/32931042656290/aller-essentials,0,4,0,0,,,,0
+https://smartq.pureforyou.com/blog/557194444834/getting-gutsy-your-gi-health-and-enzymes-for-digestion,0,1,0,0,,gutsy health,Navigational,0
+https://smartq.pureforyou.com/glossary/559133098018/glucosamine,0,5,0,0,,,,0
+https://smartq.pureforyou.com/products/44791806394402/l-glutamine-500-mg,0,3,0,0,,l-glutamine capsules,Informational,0
+https://smartq.pureforyou.com/products/33055622692898/lutein-20-mg-60,0,1,0,-3,,lutein 20 mg,Informational,0
+https://smartq.pureforyou.com/blog/563450740770/navigating-pms-lifestyle-strategies-for-relief,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/33055659720738/acetyl-l-carnitine,0,0,0,-2,,,,0
+https://smartq.pureforyou.com/products/33055586287650/potassium-aspartate,0,12,0,-2,google,aspartate supplement,Informational,1
+https://smartq.pureforyou.com/products/32040780693538/probiotic-123,0,2,0,-4,,soy free probiotics,Informational,0
+https://pureforyou.com/pages/terms,0,7,0,0,"google-ai, search-gpt",pure encapsulations phone number,"Commercial, Informational",2
+https://smartq.pureforyou.com/collections/bones-musculoskeletal-health,0,3,0,0,,pure health joint support,Informational,0
+https://smartq.pureforyou.com/blog/561523720226/vitamins-for-beauty-mechanisms-that-may-help-to-look--feel-younger,0,1,0,0,,,,0
+https://smartq.pureforyou.com/blog/558604419106/gluten-digestive-enzymes-and-gluten-free-living,0,8,0,0,,,,0
+https://smartq.pureforyou.com/products/33055588417570/olive-leaf-extract-60,0,1,0,0,,pure olive leaf extract,"Commercial, Informational",0
+https://smartq.pureforyou.com/products/40181752856610/caffphenol,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/32040790229026/th1-support,0,1,0,-2,,th1 support,Informational,0
+https://smartq.pureforyou.com/products/39337316089890/vitamin-c-gummy,0,2,0,0,,,,0
+https://smartq.pureforyou.com/blog/562950373410/what-is-brain-fog-and-how-can-you-support-it,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055647006754/copper-citrate,0,4,0,0,gemini,copper glycinate vs copper citrate,Commercial,1
+https://smartq.pureforyou.com/products/33055656411170/ascorbyl-palmitate-90,0,4,0,0,,what is ascorbyl palmitate in supplements,Informational,0
+https://smartq.pureforyou.com/glossary/559132966946/boswellia,0,1,0,0,,,,0
+https://smartq.pureforyou.com/blog/561240408098/want-to-maintain-muscle-mass-as-you-age-these-vitamins-may-help,0,2,0,0,,,,0
+https://smartq.pureforyou.com/products/44791784898594/cal-mag-malate-2-1,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/33055578292258/pycnogenol-pine-bark-extract-60,0,3,0,0,,,,0
+https://pureforyou.com/pages/official-rules-for-metabolic-health-giveaway-sweepstakes,0,1,0,0,,,,0
+https://smartq.pureforyou.com/collections/mens-formulas/page-2,0,1,0,0,,pureforyou login,"Transactional, Navigational",0
+https://smartq.pureforyou.com/collections/cognitive-health,0,2,0,0,,pure brain,Informational,0
+https://smartq.pureforyou.com/blog/560982720546/what-is-melatonin-a-complete-guide-on-what-melatonin-does,0,7,0,0,,,,0
+https://smartq.pureforyou.com/products/33055638585378/glucosamine-msm-60,0,1,0,0,,pure encapsulations glucosamine,Informational,0
+https://smartq.pureforyou.com/products/43591436861474/vitamin-d3-k2,0,1,0,-1,"gemini, google-ai",,,2
+https://smartq.pureforyou.com/collections/gastrointestinal,0,1,0,-2,,,,0
+https://smartq.pureforyou.com/products/43231263195170/rapid-mental-energy,0,2,0,0,,,,0
+https://smartq.pureforyou.com/products/32040792522786/visionpro-nutrients,0,1,0,0,,,,0
+https://smartq.pureforyou.com/collections/memory-mood,0,11,0,0,,multivitamin with magnesium glycinate,Informational,0
+https://smartq.pureforyou.com/blog/558822096930/immune-support-supplements-travel-with-confidence,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/32040731574306/balanced-immune,0,1,0,0,google-ai,immune balance supplement,Informational,2
+https://smartq.pureforyou.com/products/33055578751010/purepals,0,2,0,0,,pals vitamins,Informational,0
+https://smartq.pureforyou.com/blog/563983450146/the-role-of-glucose-metabolism-for-health-and-how-to-support-it,0,8,0,0,,,,0
+https://smartq.pureforyou.com/blog/560736698402/supplements-to-help-support-leaky-gut-factors-maintaining-normal-gut-function,0,2,0,0,gemini,,,1
+https://smartq.pureforyou.com/products/32040790130722/teavigo-120,0,1,0,-3,,teavigo,"Commercial, Informational",0
+https://smartq.pureforyou.com/glossary,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055651135522/cholestepure-90,0,2,0,0,google-ai,cholestepure reviews,"Commercial, Informational",1
+https://smartq.pureforyou.com/collections/new-products,0,0,0,0,,,,0
+https://smartq.pureforyou.com/glossary/559145713698/saccharomyces-boulardii,0,0,0,0,,,,0
+https://smartq.pureforyou.com/blog/556664848418/what-are-probiotics-and-prebiotics-for-gut-health,0,5,0,0,,,,0
+https://smartq.pureforyou.com/blog/560922460194/what-vitamins-are-good-for-pms-mild-mood-swings-and-stress,0,48,0,-1,google,low energy during period,"Commercial, Informational",3
+https://smartq.pureforyou.com/collections/all/variant-products/collections/multivitamins,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/33055645859874/digestive-enzymes-ultra-with-betaine-hcl-90,0,16,0,0,,pure encapsulations digestive enzymes ultra with betaine hcl,Informational,0
+https://smartq.pureforyou.com/products/33055644712994/epa-ultimate,0,4,0,0,,,,0
+https://smartq.pureforyou.com/collections/probiotics-prebiotics,0,2,0,0,,,,0
+https://pureforyou.com/pages/personalized-supplement-subscription,0,8,0,0,"google-ai, search-gpt",pureforyou login,"Transactional, Navigational",3
+https://smartq.pureforyou.com/products/33055644680226/epiintegrity-powder,0,0,0,0,google-ai,,,1
+https://smartq.pureforyou.com/blog/556758859810/learn-the-benefits-of-zinc-and-what-elderberry-is-good-for,0,4,0,-1,google,elderberry and zinc benefits,Informational,3
+https://smartq.pureforyou.com/products/33055571542050/taurine-1000-120,0,8,0,0,,1000 mg of taurine,Informational,0
+https://smartq.pureforyou.com/products/40225592541218/ps-plus-1,0,2,0,0,,,,0
+https://smartq.pureforyou.com/products/33055612043298/magnesium-aspartate,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/33055634849826/iodine-and-tyrosine,0,7,0,-1,"google, google-ai",iodine pure encapsulations,Informational,2
+https://smartq.pureforyou.com/blog/558461845538/acetyllcarnitine-cellular-energy-support,0,0,0,0,,,,0
+https://smartq.pureforyou.com/blog/558571716642/lglutamine-your-tummys-support-system,0,1,0,0,,,,0
+https://smartq.pureforyou.com/blog,0,3,0,0,,pureforyou login,Navigational,0
+https://smartq.pureforyou.com/glossary/559136768034/hyaluronic-acid,0,3,0,0,,,,0
+https://smartq.pureforyou.com/products/33055569936418/visionpro-epa-dha-gla-90,0,5,0,0,,,,0
+https://smartq.pureforyou.com/collections/gut-health/page-5,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055649890338/chromium-picolinate-500-mcg-60,0,1,0,0,,pure encapsulations chromium picolinate 500 mcg,Informational,0
+https://smartq.pureforyou.com/blog/559428010018/multivitamins-for-men-over-40-the-importance-of-nourishment-and-exercise,0,2,0,0,,,,0
+https://smartq.pureforyou.com/products/33055654215714/buffered-ascorbic-acid-capsules-90,0,1,0,0,,,,0
+https://smartq.pureforyou.com/blog/560241147938/supplements-to-support-occasional-heartburn,0,5,0,0,google,supplements to strengthen les,Informational,1
+https://smartq.pureforyou.com/products/33055659491362/adenosyl-hydroxy-b12-liquid,0,3,0,-3,google,hydroxy b12,Informational,2
+https://smartq.pureforyou.com/blog/556872564770/your-path-your-health--youre-in-charge,0,0,0,0,,,,0
+https://smartq.pureforyou.com/collections/fish-oils-omegas/page-2,0,5,0,0,,,,0
+https://smartq.pureforyou.com/products/33055655493666/bcaa-capsules-90,0,1,0,0,,,,0
+https://smartq.pureforyou.com/blog/557154566178/garlic-ginger-and-cinnamon-its-a-love-affair,0,8,0,0,,garlic and ginger supplements,Informational,0
+https://smartq.pureforyou.com/blog/559140601890/creatine,0,1,0,0,,,,0
+https://smartq.pureforyou.com/collections/energy-fitness,0,4,0,0,,,,0
+https://smartq.pureforyou.com/products/33055567773730/zinc-citrate-60,0,4,0,0,,,,0
+https://smartq.pureforyou.com/products/33055649562658/cla-conjugated-linoleic-acid-1000-mg-60,0,2,0,0,,cla 1000 mg,Informational,0
+https://smartq.pureforyou.com/collections/all/healthfocusarea---bones-msk/collections/liver-detoxification,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055651332130/cats-claw-90,0,1,0,0,,cat's claw capsules,Informational,0
+https://smartq.pureforyou.com/products/33055574392866/revitalage-ultra-120,0,2,0,-1,,,,0
+https://smartq.pureforyou.com/blog/559303163938/protein-for-athletes-how-to-include-more-protein-in-your-diet,0,8,0,0,,athlete protein,Informational,0
+https://smartq.pureforyou.com/products/32040784855074/purenutrients-gummy,0,4,0,0,,pure encapsulations gummy,"Commercial, Informational",0
+https://smartq.pureforyou.com/collections/bioage-collection,0,2,0,0,google,bioage products,"Commercial, Navigational",1
+https://smartq.pureforyou.com/products/32040787836962/sleep-solution,0,1,0,0,,pure encapsulations sleep,Informational,0
+https://smartq.pureforyou.com/products/39354424492066/iron-c,0,0,0,0,,,,0
+https://smartq.pureforyou.com/glossary/559140208674/vitamin-e,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/32040736784418/digestive-enzymes-ultra,0,2,0,0,,,,0
+https://smartq.pureforyou.com/blog/556799164450/one-spicy-root-the-health-benefits-of-turmeric,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/39444930854946/calcium-k-d,0,1,0,0,,,,0
+https://smartq.pureforyou.com/blog/559717777442/discover-the-essential-vitamins-and-minerals-for-women-over-40,0,8,0,0,,,,0
+https://smartq.pureforyou.com/products/39337317761058/vitamin-d-gummy,0,17,0,0,,pure encapsulations vitamin d3 and k2,Informational,0
+https://smartq.pureforyou.com/collections/fish-oils-omegas,0,12,0,-2,google,resq 1250,Informational,1
+https://smartq.pureforyou.com/products/40583049084962/daily-pure-pack-healthy-sleep-v2,0,6,0,-12,,,,0
+https://smartq.pureforyou.com/products/33055582847010/purebiome-gi,0,1,0,0,,,,0
+https://smartq.pureforyou.com/glossary/558938193954/zinc,0,6,0,0,,,,0
+https://smartq.pureforyou.com/blog/561485971490/benefits-of-magnesium-exploring-what-its-good-for,0,15,0,0,,,,0
+https://smartq.pureforyou.com/collections/hormone-support,0,7,0,0,,pure estrogen,Informational,0
+https://smartq.pureforyou.com/products/33055570362402/ubiquinol-vesisorb,0,3,0,0,,vesisorb coq10,Informational,0
+https://smartq.pureforyou.com/products/44791776509986/epa-dha-vegetarian,0,2,0,0,,vegetarian epa,Informational,0
+https://smartq.pureforyou.com/collections/all/healthfocusarea---bones-msk/collections/sleep-support,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055658508322/ai-formula-120,0,4,0,0,,ai formula,Informational,0
+https://smartq.pureforyou.com/products/33055638683682/glucosamine-hcl-chondroitin,0,1,0,0,,pure glucosamine,Informational,0
+https://smartq.pureforyou.com/products/33055637700642/hawthorn-extract,0,5,0,0,,,,0
+https://smartq.pureforyou.com/collections/multivitamins/page-5,0,2,0,0,,,,0
+https://smartq.pureforyou.com/edit/collections/multivitamins-vitamins-minerals,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/39337320153122/zinc-gummy,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/40448209125410/purelean-satiety,0,3,0,0,"gemini, google, google-ai",purelean satiety,Informational,3
+https://smartq.pureforyou.com/products/32889914228770/tribulus-formula,0,3,0,0,,,,0
+https://smartq.pureforyou.com/products/33055655100450/black-cohosh,0,3,0,0,,,,0
+https://smartq.pureforyou.com/products/33055573639202/saw-palmetto-320-120,0,0,0,-7,,,,0
+https://pureforyou.com/pages/about-us,0,1,0,0,search-gpt,pureforyou login,"Transactional, Navigational",1
+https://smartq.pureforyou.com/blog/563154452514/fertility-support-vitamins-essential-nutrients-to-support-your-reproductive-health,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/33055651594274/calcium-mcha-with-magnesium,0,3,0,-3,google,mcha supplement,Informational,1
+https://smartq.pureforyou.com/products/33055626461218/lithium-orotate-1-mg-90,0,10,0,-3,,lithium orotate 1 mg,Informational,0
+https://smartq.pureforyou.com/products/39375523708962/gluten-dairy-digest,0,0,0,0,,,,0
+https://smartq.pureforyou.com/blog/556286541858/detox-support-how-cruciferous-vegetables-help,0,6,0,0,google,how tp detofy using vegetables,Informational,1
+https://smartq.pureforyou.com/collections/blood-sugar/page-2,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/32040732098594/beta-carotene-with-mixed-carotenoids,0,9,0,0,,multivitamin beta carotene,Informational,0
+https://smartq.pureforyou.com/glossary/558937636898/l-glutamine,0,3,0,0,,,,0
+https://smartq.pureforyou.com/glossary/559145615394/ginkgo,0,3,0,0,,,,0
+https://smartq.pureforyou.com/products/39406542487586/b12-folate,0,1,0,0,,,,0
+https://smartq.pureforyou.com/products/40178719588386/niacinamide,0,1,0,0,search-gpt,pure niacinamide,"Commercial, Informational",1
+https://smartq.pureforyou.com/blog/559799861282/drugnutrient-interactions-understanding-the-basics,0,9,0,0,google,,,2
+https://smartq.pureforyou.com/products/40835220537378/epa-dha-vegetarian,0,3,0,-1,google-ai,,,1
+https://smartq.pureforyou.com/products/32040792129570/ultrazin-zinc,0,0,0,0,,,,0
+https://smartq.pureforyou.com/products/33055660539938/7-keto-dhea-100-mg-60,0,3,0,0,,7 keto dhea 100mg,Informational,0
+https://smartq.pureforyou.com/products/33055653789730/cal-with-ipriflavon-210,0,1,0,-4,,,,0
+https://smartq.pureforyou.com/products/33055635341346/indole-3-carbinol-400-mg-60,0,4,0,0,,indole 3 carbinol 400mg,Informational,0
+https://smartq.pureforyou.com/collections/top-sellers-trending-products,0,6,0,0,,,,0
+https://smartq.pureforyou.com/blog/558822096930/immune-support-supplements--travel-with-confidence,0,9,0,0,search-gpt,,,1
+https://smartq.pureforyou.com/collections/sleep-support,0,2,0,0,,sleepsupport,Informational,0
+https://smartq.pureforyou.com/products/33055615549474/m-r-s-mushroom-formula,0,1,0,0,,mrs mushroom formula,Informational,0
+https://pureforyou.com/pages/pure-difference,0,4,0,-9,"gemini, search-gpt",,,3
+https://smartq.pureforyou.com/products/33055650316322/chromemate-gtf-600-60,0,4,0,0,,chrommate,Informational,0
+https://pureforyou.com/pages/bioage,0,1,0,0,,,,0
