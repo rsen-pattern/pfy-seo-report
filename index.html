@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>PFY — SEO Report</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --surface: #171a21;
+      --surface-2: #1f2430;
+      --border: #2a3140;
+      --text: #e6e9ef;
+      --muted: #9aa4b2;
+      --accent: #4f8cff;
+      --accent-2: #38d39f;
+      --warn: #f5a623;
+      --bad: #ef5d6c;
+      --good: #38d39f;
+      --radius: 12px;
+      --maxw: 1080px;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); }
+
+    /* Layout */
+    header.hero {
+      padding: 56px 24px 40px;
+      background:
+        radial-gradient(1200px 400px at 80% -10%, rgba(79,140,255,0.18), transparent),
+        radial-gradient(800px 300px at 0% 0%, rgba(56,211,159,0.12), transparent),
+        var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 12px;
+      color: var(--accent-2);
+      font-weight: 600;
+      margin: 0 0 10px;
+    }
+    h1 { font-size: clamp(28px, 5vw, 44px); margin: 0 0 12px; line-height: 1.1; }
+    .subtitle { color: var(--muted); font-size: 18px; max-width: 640px; margin: 0; }
+    .meta-row { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; color: var(--muted); font-size: 14px; }
+    .meta-row strong { color: var(--text); font-weight: 600; }
+
+    /* Nav */
+    nav.toc {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(15,17,21,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav.toc .wrap { display: flex; gap: 4px; overflow-x: auto; padding: 8px 24px; }
+    nav.toc a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    nav.toc a:hover { color: var(--text); background: var(--surface-2); }
+
+    main { max-width: var(--maxw); margin: 0 auto; padding: 8px 24px 80px; }
+    section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    section:last-child { border-bottom: none; }
+    section h2 { font-size: 26px; margin: 0 0 6px; }
+    section .section-sub { color: var(--muted); margin: 0 0 28px; }
+
+    /* Cards / KPI */
+    .grid { display: grid; gap: 16px; }
+    .grid.kpi { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .kpi .label { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px; }
+    .kpi .value { font-size: 30px; font-weight: 700; margin: 0; }
+    .kpi .delta { font-size: 13px; margin-top: 6px; }
+    .delta.up { color: var(--good); }
+    .delta.down { color: var(--bad); }
+
+    /* Tables */
+    .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+    th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    th { background: var(--surface-2); color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 12px; }
+    tr:last-child td { border-bottom: none; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* Status pills */
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .pill.good { background: rgba(56,211,159,0.15); color: var(--good); }
+    .pill.warn { background: rgba(245,166,35,0.15); color: var(--warn); }
+    .pill.bad { background: rgba(239,93,108,0.15); color: var(--bad); }
+
+    /* Priority list */
+    ol.roadmap { list-style: none; counter-reset: step; padding: 0; margin: 0; display: grid; gap: 12px; }
+    ol.roadmap li { counter-increment: step; display: flex; gap: 16px; align-items: flex-start; }
+    ol.roadmap li::before {
+      content: counter(step);
+      flex: 0 0 auto;
+      width: 30px; height: 30px;
+      display: grid; place-items: center;
+      background: var(--accent); color: #fff;
+      border-radius: 8px; font-weight: 700; font-size: 14px;
+    }
+    ol.roadmap .body { padding-top: 2px; }
+    ol.roadmap .body strong { display: block; }
+    ol.roadmap .body span { color: var(--muted); font-size: 14px; }
+
+    .placeholder {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      background: var(--surface);
+    }
+    .placeholder code { color: var(--accent-2); background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
+
+    footer { color: var(--muted); font-size: 13px; text-align: center; padding: 32px 24px; border-top: 1px solid var(--border); }
+
+    @media print {
+      nav.toc { display: none; }
+      body { background: #fff; color: #000; }
+      .card, header.hero { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">SEO Performance Report</p>
+      <h1>PFY — SEO Report</h1>
+      <p class="subtitle">Organic search performance, technical health, and the roadmap to grow visibility.</p>
+      <div class="meta-row">
+        <div>Prepared for <strong>PFY</strong></div>
+        <div>Reporting period <strong>[TODO: e.g. Jan–Mar 2026]</strong></div>
+        <div>Last updated <strong>2 Jun 2026</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <div class="wrap">
+      <a href="#summary">Executive Summary</a>
+      <a href="#tech-audit">Tech Audit</a>
+      <a href="#traffic">Organic Traffic</a>
+      <a href="#keywords">Keywords</a>
+      <a href="#competitors">Competitors</a>
+      <a href="#roadmap">Roadmap</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ============ EXECUTIVE SUMMARY ============ -->
+    <section id="summary">
+      <h2>Executive Summary</h2>
+      <p class="section-sub">Headline numbers and the story they tell this period.</p>
+
+      <div class="grid kpi">
+        <div class="card kpi">
+          <p class="label">Organic Sessions</p>
+          <p class="value">—</p>
+          <p class="delta up">▲ —% vs prior period</p>
+        </div>
+        <div class="card kpi">
+          <p class="label">Ranking Keywords</p>
+          <p class="value">—</p>
+          <p class="delta up">▲ —</p>
+        </div>
+        <div class="card kpi">
+          <p class="label">Avg. Position</p>
+          <p class="value">—</p>
+          <p class="delta down">▼ —</p>
+        </div>
+        <div class="card kpi">
+          <p class="label">Site Health Score</p>
+          <p class="value">—</p>
+          <p class="delta up">▲ —</p>
+        </div>
+      </div>
+
+      <div class="placeholder" style="margin-top:20px;">
+        Replace the KPI values above and add a 2–3 sentence narrative summary.
+        Source: <code>data/</code> exports (Semrush / GA4 / Search Console).
+      </div>
+    </section>
+
+    <!-- ============ TECH AUDIT ============ -->
+    <section id="tech-audit">
+      <h2>Technical Audit</h2>
+      <p class="section-sub">Crawlability, indexation, and on-page issues found in the latest crawl.</p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Issue</th>
+              <th class="num">Pages Affected</th>
+              <th>Severity</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>[TODO from crawl.xlsx]</td><td class="num">—</td><td><span class="pill bad">Critical</span></td><td>Open</td></tr>
+            <tr><td>[TODO]</td><td class="num">—</td><td><span class="pill warn">Warning</span></td><td>Open</td></tr>
+            <tr><td>[TODO]</td><td class="num">—</td><td><span class="pill good">Notice</span></td><td>Resolved</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="placeholder" style="margin-top:20px;">
+        Populate from the crawl export in <code>data/</code> (e.g. <code>crawl.xlsx</code>).
+      </div>
+    </section>
+
+    <!-- ============ ORGANIC TRAFFIC ============ -->
+    <section id="traffic">
+      <h2>Organic Traffic Benchmark</h2>
+      <p class="section-sub">Trend over time against the prior period and benchmark.</p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th class="num">Sessions</th>
+              <th class="num">Conversions</th>
+              <th class="num">Conv. Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>[TODO]</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="placeholder" style="margin-top:20px;">
+        Update with the latest GA4 / Semrush export. A chart can be added later
+        (e.g. inline SVG or a lightweight charting lib).
+      </div>
+    </section>
+
+    <!-- ============ KEYWORDS ============ -->
+    <section id="keywords">
+      <h2>Keyword Performance</h2>
+      <p class="section-sub">Top movers and priority targets.</p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Keyword</th>
+              <th class="num">Position</th>
+              <th class="num">Change</th>
+              <th class="num">Volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>[TODO]</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ COMPETITORS ============ -->
+    <section id="competitors">
+      <h2>Competitor Analysis</h2>
+      <p class="section-sub">Share of visibility versus key competitors.</p>
+
+      <div class="placeholder">
+        Build out from competitor data. Suggested columns: Competitor, Visibility %,
+        Ranking Keywords, Estimated Traffic, Domain Authority.
+      </div>
+    </section>
+
+    <!-- ============ ROADMAP ============ -->
+    <section id="roadmap">
+      <h2>Recommendations &amp; Roadmap</h2>
+      <p class="section-sub">Prioritised actions for the next period.</p>
+
+      <ol class="roadmap">
+        <li><div class="body"><strong>[TODO: highest-impact action]</strong><span>Why it matters / expected impact.</span></div></li>
+        <li><div class="body"><strong>[TODO]</strong><span>Why it matters / expected impact.</span></div></li>
+        <li><div class="body"><strong>[TODO]</strong><span>Why it matters / expected impact.</span></div></li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">PFY SEO Report · Confidential · Generated and maintained with Claude Code</div>
+  </footer>
+</body>
+</html>
