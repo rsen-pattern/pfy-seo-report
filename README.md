@@ -12,7 +12,7 @@ charts, and tables.
 | Section | Status | Contents |
 | --- | --- | --- |
 | **Benchmark Data** | Live | KPIs + tabs for Organic Traffic, Keywords, Top Pages, Backlinks (Semrush, as at 1 Jun 2026) |
-| **Tech Audit** | WIP | Crawl, Core Web Vitals, indexation (placeholder) |
+| **Tech Audit** | Live | KPIs + tabs for Core Web Vitals, Metadata, Crawlability, Inlinks, Images, and a Priority Issues register (Screaming Frog + PageSpeed Insights / CrUX) |
 | **Competitor Audit** | WIP | Competitive landscape (placeholder) |
 | **WIP Notes** | WIP | Internal working notes (placeholder) |
 | **Delivery** | WIP | Briefs and client deliverables (placeholder) |
@@ -58,8 +58,9 @@ Connected to Netlify via GitHub — every push to `main` auto-deploys.
    ```
 
    Most edits live in the `DATA` block near the bottom of `index.html` — update
-   the `topKeywords`, `topPages`, `refDomains`, `organicTraffic`, etc. arrays and
-   the KPI tiles, and the charts/tables re-render automatically.
+   the `topKeywords`, `topPages`, `refDomains`, `organicTraffic`, `techIssues`,
+   `dupTitles`, etc. arrays and the KPI tiles, and the charts/tables re-render
+   automatically.
 
 3. Review the change, commit, and push — Netlify redeploys automatically.
 
