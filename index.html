@@ -241,14 +241,14 @@
     </div>
 
     <div class="kpi-grid">
-      <div class="kpi-card blue"><div class="kpi-label">Organic Traffic</div><div class="kpi-value">33.6K</div><div class="kpi-delta up">↑ 7% MoM</div><div class="kpi-sub">US monthly visits</div></div>
-      <div class="kpi-card purple"><div class="kpi-label">Organic Keywords</div><div class="kpi-value">8,907</div><div class="kpi-delta up">↑ 3% MoM</div><div class="kpi-sub">Ranking US keywords</div></div>
-      <div class="kpi-card teal"><div class="kpi-label">Traffic Value</div><div class="kpi-value">$36.6K</div><div class="kpi-delta up">↑ 4% MoM</div><div class="kpi-sub">Est. monthly CPC value</div></div>
+      <div class="kpi-card blue" id="kpi-organic-traffic"><div class="kpi-label">Organic Traffic</div><div class="kpi-value">33.6K</div><div class="kpi-delta up">↑ 7% MoM</div><div class="kpi-sub">US monthly visits</div></div>
+      <div class="kpi-card purple" id="kpi-organic-keywords"><div class="kpi-label">Organic Keywords</div><div class="kpi-value">8,907</div><div class="kpi-delta up">↑ 3% MoM</div><div class="kpi-sub">Ranking US keywords</div></div>
+      <div class="kpi-card teal" id="kpi-traffic-value"><div class="kpi-label">Traffic Value</div><div class="kpi-value">$36.6K</div><div class="kpi-delta up">↑ 4% MoM</div><div class="kpi-sub">Est. monthly CPC value</div></div>
       <div class="kpi-card navy"><div class="kpi-label">Authority Score</div><div class="kpi-value">38</div><div class="kpi-delta flat">→ Stable</div><div class="kpi-sub">Semrush domain authority</div></div>
       <div class="kpi-card blue"><div class="kpi-label">Referring Domains</div><div class="kpi-value">880</div><div class="kpi-delta flat">→ Stable</div><div class="kpi-sub">Unique linking domains</div></div>
       <div class="kpi-card chart2"><div class="kpi-label">Total Backlinks</div><div class="kpi-value">4.6K</div><div class="kpi-delta flat">→ Stable</div><div class="kpi-sub">All inbound links</div></div>
       <div class="kpi-card teal"><div class="kpi-label">Non-Branded Traffic</div><div class="kpi-value">32.5K</div><div class="kpi-delta up">↑ 7% MoM</div><div class="kpi-sub">97% of total organic</div></div>
-      <div class="kpi-card purple"><div class="kpi-label">Paid Traffic</div><div class="kpi-value">12.5K</div><div class="kpi-delta down">↓ Scaling back</div><div class="kpi-sub">vs 69K peak Jan 2025</div></div>
+      <div class="kpi-card purple" id="kpi-paid-traffic"><div class="kpi-label">Paid Traffic</div><div class="kpi-value">12.5K</div><div class="kpi-delta down">↓ Scaling back</div><div class="kpi-sub">vs 69K peak Jan 2025</div></div>
     </div>
 
     <div class="tabs-bar">
@@ -297,7 +297,7 @@
         </div>
       </div>
       <div class="data-table-wrap">
-        <div class="data-table-header"><div><div class="data-table-title">Top Ranking Keywords</div><div class="data-table-sub">Highest traffic-driving keywords · US Desktop</div></div><span class="data-badge blue">8,907 total</span></div>
+        <div class="data-table-header"><div><div class="data-table-title">Top Ranking Keywords</div><div class="data-table-sub">Highest traffic-driving keywords · US Desktop</div></div><span class="data-badge blue" data-badge="keywords-total">8,907 total</span></div>
         <table><thead><tr><th>Keyword</th><th>Pos</th><th>Volume</th><th>Traffic</th><th>Traffic %</th><th>Intent</th><th>SERP Features</th></tr></thead>
         <tbody id="keywords-table"></tbody></table>
       </div>
@@ -324,7 +324,7 @@
         <div class="chart-card"><div class="chart-card-header"><div><div class="chart-card-title">Referring Domains by Authority</div><div class="chart-card-sub">880 domains</div></div></div><canvas id="authScoreChart" height="150"></canvas></div>
       </div>
       <div class="data-table-wrap">
-        <div class="data-table-header"><div><div class="data-table-title">Top Referring Domains</div><div class="data-table-sub">Ranked by backlink volume</div></div><span class="data-badge teal">880 domains</span></div>
+        <div class="data-table-header"><div><div class="data-table-title">Top Referring Domains</div><div class="data-table-sub">Ranked by backlink volume</div></div><span class="data-badge teal" data-badge="refdomains-total">880 domains</span></div>
         <table><thead><tr><th>Domain</th><th>Authority</th><th>Backlinks</th><th>Country</th><th>First Seen</th><th>Last Seen</th></tr></thead>
         <tbody id="refdomains-table"></tbody></table>
       </div>
@@ -624,94 +624,135 @@
 </main>
 
 <script>
-// ══════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════
-const months = ['May-24','Jun-24','Jul-24','Aug-24','Sep-24','Oct-24','Nov-24','Dec-24','Jan-25','Feb-25','Mar-25','Apr-25','May-25','Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26'];
-const organicTraffic = [2965,2840,3942,7512,9529,12698,11559,13728,14793,16521,18805,25503,15314,32531,23133,21668,19455,16540,20738,26277,29495,27314,29520,31468,33572];
-const paidTraffic    = [26431,23477,46101,30879,20742,22566,18653,58643,68833,69717,38323,11965,7446,5046,5108,417,7455,2680,746,9213,6410,6339,6607,12593,12543];
+// ══════════════════════════════════════════════════════════════
+// CSV LOADER UTILITY
+// ══════════════════════════════════════════════════════════════
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/\r/g, ''));
+  return lines.slice(1).map(line => {
+    // Handle quoted fields with commas inside
+    const values = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { values.push(cur.trim().replace(/\r/g, '')); cur = ''; }
+      else { cur += ch; }
+    }
+    values.push(cur.trim().replace(/\r/g, ''));
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = values[i] || '');
+    return obj;
+  });
+}
 
-const topKeywords = [
-  {kw:'pure encapsulations',pos:8,vol:'90,500',traffic:1991,pct:'5.93%',intent:'commercial',serp:'Sitelinks, Video, PAA'},
-  {kw:'pure encapsulations magnesium glycinate',pos:2,vol:'18,100',traffic:1484,pct:'4.42%',intent:'informational',serp:'Knowledge panel, Video'},
-  {kw:'pure encapsulations pure encapsulations',pos:5,vol:'22,200',traffic:777,pct:'2.31%',intent:'informational',serp:'Sitelinks, Video Carousel'},
-  {kw:'pure encapsulations carbcrave complex 90 capsules',pos:2,vol:'3,600',traffic:475,pct:'1.41%',intent:'informational',serp:'Knowledge panel, Sitelinks'},
-  {kw:'magnesium glycinate',pos:26,vol:'673,000',traffic:471,pct:'1.40%',intent:'informational',serp:'AI Overview, Things to Know'},
-  {kw:'pure magnesium glycinate',pos:2,vol:'6,600',traffic:429,pct:'1.27%',intent:'informational',serp:'Image pack, AI Overview'},
-  {kw:'pure encapsulations o.n.e. multivitamin',pos:2,vol:'2,900',traffic:382,pct:'1.13%',intent:'informational',serp:'Knowledge panel, Video'},
-  {kw:'pure',pos:6,vol:'60,500',traffic:363,pct:'1.08%',intent:'informational',serp:'AI Overview, Local pack'},
-  {kw:'panax ginseng',pos:8,vol:'14,800',traffic:355,pct:'1.05%',intent:'informational',serp:'Knowledge panel, Video'},
-  {kw:'l tyrosine tyrosine',pos:5,vol:'14,800',traffic:355,pct:'1.05%',intent:'informational',serp:'AI Overview, Video'},
-  {kw:'prenatus',pos:1,vol:'5,400',traffic:328,pct:'0.97%',intent:'informational',serp:'AI Overview, Sitelinks'},
-  {kw:'pure encapsulations vitamin d3',pos:1,vol:'1,300',traffic:322,pct:'0.95%',intent:'informational',serp:'Knowledge panel, Video Carousel'},
-  {kw:'dgl',pos:2,vol:'4,400',traffic:286,pct:'0.85%',intent:'informational',serp:'AI Overview, Video Carousel'},
-  {kw:'copper supplement',pos:6,vol:'12,100',traffic:290,pct:'0.86%',intent:'informational',serp:'AI Overview, Image pack'},
-  {kw:'pure encapsulations b-complex plus',pos:2,vol:'1,900',traffic:250,pct:'0.74%',intent:'informational',serp:'Knowledge panel, Video'},
-];
+async function loadCSV(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
+  return parseCSV(await res.text());
+}
 
-const topPages = [
-  {url:'https://pureforyou.com/',pct:'14.62',traffic:4910,kw:683,chg:-2491,kw_top:'pure encapsulations',llm:'gemini, google, google-ai, searchgpt'},
-  {url:'smartq.../magnesium-glycinate',pct:'13.55',traffic:4551,kw:572,chg:+1013,kw_top:'pure encapsulations magnesium glycinate',llm:'google'},
-  {url:'smartq.../o-n-e-multivitamin',pct:'6.02',traffic:2024,kw:131,chg:+247,kw_top:'pure encapsulations o.n.e. multivitamin',llm:'google'},
-  {url:'smartq.../b-complex-plus',pct:'3.63',traffic:1219,kw:104,chg:+82,kw_top:'pure encapsulations b-complex plus',llm:'google, google-ai'},
-  {url:'smartq.../prenatal-nutrients',pct:'2.63',traffic:884,kw:57,chg:+677,kw_top:'prenatus',llm:'gemini, google, google-ai'},
-  {url:'smartq.../l-tyrosine',pct:'2.27',traffic:763,kw:24,chg:+417,kw_top:'l tyrosine tyrosine',llm:'google'},
-  {url:'smartq.../vitamin-d3',pct:'2.21',traffic:745,kw:40,chg:+189,kw_top:'pure encapsulations vitamin d3',llm:'google'},
-  {url:'smartq.../l-glutamine-powder',pct:'2.00',traffic:672,kw:46,chg:+563,kw_top:'l glutamine powder',llm:'google'},
-  {url:'smartq.../dao-enzyme',pct:'1.83',traffic:616,kw:50,chg:-20,kw_top:'dao supplement',llm:'google'},
-  {url:'smartq.../dgl-plus-60',pct:'1.57',traffic:528,kw:39,chg:-8,kw_top:'dgl',llm:'google, google-ai'},
-  {url:'smartq.../digestive-enzymes-ultra',pct:'1.56',traffic:526,kw:66,chg:+202,kw_top:'pure encapsulations digestive enzymes',llm:'google'},
-  {url:'smartq.../thyroid-support-complex',pct:'1.10',traffic:371,kw:183,chg:+47,kw_top:'thyroid support',llm:'google, searchgpt'},
-];
+// ══════════════════════════════════════════════════════════════
+// STATE — populated by loadAllData()
+// ══════════════════════════════════════════════════════════════
+let DATA = {
+  kpis: [],
+  trend: [],
+  keywords: [],
+  pages: [],
+  refdomains: [],
+  backlinks: [],
+};
 
-const refDomains = [
-  {domain:'pureencapsulationspro.com',as:42,bl:864,country:'TR',first:'2024-06-07',last:'2026-05-31'},
-  {domain:'purecaps.com.br',as:2,bl:262,country:'US',first:'2025-02-28',last:'2026-04-05'},
-  {domain:'yahoo.com',as:100,bl:92,country:'US',first:'2025-06-18',last:'2026-05-28'},
-  {domain:'substack.com',as:86,bl:43,country:'—',first:'2024-07-26',last:'2026-05-31'},
-  {domain:'bing.com',as:97,bl:21,country:'US',first:'2025-04-09',last:'2026-04-27'},
-  {domain:'thegoodtrade.com',as:66,bl:32,country:'US',first:'2024-11-29',last:'2026-05-31'},
-  {domain:'emailsnest.com',as:23,bl:98,country:'—',first:'2024-05-10',last:'2026-02-16'},
-  {domain:'eurekster.com',as:6,bl:94,country:'US',first:'2023-08-05',last:'2026-05-29'},
-  {domain:'ascendingbutterfly.com',as:13,bl:67,country:'US',first:'2024-11-04',last:'2026-05-29'},
-  {domain:'hi-ho.ne.jp',as:48,bl:23,country:'JP',first:'2024-11-07',last:'2026-05-30'},
-  {domain:'nutrition21.com',as:30,bl:12,country:'—',first:'2025-04-07',last:'2026-03-05'},
-  {domain:'cro.media',as:26,bl:12,country:'—',first:'2025-11-19',last:'2026-05-31'},
-];
+// ══════════════════════════════════════════════════════════════
+// LOAD ALL DATA FILES
+// ══════════════════════════════════════════════════════════════
+async function loadAllData() {
+  try {
+    const [kpis, trend, keywords, pages, refdomains, backlinks] = await Promise.all([
+      loadCSV('data/kpis.csv'),
+      loadCSV('data/traffic_trend.csv'),
+      loadCSV('data/keywords.csv'),
+      loadCSV('data/pages.csv'),
+      loadCSV('data/refdomains.csv'),
+      loadCSV('data/backlinks.csv'),
+    ]);
+    DATA.kpis       = kpis;
+    DATA.trend      = trend;
+    DATA.keywords   = keywords;
+    DATA.pages      = pages;
+    DATA.refdomains = refdomains;
+    DATA.backlinks  = backlinks;
+  } catch (err) {
+    console.error('Data load error:', err);
+    // Show warning banner if data fails
+    const warn = document.createElement('div');
+    warn.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999;background:#e53e51;color:#fff;padding:10px 20px;font-size:13px;text-align:center';
+    warn.textContent = '⚠ Data files not found — run from repo root (python3 -m http.server 8000) or deploy to Netlify';
+    document.body.prepend(warn);
+  }
+}
 
-const techIssues = [
-  {n:1,issue:'Avg LCP 27.2s — catastrophic page speed across all product pages',volume:'754/755 pages',impact:'HIGH',effort:'HIGH',cat:'Performance'},
-  {n:2,issue:'Avg TBT 1,655ms — excessive main thread blocking',volume:'735/755 pages',impact:'HIGH',effort:'HIGH',cat:'Performance'},
-  {n:3,issue:'Avg CLS 0.670 — severe layout shift on load',volume:'610/755 pages',impact:'HIGH',effort:'MEDIUM',cat:'Performance'},
-  {n:4,issue:'504 pages missing H1 tag (66.7%)',volume:'504 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
-  {n:5,issue:'2,561 orphan URLs — no internal links, unreachable by crawlers',volume:'2,561 URLs',impact:'HIGH',effort:'MEDIUM',cat:'Architecture'},
-  {n:6,issue:'384 pages missing title tag (50.8%)',volume:'384 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
-  {n:7,issue:'267 pages missing canonical tag (35.3%)',volume:'267 pages',impact:'MEDIUM',effort:'LOW',cat:'Metadata'},
-  {n:8,issue:'211 indexable pages missing from XML sitemap',volume:'211 pages',impact:'HIGH',effort:'LOW',cat:'Sitemap'},
-  {n:9,issue:'16,222 images missing alt text (75.8%)',volume:'16,222 images',impact:'MEDIUM',effort:'MEDIUM',cat:'Images'},
-  {n:10,issue:'576 pages with 0–4 inlinks — poor internal link equity',volume:'576 pages',impact:'HIGH',effort:'MEDIUM',cat:'Inlinks'},
-  {n:11,issue:'421 pages missing meta description (55.7%)',volume:'421 pages',impact:'MEDIUM',effort:'LOW',cat:'Metadata'},
-  {n:12,issue:'94 pages share same title tag (Questionnaire page)',volume:'94 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
-  {n:13,issue:'85% organic traffic on subdomain — link equity dilution risk',volume:'smartq subdomain',impact:'HIGH',effort:'HIGH',cat:'Architecture'},
-  {n:14,issue:'17 URLs returning 403 Forbidden',volume:'17 URLs',impact:'LOW',effort:'LOW',cat:'Crawlability'},
-];
+// ══════════════════════════════════════════════════════════════
+// KPI TILES — update from kpis.csv
+// ══════════════════════════════════════════════════════════════
+function updateKPITiles() {
+  const kMap = {};
+  DATA.kpis.forEach(r => { kMap[r.metric] = r; });
 
-const dupTitles = [
-  {title:'Personalized Wellness Questionnaire | Pure Encapsulations',count:94},
-  {title:'undefined | Glossary | Pure Encapsulations',count:6},
-  {title:'Bones & Musculoskeletal Health | Pure Encapsulations',count:5},
-  {title:'Mental Health & Stress Support | Pure Encapsulations',count:5},
-  {title:'Multivitamins | Pure Encapsulations',count:5},
-  {title:'Immune | Pure Encapsulations',count:4},
-  {title:'Cardiovascular Health | Pure Encapsulations',count:4},
-  {title:'Gut Health | Pure Encapsulations',count:4},
-  {title:'Vitamins & Minerals | Pure Encapsulations',count:4},
-  {title:'Energy & Fatigue | Pure Encapsulations',count:4},
-];
+  const ot = kMap['Organic Traffic'];
+  const ok = kMap['Organic Keywords'];
+  const otc = kMap['Organic Traffic Cost'];
+  const pt = kMap['Paid Traffic'];
 
-// ══════════════════════════════════════════
+  if (ot) {
+    setKPI('kpi-organic-traffic',
+      fmt(+ot.current_may26),
+      (ot.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(ot.pct_change_mom) + '% MoM',
+      ot.pct_change_mom > 0 ? 'up' : 'down');
+  }
+  if (ok) {
+    setKPI('kpi-organic-keywords',
+      fmt(+ok.current_may26),
+      (ok.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(ok.pct_change_mom) + '% MoM',
+      ok.pct_change_mom > 0 ? 'up' : 'down');
+  }
+  if (otc) {
+    setKPI('kpi-traffic-value',
+      '$' + fmtK(+otc.current_may26),
+      (otc.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(otc.pct_change_mom) + '% MoM',
+      otc.pct_change_mom > 0 ? 'up' : 'down');
+  }
+  if (pt) {
+    setKPI('kpi-paid-traffic',
+      fmtK(+pt.current_may26),
+      (pt.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(pt.pct_change_mom) + '% MoM',
+      pt.pct_change_mom > 0 ? 'up' : 'down');
+  }
+}
+
+function setKPI(id, value, delta, dir) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelector('.kpi-value').textContent = value;
+  const d = el.querySelector('.kpi-delta');
+  d.textContent = delta;
+  d.className = 'kpi-delta ' + dir;
+}
+
+function fmt(n) {
+  if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  return n.toLocaleString();
+}
+function fmtK(n) {
+  if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  return n.toString();
+}
+
+// ══════════════════════════════════════════════════════════════
 // NAV
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -730,46 +771,117 @@ function showTab(id, btn) {
   if (btn) btn.classList.add('active');
 }
 
-// ══════════════════════════════════════════
-// TABLES
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// TABLES — built from live CSV data
+// ══════════════════════════════════════════════════════════════
 function intentPill(intent) {
-  const map = {commercial:'pill-blue',informational:'pill-purple',navigational:'pill-teal',transactional:'pill-amber'};
-  return `<span class="td-pill ${map[intent.toLowerCase()]||'pill-gray'}">${intent}</span>`;
+  const s = (intent||'').toLowerCase();
+  const map = {commercial:'pill-blue', informational:'pill-purple', navigational:'pill-teal', transactional:'pill-amber'};
+  return `<span class="td-pill ${map[s]||'pill-gray'}">${intent||'—'}</span>`;
 }
 function posBadge(pos) {
-  const cls = pos===1?'pos-1':pos===2?'pos-2':pos===3?'pos-3':'pos-top';
+  const n = +pos;
+  const cls = n===1?'pos-1':n===2?'pos-2':n===3?'pos-3':'pos-top';
   return `<span class="pos-badge ${cls}">${pos}</span>`;
 }
-function impactColor(i) { return i==='HIGH'?'var(--c4)':i==='MEDIUM'?'var(--c6)':'var(--mid)'; }
-function effortBadge(e) { return `<span class="td-pill ${e==='LOW'?'pill-teal':e==='MEDIUM'?'pill-blue':'pill-red'}">${e}</span>`; }
-function catBadge(c) { const m={Metadata:'pill-purple',Architecture:'pill-red',Sitemap:'pill-teal',Inlinks:'pill-blue',Images:'pill-amber',Performance:'pill-red',Crawlability:'pill-gray'}; return `<span class="td-pill ${m[c]||'pill-gray'}">${c}</span>`; }
 
 function buildKeywordsTable() {
-  document.getElementById('keywords-table').innerHTML = topKeywords.map(k=>`
+  const tbody = document.getElementById('keywords-table');
+  if (!tbody) return;
+  // Show top 50 by traffic desc
+  const sorted = [...DATA.keywords].sort((a,b) => +b.traffic - +a.traffic).slice(0, 50);
+  tbody.innerHTML = sorted.map(k => `
     <tr>
-      <td style="font-weight:500;max-width:260px">${k.kw}</td>
-      <td>${posBadge(k.pos)}</td><td>${k.vol}</td>
-      <td>${k.traffic.toLocaleString()}</td><td>${k.pct}</td>
-      <td>${intentPill(k.intent)}</td>
-      <td style="font-size:10.5px;color:var(--mid);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k.serp}</td>
+      <td style="font-weight:500;max-width:260px">${k.keyword}</td>
+      <td>${posBadge(k.position)}</td>
+      <td>${(+k.search_volume).toLocaleString()}</td>
+      <td>${(+k.traffic).toLocaleString()}</td>
+      <td>${(+k.traffic_pct).toFixed(2)}%</td>
+      <td>${intentPill(k.keyword_intents)}</td>
+      <td style="font-size:10.5px;color:var(--mid);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k.serp_features||'—'}</td>
     </tr>`).join('');
+
+  // Update badge count
+  const badge = document.querySelector('[data-badge="keywords-total"]');
+  if (badge) badge.textContent = DATA.keywords.length.toLocaleString() + ' total';
 }
+
 function buildPagesTable() {
-  document.getElementById('pages-table').innerHTML = topPages.map(p=>{
-    const c=p.chg>=0?'var(--teal)':'var(--c4)',s=p.chg>=0?'+':'';
-    const ll=p.llm&&p.llm!=='—'?`<span style="font-size:10px;color:var(--primary)">🤖 ${p.llm.split(',').length}</span>`:'—';
-    return `<tr><td class="td-url" title="${p.url}">${p.url.length>50?p.url.slice(0,50)+'…':p.url}</td><td>${p.pct}%</td><td>${p.traffic.toLocaleString()}</td><td>${p.kw}</td><td style="color:${c};font-weight:700">${s}${p.chg.toLocaleString()}</td><td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.kw_top}</td><td>${ll}</td></tr>`;
+  const tbody = document.getElementById('pages-table');
+  if (!tbody) return;
+  const top30 = DATA.pages.slice(0, 30);
+  tbody.innerHTML = top30.map(p => {
+    const chg = +p.traffic_change;
+    const chgColor = chg >= 0 ? 'var(--teal)' : 'var(--c4)';
+    const chgSign  = chg >= 0 ? '+' : '';
+    const url = p.url || '';
+    const shortUrl = url.length > 52 ? url.slice(0, 52) + '…' : url;
+    const ae = p.answer_engines || '';
+    const llmCount = ae.split(',').filter(x => x.trim()).length;
+    const llmBadge = llmCount > 0
+      ? `<span style="font-size:10px;color:var(--primary)">🤖 ${llmCount}</span>`
+      : '—';
+    return `
+      <tr>
+        <td class="td-url" title="${url}">${shortUrl}</td>
+        <td>${(+p.traffic_pct).toFixed(2)}%</td>
+        <td>${(+p.traffic).toLocaleString()}</td>
+        <td>${(+p.keywords).toLocaleString()}</td>
+        <td style="color:${chgColor};font-weight:700">${chgSign}${chg.toLocaleString()}</td>
+        <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.top_keyword||'—'}</td>
+        <td>${llmBadge}</td>
+      </tr>`;
   }).join('');
 }
+
 function buildRefDomainsTable() {
-  document.getElementById('refdomains-table').innerHTML = refDomains.map(d=>{
-    const c=d.as>=70?'var(--teal)':d.as>=40?'var(--primary)':d.as>=20?'var(--mid)':'var(--c4)';
-    return `<tr><td style="font-weight:600">${d.domain}</td><td><span style="color:${c};font-weight:800">${d.as}</span></td><td>${d.bl.toLocaleString()}</td><td>${d.country}</td><td style="color:var(--mid)">${d.first}</td><td style="color:var(--mid)">${d.last}</td></tr>`;
+  const tbody = document.getElementById('refdomains-table');
+  if (!tbody) return;
+  // Sort by backlinks desc, show top 30
+  const sorted = [...DATA.refdomains].sort((a,b) => +b.backlinks - +a.backlinks).slice(0, 30);
+  tbody.innerHTML = sorted.map(d => {
+    const as = +d.authority_score;
+    const c = as >= 70 ? 'var(--teal)' : as >= 40 ? 'var(--primary)' : as >= 20 ? 'var(--mid)' : 'var(--c4)';
+    const country = (d.country||'—').toUpperCase() || '—';
+    return `
+      <tr>
+        <td style="font-weight:600">${d.domain}</td>
+        <td><span style="color:${c};font-weight:800">${as}</span></td>
+        <td>${(+d.backlinks).toLocaleString()}</td>
+        <td>${country}</td>
+        <td style="color:var(--mid)">${d.first_seen}</td>
+        <td style="color:var(--mid)">${d.last_seen}</td>
+      </tr>`;
   }).join('');
+
+  // Update badge
+  const badge = document.querySelector('[data-badge="refdomains-total"]');
+  if (badge) badge.textContent = DATA.refdomains.length.toLocaleString() + ' domains';
 }
+
 function buildTechIssuesTable() {
-  document.getElementById('tech-issues-table').innerHTML = techIssues.map(i=>`
+  const tbody = document.getElementById('tech-issues-table');
+  if (!tbody) return;
+  const techIssues = [
+    {n:1,issue:'Avg LCP 27.2s — catastrophic page speed across all product pages',volume:'754/755 pages',impact:'HIGH',effort:'HIGH',cat:'Performance'},
+    {n:2,issue:'Avg TBT 1,655ms — excessive main thread blocking',volume:'735/755 pages',impact:'HIGH',effort:'HIGH',cat:'Performance'},
+    {n:3,issue:'Avg CLS 0.670 — severe layout shift on load',volume:'610/755 pages',impact:'HIGH',effort:'MEDIUM',cat:'Performance'},
+    {n:4,issue:'504 pages missing H1 tag (66.7%)',volume:'504 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
+    {n:5,issue:'2,561 orphan URLs — no internal links, unreachable by crawlers',volume:'2,561 URLs',impact:'HIGH',effort:'MEDIUM',cat:'Architecture'},
+    {n:6,issue:'384 pages missing title tag (50.8%)',volume:'384 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
+    {n:7,issue:'267 pages missing canonical tag (35.3%)',volume:'267 pages',impact:'MEDIUM',effort:'LOW',cat:'Metadata'},
+    {n:8,issue:'211 indexable pages missing from XML sitemap',volume:'211 pages',impact:'HIGH',effort:'LOW',cat:'Sitemap'},
+    {n:9,issue:'16,222 images missing alt text (75.8%)',volume:'16,222 images',impact:'MEDIUM',effort:'MEDIUM',cat:'Images'},
+    {n:10,issue:'576 pages with 0–4 inlinks — poor internal link equity',volume:'576 pages',impact:'HIGH',effort:'MEDIUM',cat:'Inlinks'},
+    {n:11,issue:'421 pages missing meta description (55.7%)',volume:'421 pages',impact:'MEDIUM',effort:'LOW',cat:'Metadata'},
+    {n:12,issue:'94 pages share same title tag (Questionnaire page)',volume:'94 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
+    {n:13,issue:'85% organic traffic on subdomain — link equity dilution risk',volume:'smartq subdomain',impact:'HIGH',effort:'HIGH',cat:'Architecture'},
+    {n:14,issue:'17 URLs returning 403 Forbidden',volume:'17 URLs',impact:'LOW',effort:'LOW',cat:'Crawlability'},
+  ];
+  const impactColor = i => i==='HIGH'?'var(--c4)':i==='MEDIUM'?'var(--c6)':'var(--mid)';
+  const effortBadge = e => `<span class="td-pill ${e==='LOW'?'pill-teal':e==='MEDIUM'?'pill-blue':'pill-red'}">${e}</span>`;
+  const catBadge = c => { const m={Metadata:'pill-purple',Architecture:'pill-red',Sitemap:'pill-teal',Inlinks:'pill-blue',Images:'pill-amber',Performance:'pill-red',Crawlability:'pill-gray'}; return `<span class="td-pill ${m[c]||'pill-gray'}">${c}</span>`; };
+  tbody.innerHTML = techIssues.map(i => `
     <tr>
       <td style="font-weight:800;color:var(--mid)">${i.n}</td>
       <td style="font-weight:500;max-width:340px;line-height:1.4">${i.issue}</td>
@@ -779,8 +891,23 @@ function buildTechIssuesTable() {
       <td>${catBadge(i.cat)}</td>
     </tr>`).join('');
 }
+
 function buildDupTitlesTable() {
-  document.getElementById('dup-titles-table').innerHTML = dupTitles.map(d=>`
+  const tbody = document.getElementById('dup-titles-table');
+  if (!tbody) return;
+  const dupTitles = [
+    {title:'Personalized Wellness Questionnaire | Pure Encapsulations',count:94},
+    {title:'undefined | Glossary | Pure Encapsulations',count:6},
+    {title:'Bones & Musculoskeletal Health | Pure Encapsulations',count:5},
+    {title:'Mental Health & Stress Support | Pure Encapsulations',count:5},
+    {title:'Multivitamins | Pure Encapsulations',count:5},
+    {title:'Immune | Pure Encapsulations',count:4},
+    {title:'Cardiovascular Health | Pure Encapsulations',count:4},
+    {title:'Gut Health | Pure Encapsulations',count:4},
+    {title:'Vitamins & Minerals | Pure Encapsulations',count:4},
+    {title:'Energy & Fatigue | Pure Encapsulations',count:4},
+  ];
+  tbody.innerHTML = dupTitles.map(d => `
     <tr>
       <td style="font-weight:500">${d.title}</td>
       <td><span style="font-weight:800;color:${d.count>10?'var(--c4)':'var(--c6)'}">${d.count}</span></td>
@@ -788,72 +915,234 @@ function buildDupTitlesTable() {
     </tr>`).join('');
 }
 
-// ══════════════════════════════════════════
-// CHARTS
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// CHARTS — built from live CSV data
+// ══════════════════════════════════════════════════════════════
 Chart.defaults.font.family = "'DM Sans', sans-serif";
 Chart.defaults.color = '#b3b3b3';
 
-const P = {responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(232,232,232,.6)'},ticks:{callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}};
+const P = {
+  responsive: true,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { display: false } },
+    y: { grid: { color: 'rgba(232,232,232,.6)' }, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0)+'K' : v } }
+  }
+};
 
-function trafficTrend(){new Chart(document.getElementById('trafficTrendChart'),{type:'line',data:{labels:months,datasets:[{label:'Organic Traffic',data:organicTraffic,borderColor:'#009bff',backgroundColor:'rgba(0,155,255,.07)',fill:true,tension:.4,pointRadius:3,pointBackgroundColor:'#009bff',borderWidth:2.5}]},options:{...P,plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:13}},y:{grid:{color:'rgba(232,232,232,.6)'},ticks:{font:{size:10},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}}})}
+function trafficTrend() {
+  const labels = DATA.trend.map(r => r.month.replace(/^20/, '').replace('-', '-'));
+  const organic = DATA.trend.map(r => +r['Organic Traffic']);
+  new Chart(document.getElementById('trafficTrendChart'), {
+    type: 'line',
+    data: { labels, datasets: [{
+      label: 'Organic Traffic', data: organic,
+      borderColor: '#009bff', backgroundColor: 'rgba(0,155,255,.07)',
+      fill: true, tension: .4, pointRadius: 3, pointBackgroundColor: '#009bff', borderWidth: 2.5
+    }]},
+    options: { ...P, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 13 } },
+        y: { grid: { color: 'rgba(232,232,232,.6)' }, ticks: { font: { size: 10 }, callback: v => v >= 1000 ? (v/1000).toFixed(0)+'K' : v } }
+      }
+    }
+  });
+}
 
-function intentChart(){new Chart(document.getElementById('intentChart'),{type:'doughnut',data:{labels:['Informational','Commercial','Transactional','Navigational'],datasets:[{data:[83,10.4,4.3,2.3],backgroundColor:['#770bff','#009bff','#4cc3ae','#b3b3b3'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:11,padding:12}},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.raw}%`}}},cutout:'60%'}})}
+function intentChart() {
+  // Compute from keywords data
+  const counts = { informational: 0, commercial: 0, transactional: 0, navigational: 0, unknown: 0 };
+  DATA.keywords.forEach(k => {
+    const i = (k.keyword_intents||'').toLowerCase();
+    if (i.includes('informational')) counts.informational++;
+    else if (i.includes('commercial')) counts.commercial++;
+    else if (i.includes('transactional')) counts.transactional++;
+    else if (i.includes('navigational')) counts.navigational++;
+    else counts.unknown++;
+  });
+  const total = DATA.keywords.length || 1;
+  new Chart(document.getElementById('intentChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Informational', 'Commercial', 'Transactional', 'Navigational'],
+      datasets: [{ data: [
+        +(counts.informational/total*100).toFixed(1),
+        +(counts.commercial/total*100).toFixed(1),
+        +(counts.transactional/total*100).toFixed(1),
+        +(counts.navigational/total*100).toFixed(1),
+      ], backgroundColor: ['#770bff','#009bff','#4cc3ae','#b3b3b3'], borderWidth: 0, hoverOffset: 8 }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'right', labels: { font: { size: 11 }, boxWidth: 11, padding: 12 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` } }
+      },
+      cutout: '60%'
+    }
+  });
+}
 
-function paidOrganicChart(){new Chart(document.getElementById('paidOrganicChart'),{type:'line',data:{labels:months,datasets:[{label:'Organic',data:organicTraffic,borderColor:'#009bff',backgroundColor:'rgba(0,155,255,.05)',fill:true,tension:.4,pointRadius:0,borderWidth:2},{label:'Paid',data:paidTraffic,borderColor:'#770bff',backgroundColor:'rgba(119,11,255,.05)',fill:true,tension:.4,pointRadius:0,borderWidth:2,borderDash:[4,3]}]},options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:11,padding:14}},tooltip:{mode:'index',intersect:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxTicksLimit:10}},y:{grid:{color:'rgba(232,232,232,.6)'},ticks:{font:{size:10},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}}}}})}
+function paidOrganicChart() {
+  const labels  = DATA.trend.map(r => r.month.replace(/^20/, '').replace('-', '-'));
+  const organic = DATA.trend.map(r => +r['Organic Traffic']);
+  const paid    = DATA.trend.map(r => +r['Paid Traffic']);
+  new Chart(document.getElementById('paidOrganicChart'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Organic', data: organic, borderColor: '#009bff', backgroundColor: 'rgba(0,155,255,.05)', fill: true, tension: .4, pointRadius: 0, borderWidth: 2 },
+      { label: 'Paid',    data: paid,    borderColor: '#770bff', backgroundColor: 'rgba(119,11,255,.05)', fill: true, tension: .4, pointRadius: 0, borderWidth: 2, borderDash: [4,3] }
+    ]},
+    options: { responsive: true,
+      plugins: { legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 11, padding: 14 } }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 10 } },
+        y: { grid: { color: 'rgba(232,232,232,.6)' }, ticks: { font: { size: 10 }, callback: v => v >= 1000 ? (v/1000).toFixed(0)+'K' : v } }
+      }
+    }
+  });
+}
 
-function posDistChart(){new Chart(document.getElementById('posDistChart'),{type:'bar',data:{labels:['Top 3','Pos 4–10','Pos 11–20','Pos 21–50','Pos 51–100'],datasets:[{data:[820,1540,1380,2280,2887],backgroundColor:['#4cc3ae','#009bff','#770bff','#b3b3b3','#e8e8e8'],borderRadius:5,borderSkipped:false}]},options:{...P}})}
+function posDistChart() {
+  // Compute from live keyword data
+  const buckets = { top3: 0, p4_10: 0, p11_20: 0, p21_50: 0, p51_100: 0 };
+  DATA.keywords.forEach(k => {
+    const p = +k.position;
+    if (p <= 3) buckets.top3++;
+    else if (p <= 10) buckets.p4_10++;
+    else if (p <= 20) buckets.p11_20++;
+    else if (p <= 50) buckets.p21_50++;
+    else buckets.p51_100++;
+  });
+  new Chart(document.getElementById('posDistChart'), {
+    type: 'bar',
+    data: { labels: ['Top 3','Pos 4–10','Pos 11–20','Pos 21–50','Pos 51–100'],
+      datasets: [{ data: [buckets.top3, buckets.p4_10, buckets.p11_20, buckets.p21_50, buckets.p51_100],
+        backgroundColor: ['#4cc3ae','#009bff','#770bff','#b3b3b3','#e8e8e8'], borderRadius: 5, borderSkipped: false }]
+    },
+    options: { ...P }
+  });
+}
 
-function trafficIntentChart(){new Chart(document.getElementById('trafficIntentChart'),{type:'bar',data:{labels:['Informational','Commercial','Transactional','Navigational'],datasets:[{data:[29500,4200,1500,1100],backgroundColor:['#770bff','#009bff','#4cc3ae','#b3b3b3'],borderRadius:5,borderSkipped:false}]},options:{...P}})}
+function trafficIntentChart() {
+  // Compute traffic by intent
+  const traffic = { informational: 0, commercial: 0, transactional: 0, navigational: 0 };
+  DATA.keywords.forEach(k => {
+    const i = (k.keyword_intents||'').toLowerCase();
+    const t = +k.traffic || 0;
+    if (i.includes('informational')) traffic.informational += t;
+    else if (i.includes('commercial')) traffic.commercial += t;
+    else if (i.includes('transactional')) traffic.transactional += t;
+    else if (i.includes('navigational')) traffic.navigational += t;
+  });
+  new Chart(document.getElementById('trafficIntentChart'), {
+    type: 'bar',
+    data: { labels: ['Informational','Commercial','Transactional','Navigational'],
+      datasets: [{ data: [traffic.informational, traffic.commercial, traffic.transactional, traffic.navigational],
+        backgroundColor: ['#770bff','#009bff','#4cc3ae','#b3b3b3'], borderRadius: 5, borderSkipped: false }]
+    },
+    options: { ...P }
+  });
+}
 
-function blTypesChart(){new Chart(document.getElementById('blTypesChart'),{type:'doughnut',data:{labels:['Text (95.1%)','Image (4.9%)'],datasets:[{data:[3583,183],backgroundColor:['#009bff','#770bff'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:9,padding:8}}},cutout:'58%'}})}
+function blTypesChart() {
+  // Use known totals from Semrush PDF
+  new Chart(document.getElementById('blTypesChart'), {
+    type: 'doughnut',
+    data: { labels: ['Text (95.1%)','Image (4.9%)'],
+      datasets: [{ data: [3583,183], backgroundColor: ['#009bff','#770bff'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 9, padding: 8 } } }, cutout: '58%' }
+  });
+}
 
-function followChart(){new Chart(document.getElementById('followChart'),{type:'doughnut',data:{labels:['Follow (77%)','Nofollow (23%)'],datasets:[{data:[3542,1058],backgroundColor:['#4cc3ae','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:9,padding:8}}},cutout:'58%'}})}
+function followChart() {
+  // Use known totals from Semrush for full dataset
+  new Chart(document.getElementById('followChart'), {
+    type: 'doughnut',
+    data: { labels: ['Follow (77%)','Nofollow (23%)'],
+      datasets: [{ data: [3542,1058], backgroundColor: ['#4cc3ae','#e8e8e8'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 9, padding: 8 } } }, cutout: '58%' }
+  });
+}
 
-function authScoreChart(){new Chart(document.getElementById('authScoreChart'),{type:'bar',data:{labels:['0–10','11–20','21–30','31–40','41–50','51–60','61–70','71–80','81–90','91–100'],datasets:[{data:[704,51,49,24,19,12,5,7,5,5],backgroundColor:ctx=>ctx.raw>100?'#e8e8e8':ctx.raw>30?'#009bff':'#e8e8e8',borderRadius:3}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(232,232,232,.6)'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}})}
+function authScoreChart() {
+  // Compute from live refdomains
+  const bins = { b0: 0, b11: 0, b21: 0, b31: 0, b41: 0, b51: 0, b61: 0, b71: 0, b81: 0, b91: 0 };
+  DATA.refdomains.forEach(d => {
+    const s = +d.authority_score;
+    if (s <= 10) bins.b0++;
+    else if (s <= 20) bins.b11++;
+    else if (s <= 30) bins.b21++;
+    else if (s <= 40) bins.b31++;
+    else if (s <= 50) bins.b41++;
+    else if (s <= 60) bins.b51++;
+    else if (s <= 70) bins.b61++;
+    else if (s <= 80) bins.b71++;
+    else if (s <= 90) bins.b81++;
+    else bins.b91++;
+  });
+  new Chart(document.getElementById('authScoreChart'), {
+    type: 'bar',
+    data: { labels: ['0–10','11–20','21–30','31–40','41–50','51–60','61–70','71–80','81–90','91–100'],
+      datasets: [{ data: Object.values(bins),
+        backgroundColor: ctx => ctx.raw > 100 ? '#e8e8e8' : ctx.raw > 30 ? '#009bff' : '#e8e8e8',
+        borderRadius: 3 }]
+    },
+    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+      scales: { x: { grid: { color: 'rgba(232,232,232,.6)' } }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } }
+    }
+  });
+}
 
-// TECH CHARTS
+// TECH AUDIT CHARTS (static — from crawl data)
 function perfScoreChart(){new Chart(document.getElementById('perfScoreChart'),{type:'bar',data:{labels:['0–9','10–19','20–29','30–39','40–49','50–89','90+'],datasets:[{data:[480,190,55,15,9,6,0],backgroundColor:['#e53e51','#e53e51','#f56969','#ffb548','#ffb548','#4cc3ae','#076ae2'],borderRadius:4}]},options:{...P,plugins:{legend:{display:false}}}})}
-
-function lcpChart(){new Chart(document.getElementById('lcpChart'),{type:'doughnut',data:{labels:['Good ≤2.5s (0)','Needs Improvement 2.5–4s (1)','Poor >4s (754)'],datasets:[{data:[0,1,754],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-
+function lcpChart(){new Chart(document.getElementById('lcpChart'),{type:'doughnut',data:{labels:['Good ≤2.5s (0)','Needs Improvement (1)','Poor >4s (754)'],datasets:[{data:[0,1,754],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
 function tbtChart(){new Chart(document.getElementById('tbtChart'),{type:'doughnut',data:{labels:['Good ≤200ms (0)','Needs Improvement (20)','Poor >600ms (735)'],datasets:[{data:[0,20,735],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-
 function clsChart(){new Chart(document.getElementById('clsChart'),{type:'doughnut',data:{labels:['Good ≤0.1 (122)','Needs Improvement (22)','Poor >0.25 (610)'],datasets:[{data:[122,22,610],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-
 function cruxChart(){new Chart(document.getElementById('cruxChart'),{type:'bar',data:{labels:['Pass','Fail','No Data'],datasets:[{data:[3,34,718],backgroundColor:['#4cc3ae','#e53e51','#e8e8e8'],borderRadius:5}]},options:{...P,plugins:{legend:{display:false}}}})}
-
 function cruxLcpChart(){new Chart(document.getElementById('cruxLcpChart'),{type:'bar',data:{labels:['Good','Needs Improvement','Poor','No CrUX Data'],datasets:[{data:[4,29,7,715],backgroundColor:['#4cc3ae','#ffb548','#e53e51','#e8e8e8'],borderRadius:5}]},options:{...P,plugins:{legend:{display:false}}}})}
-
 function techTitleChart(){new Chart(document.getElementById('techTitleChart'),{type:'doughnut',data:{labels:['Has Title (372)','Missing Title (384)'],datasets:[{data:[372,384],backgroundColor:['#009bff','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-
 function techDescChart(){new Chart(document.getElementById('techDescChart'),{type:'doughnut',data:{labels:['Has Description (335)','Missing (421)'],datasets:[{data:[335,421],backgroundColor:['#770bff','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-
 function techH1Chart(){new Chart(document.getElementById('techH1Chart'),{type:'doughnut',data:{labels:['Has H1 (252)','Missing H1 (504)'],datasets:[{data:[252,504],backgroundColor:['#4cc3ae','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-
 function techMetaSummary(){new Chart(document.getElementById('techMetaSummary'),{type:'bar',data:{labels:['No H1','No Desc','No Title','Long Desc (>160)','Short Desc (<70)','Long Title (>60)','Short Title (<30)'],datasets:[{data:[504,421,384,52,66,43,9],backgroundColor:['#e53e51','#e53e51','#e53e51','#770bff','#770bff','#009bff','#009bff'],borderRadius:4}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(232,232,232,.6)'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}})}
-
 function techStatusChart(){new Chart(document.getElementById('techStatusChart'),{type:'doughnut',data:{labels:['200 OK (1,637)','403 Forbidden (17)','404 Not Found (3)','301 Redirect (2)'],datasets:[{data:[1637,17,3,2],backgroundColor:['#4cc3ae','#ffb548','#e53e51','#009bff'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-
 function techDepthChart(){new Chart(document.getElementById('techDepthChart'),{type:'bar',data:{labels:['Depth 0','Depth 1','Depth 2','Depth 3','Depth 4','Depth 5+'],datasets:[{data:[1,52,283,180,13,2],backgroundColor:['#4cc3ae','#009bff','#770bff','#770bff','#b3b3b3','#e8e8e8'],borderRadius:4}]},options:{...P}})}
-
 function techSitemapChart(){new Chart(document.getElementById('techSitemapChart'),{type:'bar',data:{labels:['In Sitemap','Missing from Sitemap','Orphan URLs'],datasets:[{data:[3206,211,2561],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderRadius:5}]},options:{...P,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(232,232,232,.6)'},ticks:{callback:v=>v>=1000?(v/1000)+'K':v}}}}})}
-
 function techIndexChart(){new Chart(document.getElementById('techIndexChart'),{type:'doughnut',data:{labels:['Indexable (1,501)','Non-Indexable (163)'],datasets:[{data:[1501,163],backgroundColor:['#4cc3ae','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-
 function inlinksChart(){new Chart(document.getElementById('inlinksChart'),{type:'bar',data:{labels:['0 inlinks','1–4 inlinks','5–49 inlinks','50+ inlinks'],datasets:[{data:[130,446,159,21],backgroundColor:['#e53e51','#ffb548','#009bff','#4cc3ae'],borderRadius:5}]},options:{...P,plugins:{legend:{display:false}}}})}
-
 function techAltChart(){new Chart(document.getElementById('techAltChart'),{type:'doughnut',data:{labels:['Has Alt Text (5,176)','Missing Alt (16,222)'],datasets:[{data:[5176,16222],backgroundColor:['#4cc3ae','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
 
-// ══════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-  buildKeywordsTable(); buildPagesTable(); buildRefDomainsTable();
-  buildTechIssuesTable(); buildDupTitlesTable();
-  trafficTrend(); intentChart(); paidOrganicChart(); posDistChart(); trafficIntentChart();
-  blTypesChart(); followChart(); authScoreChart();
-  perfScoreChart(); lcpChart(); tbtChart(); clsChart(); cruxChart(); cruxLcpChart();
+// ══════════════════════════════════════════════════════════════
+// INIT — load data, then build everything
+// ══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadAllData();
+
+  // Update live KPI tiles
+  updateKPITiles();
+
+  // Build tables from live data
+  buildKeywordsTable();
+  buildPagesTable();
+  buildRefDomainsTable();
+  buildTechIssuesTable();
+  buildDupTitlesTable();
+
+  // Charts from live data
+  trafficTrend();
+  intentChart();
+  paidOrganicChart();
+  posDistChart();
+  trafficIntentChart();
+  blTypesChart();
+  followChart();
+  authScoreChart();
+
+  // Static tech audit charts (from crawl export, not updated via CSV)
+  perfScoreChart(); lcpChart(); tbtChart(); clsChart();
+  cruxChart(); cruxLcpChart();
   techTitleChart(); techDescChart(); techH1Chart(); techMetaSummary();
   techStatusChart(); techDepthChart(); techSitemapChart(); techIndexChart();
   inlinksChart(); techAltChart();

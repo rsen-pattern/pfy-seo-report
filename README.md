@@ -5,9 +5,10 @@ A single, self-contained HTML dashboard deployed via Netlify.
 
 ## What's in the report
 
-`index.html` is a sidebar-navigated dashboard. Data is held in JS arrays at the
-bottom of the file and rendered into KPI tiles, [Chart.js](https://www.chartjs.org/)
-charts, and tables.
+`index.html` is a sidebar-navigated dashboard. On load it `fetch()`es the CSV
+files in `data/` and renders them into KPI tiles, [Chart.js](https://www.chartjs.org/)
+charts, and tables. The Benchmark page is fully data-driven; the Tech Audit
+charts are derived from the Screaming Frog crawl and currently hardcoded.
 
 | Section | Status | Contents |
 | --- | --- | --- |
@@ -21,15 +22,24 @@ charts, and tables.
 
 ```
 pfy-seo-report/
-├── index.html     ← the report (open directly in a browser, no build step)
-├── data/          ← raw data exports (xlsx, csv from Semrush / GA4 / Search Console)
+├── index.html     ← the report (no build step; loads CSVs at runtime)
+├── data/          ← data the report reads
+│   ├── kpis.csv            ← benchmark KPI tiles (metric, current, MoM %)
+│   ├── traffic_trend.csv   ← monthly organic/paid traffic trend
+│   ├── keywords.csv        ← ranking keywords (drives table + intent/position charts)
+│   ├── pages.csv           ← top organic pages
+│   ├── refdomains.csv      ← referring domains (drives table + authority chart)
+│   ├── backlinks.csv       ← backlinks export
+│   └── PFY - CRAWLS.xlsx    ← Screaming Frog crawl (source for Tech Audit)
 ├── assets/        ← images, logos, charts
 └── README.md      ← this file
 ```
 
 ## Viewing locally
 
-Open `index.html` in a browser, or serve the folder:
+Because the report fetches CSVs, it must be served over HTTP — opening
+`index.html` directly via `file://` will trip the "Data files not found"
+banner. Serve the folder from the repo root:
 
 ```bash
 python3 -m http.server 8000
@@ -48,24 +58,34 @@ Connected to Netlify via GitHub — every push to `main` auto-deploys.
 
 ## Updating the report
 
-1. Drop the new data export into `data/` (e.g. `crawl.xlsx`, `semrush-export.csv`).
-2. Ask Claude Code to update the relevant section, for example:
+For the **Benchmark** page, just replace the relevant CSV in `data/` with a
+fresh export (keep the same column headers) and push — no code change needed.
+The KPI tiles, tables, intent/position/authority charts and badge counts all
+recompute from the CSVs on load.
 
-   ```bash
-   claude "Update the benchmark KPIs and traffic trend from data/semrush-export.csv"
-   claude "Build out the Tech Audit section from data/crawl.xlsx"
-   claude "Fill in the Competitor Audit using data/competitors.csv"
-   ```
+Expected CSV columns:
 
-   Most edits live in the `DATA` block near the bottom of `index.html` — update
-   the `topKeywords`, `topPages`, `refDomains`, `organicTraffic`, `techIssues`,
-   `dupTitles`, etc. arrays and the KPI tiles, and the charts/tables re-render
-   automatically.
+| File | Key columns |
+| --- | --- |
+| `kpis.csv` | `metric, current_may26, pct_change_mom` (rows: Organic Traffic, Organic Keywords, Organic Traffic Cost, Paid Traffic) |
+| `traffic_trend.csv` | `month, Organic Traffic, Paid Traffic` |
+| `keywords.csv` | `keyword, position, search_volume, traffic, traffic_pct, keyword_intents, serp_features` |
+| `pages.csv` | `url, traffic_pct, traffic, keywords, traffic_change, top_keyword, answer_engines` |
+| `refdomains.csv` | `domain, authority_score, backlinks, country, first_seen, last_seen` |
+| `backlinks.csv` | `nofollow` (others optional) |
 
-3. Review the change, commit, and push — Netlify redeploys automatically.
+A few values are still hardcoded in `index.html` (Tech Audit charts, the
+backlink type / follow-vs-nofollow totals, and the narrative insight cards).
+Update those in the markup when the underlying data changes.
+
+For the **Tech Audit** page, refresh `data/PFY - CRAWLS.xlsx` and update the
+corresponding chart values in `index.html`.
+
+Then review, commit, and push — Netlify redeploys automatically.
 
 ## Notes
 
-- All styling and data are inline in `index.html`; the only external
-  dependencies are the Chart.js and Google Fonts CDNs.
+- The report reads CSVs at runtime, so it must be served over HTTP (locally or
+  on Netlify), not opened via `file://`.
+- Chart.js and Google Fonts load from a CDN.
 - Sections marked **WIP** in the sidebar are placeholders awaiting data.
