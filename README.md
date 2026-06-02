@@ -1,6 +1,21 @@
 # pfy-seo-report
 
-The PFY SEO report — a single, self-contained HTML page deployed via Netlify.
+SEO report for **Pure Encapsulations** (`pureforyou.com`), built by Pattern.
+A single, self-contained HTML dashboard deployed via Netlify.
+
+## What's in the report
+
+`index.html` is a sidebar-navigated dashboard. Data is held in JS arrays at the
+bottom of the file and rendered into KPI tiles, [Chart.js](https://www.chartjs.org/)
+charts, and tables.
+
+| Section | Status | Contents |
+| --- | --- | --- |
+| **Benchmark Data** | Live | KPIs + tabs for Organic Traffic, Keywords, Top Pages, Backlinks (Semrush, as at 1 Jun 2026) |
+| **Tech Audit** | WIP | Crawl, Core Web Vitals, indexation (placeholder) |
+| **Competitor Audit** | WIP | Competitive landscape (placeholder) |
+| **WIP Notes** | WIP | Internal working notes (placeholder) |
+| **Delivery** | WIP | Briefs and client deliverables (placeholder) |
 
 ## Structure
 
@@ -14,16 +29,19 @@ pfy-seo-report/
 
 ## Viewing locally
 
-Just open `index.html` in a browser, or serve the folder:
+Open `index.html` in a browser, or serve the folder:
 
 ```bash
 python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
+> Note: Chart.js and the DM Sans / DM Serif fonts load from a CDN, so an
+> internet connection is needed for charts and fonts to render.
+
 ## Deploying (Netlify)
 
-The site is connected to Netlify via GitHub. Every push to `main` auto-deploys.
+Connected to Netlify via GitHub — every push to `main` auto-deploys.
 
 - **Build command:** none
 - **Publish directory:** root (`.`)
@@ -34,15 +52,19 @@ The site is connected to Netlify via GitHub. Every push to `main` auto-deploys.
 2. Ask Claude Code to update the relevant section, for example:
 
    ```bash
-   claude "Add the tech audit data from data/crawl.xlsx to the Tech Audit section"
-   claude "Update the organic traffic benchmark with data/semrush-export.csv"
-   claude "Build out the competitor section from data/competitors.csv"
+   claude "Update the benchmark KPIs and traffic trend from data/semrush-export.csv"
+   claude "Build out the Tech Audit section from data/crawl.xlsx"
+   claude "Fill in the Competitor Audit using data/competitors.csv"
    ```
+
+   Most edits live in the `DATA` block near the bottom of `index.html` — update
+   the `topKeywords`, `topPages`, `refDomains`, `organicTraffic`, etc. arrays and
+   the KPI tiles, and the charts/tables re-render automatically.
 
 3. Review the change, commit, and push — Netlify redeploys automatically.
 
 ## Notes
 
-- `index.html` carries `noindex, nofollow` so the report is not indexed by search engines.
-- All styling is inline in `index.html` — no dependencies, no build tooling.
-- Sections currently marked `[TODO]` are placeholders waiting on real data.
+- All styling and data are inline in `index.html`; the only external
+  dependencies are the Chart.js and Google Fonts CDNs.
+- Sections marked **WIP** in the sidebar are placeholders awaiting data.
