@@ -50,6 +50,7 @@
   .nav-wip:hover { background: none !important; color: rgba(255,255,255,.2) !important; }
   .sidebar-footer { margin-top: auto; padding: 14px 22px; border-top: 1px solid rgba(255,255,255,.07); font-size: 11px; color: rgba(255,255,255,.25); line-height: 1.6; }
   .sidebar-footer strong { color: rgba(255,255,255,.4); }
+  .load-warning { margin-top: 8px; font-size: 10px; font-weight: 700; color: #ffb548; }
 
   /* MAIN */
   #main { margin-left: var(--sidebar); flex: 1; min-height: 100vh; }
@@ -170,6 +171,10 @@
   .cwv-ni    { color: #a06000; background: rgba(255,181,72,.15); }
   .cwv-poor  { color: var(--c4); background: rgba(229,62,81,.08); }
 
+  /* SETUP BANNER */
+  .setup-banner { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: var(--secondary); color: #fff; padding: 12px 20px; font-size: 13px; text-align: center; font-weight: 600; }
+  .setup-banner code { background: rgba(255,255,255,.2); padding: 1px 6px; border-radius: 4px; }
+
   @media (max-width: 900px) {
     :root { --sidebar: 0px; }
     #sidebar { transform: translateX(-248px); transition: transform .3s; }
@@ -185,8 +190,8 @@
 <aside id="sidebar">
   <div class="sidebar-brand">
     <div class="brand-label">Pattern · SEO Report</div>
-    <div class="brand-client">Pure Encapsulations</div>
-    <div class="brand-url">pureforyou.com</div>
+    <div class="brand-client" id="brand-client">Pure Encapsulations</div>
+    <div class="brand-url" id="brand-url">pureforyou.com</div>
   </div>
 
   <div class="sidebar-section">
@@ -217,8 +222,9 @@
   </div>
 
   <div class="sidebar-footer">
-    <strong>Generated</strong> June 2, 2026<br>
-    Semrush · Screaming Frog
+    <strong>Generated</strong> <span id="meta-generated">—</span><br>
+    <span id="meta-source">—</span>
+    <div class="load-warning" id="load-warning"></div>
   </div>
 </aside>
 
@@ -230,7 +236,7 @@
   <div class="topbar">
     <div class="topbar-title">Benchmark Data</div>
     <div class="topbar-meta">
-      <span class="topbar-pill"><span class="dot"></span> 1 Jun 2026</span>
+      <span class="topbar-pill"><span class="dot" id="benchmark-status-dot"></span> <span id="benchmark-status-label">—</span></span>
       <span>US · Desktop · Semrush</span>
     </div>
   </div>
@@ -240,16 +246,7 @@
       <p>Baseline metrics for pureforyou.com as at June 1, 2026. All data sourced from Semrush. This is the starting point for measuring SEO growth over the engagement.</p>
     </div>
 
-    <div class="kpi-grid">
-      <div class="kpi-card blue" id="kpi-organic-traffic"><div class="kpi-label">Organic Traffic</div><div class="kpi-value">33.6K</div><div class="kpi-delta up">↑ 7% MoM</div><div class="kpi-sub">US monthly visits</div></div>
-      <div class="kpi-card purple" id="kpi-organic-keywords"><div class="kpi-label">Organic Keywords</div><div class="kpi-value">8,907</div><div class="kpi-delta up">↑ 3% MoM</div><div class="kpi-sub">Ranking US keywords</div></div>
-      <div class="kpi-card teal" id="kpi-traffic-value"><div class="kpi-label">Traffic Value</div><div class="kpi-value">$36.6K</div><div class="kpi-delta up">↑ 4% MoM</div><div class="kpi-sub">Est. monthly CPC value</div></div>
-      <div class="kpi-card navy"><div class="kpi-label">Authority Score</div><div class="kpi-value">38</div><div class="kpi-delta flat">→ Stable</div><div class="kpi-sub">Semrush domain authority</div></div>
-      <div class="kpi-card blue"><div class="kpi-label">Referring Domains</div><div class="kpi-value">880</div><div class="kpi-delta flat">→ Stable</div><div class="kpi-sub">Unique linking domains</div></div>
-      <div class="kpi-card chart2"><div class="kpi-label">Total Backlinks</div><div class="kpi-value">4.6K</div><div class="kpi-delta flat">→ Stable</div><div class="kpi-sub">All inbound links</div></div>
-      <div class="kpi-card teal"><div class="kpi-label">Non-Branded Traffic</div><div class="kpi-value">32.5K</div><div class="kpi-delta up">↑ 7% MoM</div><div class="kpi-sub">97% of total organic</div></div>
-      <div class="kpi-card purple" id="kpi-paid-traffic"><div class="kpi-label">Paid Traffic</div><div class="kpi-value">12.5K</div><div class="kpi-delta down">↓ Scaling back</div><div class="kpi-sub">vs 69K peak Jan 2025</div></div>
-    </div>
+    <div class="kpi-grid" id="kpis-benchmark"></div>
 
     <div class="tabs-bar">
       <button class="tab-btn active" onclick="showTab('organic',this)">Organic Traffic</button>
@@ -268,7 +265,7 @@
       </div>
       <div class="chart-grid">
         <div class="chart-card">
-          <div class="chart-card-header"><div><div class="chart-card-title">Keywords by Search Intent</div><div class="chart-card-sub">Share of 8,907 ranking keywords</div></div></div>
+          <div class="chart-card-header"><div><div class="chart-card-title">Keywords by Search Intent</div><div class="chart-card-sub">Share of ranking keywords</div></div></div>
           <canvas id="intentChart" height="170"></canvas>
         </div>
         <div class="chart-card">
@@ -276,19 +273,14 @@
           <canvas id="paidOrganicChart" height="170"></canvas>
         </div>
       </div>
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon blue">📈</div><div class="insight-body"><h4>10× Growth in 24 Months</h4><p>Organic traffic surged from ~3K/mo (May 2024) to 33.6K/mo by May 2026 — a 10-fold increase. The site is clearly in an accelerating growth phase driven by non-branded supplement keywords.</p></div></div>
-        <div class="insight-card"><div class="insight-icon purple">🔍</div><div class="insight-body"><h4>97% Non-Branded Traffic</h4><p>The vast majority of organic visits come from generic supplement and ingredient searches, not brand terms. This signals strong topical authority and low brand-search dependency — healthy for long-term growth.</p></div></div>
-        <div class="insight-card"><div class="insight-icon teal">🎯</div><div class="insight-body"><h4>Informational Intent Dominates (83%)</h4><p>83% of ranking keywords are informational. A major opportunity exists to convert this educational audience through better commercial content, buying guides, and CTA optimisation on high-traffic informational pages.</p></div></div>
-        <div class="insight-card"><div class="insight-icon amber">📉</div><div class="insight-body"><h4>Paid Scaling Back — Organic Must Fill the Gap</h4><p>Paid traffic fell from a peak of ~69K visits (Jan 2025) to ~12.5K (May 2026). The paid reduction puts pressure on organic to compensate — making this SEO engagement strategically critical right now.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="benchmark" data-insights-tab="organic"></div>
     </div>
 
     <!-- KEYWORDS TAB -->
     <div id="tab-keywords" class="tab-panel">
       <div class="chart-grid">
         <div class="chart-card">
-          <div class="chart-card-header"><div><div class="chart-card-title">Keywords by Position Bucket</div><div class="chart-card-sub">Distribution of 8,907 keywords</div></div></div>
+          <div class="chart-card-header"><div><div class="chart-card-title">Keywords by Position Bucket</div><div class="chart-card-sub">Distribution of ranking keywords</div></div></div>
           <canvas id="posDistChart" height="170"></canvas>
         </div>
         <div class="chart-card">
@@ -297,7 +289,7 @@
         </div>
       </div>
       <div class="data-table-wrap">
-        <div class="data-table-header"><div><div class="data-table-title">Top Ranking Keywords</div><div class="data-table-sub">Highest traffic-driving keywords · US Desktop</div></div><span class="data-badge blue" data-badge="keywords-total">8,907 total</span></div>
+        <div class="data-table-header"><div><div class="data-table-title">Top Ranking Keywords</div><div class="data-table-sub">Highest traffic-driving keywords · US Desktop</div></div><span class="data-badge blue" data-badge="keywords-total">—</span></div>
         <table><thead><tr><th>Keyword</th><th>Pos</th><th>Volume</th><th>Traffic</th><th>Traffic %</th><th>Intent</th><th>SERP Features</th></tr></thead>
         <tbody id="keywords-table"></tbody></table>
       </div>
@@ -310,10 +302,7 @@
         <table><thead><tr><th>URL</th><th>Traffic %</th><th>Visits</th><th>Keywords</th><th>Traffic Δ</th><th>Top Keyword</th><th>AI Engines</th></tr></thead>
         <tbody id="pages-table"></tbody></table>
       </div>
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon purple">🌐</div><div class="insight-body"><h4>Subdomain Concentration Risk</h4><p>85.2% of organic traffic and 8,066 keywords sit on <em>smartq.pureforyou.com</em> — treated as a separate entity by Google. This creates architectural risk and link equity dilution between root domain and subdomain.</p></div></div>
-        <div class="insight-card"><div class="insight-icon blue">🤖</div><div class="insight-body"><h4>Early AI Search Presence</h4><p>Multiple top pages already appear in Gemini, SearchGPT, and Google AI Overviews. This early positioning is valuable — AI citations reinforce brand authority and drive zero-click brand awareness.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="benchmark" data-insights-tab="pages"></div>
     </div>
 
     <!-- BACKLINKS TAB -->
@@ -324,16 +313,11 @@
         <div class="chart-card"><div class="chart-card-header"><div><div class="chart-card-title">Referring Domains by Authority</div><div class="chart-card-sub">880 domains</div></div></div><canvas id="authScoreChart" height="150"></canvas></div>
       </div>
       <div class="data-table-wrap">
-        <div class="data-table-header"><div><div class="data-table-title">Top Referring Domains</div><div class="data-table-sub">Ranked by backlink volume</div></div><span class="data-badge teal" data-badge="refdomains-total">880 domains</span></div>
+        <div class="data-table-header"><div><div class="data-table-title">Top Referring Domains</div><div class="data-table-sub">Ranked by backlink volume</div></div><span class="data-badge teal" data-badge="refdomains-total">—</span></div>
         <table><thead><tr><th>Domain</th><th>Authority</th><th>Backlinks</th><th>Country</th><th>First Seen</th><th>Last Seen</th></tr></thead>
         <tbody id="refdomains-table"></tbody></table>
       </div>
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon amber">⚠️</div><div class="insight-body"><h4>80% of Domains Score 0–10</h4><p>The backlink profile is dominated by low-authority sites — many are directories, blogspots, and aggregators. Quality link building targeting AS 40+ health, nutrition, and lifestyle publishers should be a core workstream.</p></div></div>
-        <div class="insight-card"><div class="insight-icon teal">✅</div><div class="insight-body"><h4>Strong Editorial Links from Health Media</h4><p>Healthline, Men's Health, Medical News Today, Vogue, and The Good Trade have all linked to PFY product pages. This editorial foundation signals genuine brand authority and provides a base to build from.</p></div></div>
-        <div class="insight-card"><div class="insight-icon blue">🌏</div><div class="insight-body"><h4>Singapore Cluster — Audit Recommended</h4><p>33% of referring domains originate from Singapore IPs — predominantly low-quality directory and aggregator sites. These should be reviewed for disavow eligibility to protect link profile quality.</p></div></div>
-        <div class="insight-card"><div class="insight-icon purple">⚓</div><div class="insight-body"><h4>Healthy Anchor Text Distribution</h4><p>Top anchors are "consumer site" (16%), brand URL (10%), "take me to pure for you" (7%). No over-optimised commercial anchors detected — this is a clean, natural profile with room to build strategic anchor diversity.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="benchmark" data-insights-tab="backlinks"></div>
     </div>
   </div>
 </div>
@@ -343,7 +327,7 @@
   <div class="topbar">
     <div class="topbar-title">Tech Audit</div>
     <div class="topbar-meta">
-      <span class="topbar-pill"><span class="dot dot-red"></span> Critical Issues Found</span>
+      <span class="topbar-pill"><span class="dot" id="tech-status-dot"></span> <span id="tech-status-label">—</span></span>
       <span>Screaming Frog · Jun 2026</span>
     </div>
   </div>
@@ -353,16 +337,7 @@
       <p>Crawl analysis of pureforyou.com and smartq.pureforyou.com. Data from Screaming Frog. Sources: Screaming Frog, Google PageSpeed Insights, CrUX.</p>
     </div>
 
-    <div class="kpi-grid">
-      <div class="kpi-card blue"><div class="kpi-label">URLs Crawled</div><div class="kpi-value">1,659</div><div class="kpi-delta flat">Both subdomains</div><div class="kpi-sub">All response types</div></div>
-      <div class="kpi-card teal"><div class="kpi-label">Indexable Pages</div><div class="kpi-value">1,501</div><div class="kpi-delta up">90.5% of crawl</div><div class="kpi-sub">HTML pages: 756</div></div>
-      <div class="kpi-card red"><div class="kpi-label">Avg Perf Score</div><div class="kpi-value">11.3</div><div class="kpi-delta down">99.2% score below 50</div><div class="kpi-sub">Lighthouse · 755 pages</div></div>
-      <div class="kpi-card red"><div class="kpi-label">Avg LCP</div><div class="kpi-value">27.2s</div><div class="kpi-delta down">Target: ≤2.5s</div><div class="kpi-sub">754/755 pages failing</div></div>
-      <div class="kpi-card amber"><div class="kpi-label">Orphan URLs</div><div class="kpi-value">2,561</div><div class="kpi-delta down">No inlinks at all</div><div class="kpi-sub">Unreachable by crawlers</div></div>
-      <div class="kpi-card amber"><div class="kpi-label">Missing Sitemap</div><div class="kpi-value">211</div><div class="kpi-delta down">Indexable but absent</div><div class="kpi-sub">From XML sitemap</div></div>
-      <div class="kpi-card purple"><div class="kpi-label">No H1 Tag</div><div class="kpi-value">66.7%</div><div class="kpi-delta down">504 pages</div><div class="kpi-sub">Missing primary heading</div></div>
-      <div class="kpi-card purple"><div class="kpi-label">No Title Tag</div><div class="kpi-value">50.8%</div><div class="kpi-delta down">384 pages</div><div class="kpi-sub">Missing meta title</div></div>
-    </div>
+    <div class="kpi-grid" id="kpis-tech"></div>
 
     <div class="tabs-bar">
       <button class="tab-btn active" onclick="showTab('tech-cwv',this)">Core Web Vitals</button>
@@ -375,32 +350,7 @@
 
     <!-- CWV TAB -->
     <div id="tab-tech-cwv" class="tab-panel active">
-      <div class="cwv-grid">
-        <div class="cwv-card">
-          <div class="cwv-label">Avg Performance Score</div>
-          <div class="cwv-score" style="color:var(--c4)">11.3</div>
-          <div class="cwv-status cwv-poor">POOR</div>
-          <div style="font-size:11px;color:var(--mid);margin-top:8px">Target: 90+<br>749/755 pages fail</div>
-        </div>
-        <div class="cwv-card">
-          <div class="cwv-label">Avg LCP</div>
-          <div class="cwv-score" style="color:var(--c4)">27.2s</div>
-          <div class="cwv-status cwv-poor">POOR</div>
-          <div style="font-size:11px;color:var(--mid);margin-top:8px">Target: ≤2.5s<br>754/755 pages fail</div>
-        </div>
-        <div class="cwv-card">
-          <div class="cwv-label">Avg TBT</div>
-          <div class="cwv-score" style="color:var(--c4)">1,655ms</div>
-          <div class="cwv-status cwv-poor">POOR</div>
-          <div style="font-size:11px;color:var(--mid);margin-top:8px">Target: ≤200ms<br>735/755 pages fail</div>
-        </div>
-        <div class="cwv-card">
-          <div class="cwv-label">Avg CLS</div>
-          <div class="cwv-score" style="color:var(--c4)">0.670</div>
-          <div class="cwv-status cwv-poor">POOR</div>
-          <div style="font-size:11px;color:var(--mid);margin-top:8px">Target: ≤0.1<br>610/755 pages fail</div>
-        </div>
-      </div>
+      <div class="cwv-grid" id="cwv-gauges"></div>
 
       <div class="chart-grid">
         <div class="chart-card">
@@ -435,12 +385,7 @@
         </div>
       </div>
 
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon red">🚨</div><div class="insight-body"><h4>Critical: Avg LCP of 27 Seconds</h4><p>The average Largest Contentful Paint across 755 pages is 27.2 seconds — over 10× the "Poor" threshold of 4s and nearly 11× the "Good" threshold. This is the most severe technical issue on the site and almost certainly suppressing rankings across all product pages.</p></div></div>
-        <div class="insight-card"><div class="insight-icon red">⚡</div><div class="insight-body"><h4>99.2% of Pages Score Below 50 on Lighthouse</h4><p>Only 6 pages out of 755 achieve a performance score of 50+, and zero pages reach the 90+ "Good" threshold. This is a systemic infrastructure or rendering issue, not an isolated problem — likely related to the Shopify headless/smartq setup.</p></div></div>
-        <div class="insight-card"><div class="insight-icon amber">🔄</div><div class="insight-body"><h4>CLS of 0.67 — Severe Layout Instability</h4><p>An average CLS of 0.670 means page elements shift significantly during load — a very poor user experience. The "Good" threshold is 0.1. 610 pages fail. Likely caused by late-loading images without reserved dimensions or dynamic content injection.</p></div></div>
-        <div class="insight-card"><div class="insight-icon blue">📊</div><div class="insight-body"><h4>CrUX Field Data Confirms Lab Data Issues</h4><p>Real-user CrUX data shows only 3 pages passing Core Web Vitals, 34 failing, with CrUX LCP categorised as "Poor" on 7 pages and "Needs Improvement" on 29. Lab and field data are aligned — this is a real user impact, not just a testing artifact.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="tech" data-insights-tab="tech-cwv"></div>
     </div>
 
     <!-- META TAB -->
@@ -463,19 +408,10 @@
       <div class="data-table-wrap">
         <div class="data-table-header"><div><div class="data-table-title">Canonical Tag Analysis</div><div class="data-table-sub">Self-referencing vs missing canonical coverage</div></div><span class="data-badge amber">267 pages missing canonical</span></div>
         <table><thead><tr><th>Canonical Status</th><th>Count</th><th>% of HTML Pages</th><th>Action</th></tr></thead>
-        <tbody>
-          <tr><td style="font-weight:600">Self-referencing (correct)</td><td>489</td><td>64.7%</td><td><span class="td-pill pill-teal">Good</span></td></tr>
-          <tr><td style="font-weight:600">Missing canonical tag</td><td>267</td><td>35.3%</td><td><span class="td-pill pill-red">Fix — add self-canonical</span></td></tr>
-          <tr><td style="font-weight:600">Points to another URL</td><td>0</td><td>0%</td><td><span class="td-pill pill-teal">None</span></td></tr>
-        </tbody></table>
+        <tbody id="canonicals-table"></tbody></table>
       </div>
 
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon red">🏷️</div><div class="insight-body"><h4>50.8% Missing Title Tags — 384 Pages</h4><p>The most impactful on-page SEO element is absent on over half the site. This is predominantly pagination pages and newer products on the smartq subdomain. Shopify's liquid templates should output titles by default — this suggests a custom theme gap or missing product data.</p></div></div>
-        <div class="insight-card"><div class="insight-icon amber">📌</div><div class="insight-body"><h4>66.7% Missing H1 — 504 Pages</h4><p>H1 is Google's primary signal for page topic. 504 pages have no H1 whatsoever — the most urgent metadata fix. Priority should be product pages with existing organic rankings, as adding H1s to ranked pages has high potential for quick position improvement.</p></div></div>
-        <div class="insight-card"><div class="insight-icon purple">🔁</div><div class="insight-body"><h4>94 Pages Share Same Title Tag</h4><p>The "Personalized Wellness Questionnaire" title appears on 94 pages — the biggest duplicate cluster. Pagination pages are also cannibalising collection titles. Unique, keyword-optimised titles are needed across all paginated URLs.</p></div></div>
-        <div class="insight-card"><div class="insight-icon blue">📋</div><div class="insight-body"><h4>267 Pages Need Self-Canonical Tags</h4><p>35.3% of indexable HTML pages have no canonical tag at all. Adding self-referencing canonicals to these pages prevents potential duplicate content signals and consolidates ranking signals — a quick technical win.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="tech" data-insights-tab="tech-meta"></div>
     </div>
 
     <!-- CRAWLABILITY TAB -->
@@ -492,26 +428,10 @@
       <div class="data-table-wrap">
         <div class="data-table-header"><div><div class="data-table-title">Crawl Architecture Summary</div><div class="data-table-sub">Technical health indicators at a glance</div></div><span class="data-badge blue">12 metrics</span></div>
         <table><thead><tr><th>Area</th><th>Finding</th><th>Value</th><th>Status</th><th>Priority</th></tr></thead>
-        <tbody>
-          <tr><td style="font-weight:600">Response Codes</td><td>200 OK pages</td><td>1,637</td><td><span class="td-pill pill-teal">Good</span></td><td>—</td></tr>
-          <tr><td style="font-weight:600">Response Codes</td><td>404 Broken URLs</td><td>3</td><td><span class="td-pill pill-teal">Good</span></td><td>Low</td></tr>
-          <tr><td style="font-weight:600">Response Codes</td><td>403 Forbidden</td><td>17</td><td><span class="td-pill pill-amber">Monitor</span></td><td>Medium</td></tr>
-          <tr><td style="font-weight:600">Redirects</td><td>301 Permanent</td><td>2</td><td><span class="td-pill pill-teal">Good</span></td><td>—</td></tr>
-          <tr><td style="font-weight:600">Redirects</td><td>Redirect Chains / Loops</td><td>0</td><td><span class="td-pill pill-teal">Pass</span></td><td>—</td></tr>
-          <tr><td style="font-weight:600">Sitemap</td><td>Indexable pages in sitemap</td><td>3,206</td><td><span class="td-pill pill-blue">Normal</span></td><td>—</td></tr>
-          <tr><td style="font-weight:600">Sitemap</td><td>Indexable — NOT in sitemap</td><td>211</td><td><span class="td-pill pill-amber">Fix</span></td><td>High</td></tr>
-          <tr><td style="font-weight:600">Orphans</td><td>URLs with zero inlinks</td><td>2,561</td><td><span class="td-pill pill-red">Critical</span></td><td>High</td></tr>
-          <tr><td style="font-weight:600">Depth</td><td>Max crawl depth</td><td>6 levels</td><td><span class="td-pill pill-blue">Normal</span></td><td>—</td></tr>
-          <tr><td style="font-weight:600">Depth</td><td>Pages at depth 2–3</td><td>463 pages</td><td><span class="td-pill pill-teal">Good</span></td><td>—</td></tr>
-          <tr><td style="font-weight:600">Architecture</td><td>Subdomains in crawl</td><td>2 (root + smartq)</td><td><span class="td-pill pill-amber">Monitor</span></td><td>Medium</td></tr>
-          <tr><td style="font-weight:600">Architecture</td><td>smartq traffic concentration</td><td>85.2%</td><td><span class="td-pill pill-red">Risk</span></td><td>High</td></tr>
-        </tbody></table>
+        <tbody id="crawl-summary-table"></tbody></table>
       </div>
 
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon red">🗺️</div><div class="insight-body"><h4>2,561 Orphan URLs — Crawl Dead Zones</h4><p>Over 2,500 URLs have zero internal links pointing to them. These pages are invisible to users and largely to Googlebot without sitemap inclusion. Many are product and glossary pages on the smartq subdomain that need to be integrated into the site's internal linking architecture.</p></div></div>
-        <div class="insight-card"><div class="insight-icon amber">🏗️</div><div class="insight-body"><h4>Subdomain Architecture — Structural Risk</h4><p>The smartq.pureforyou.com subdomain carries 85% of traffic but operates as a Google-separate entity. Link equity from pureencapsulations.com (domain authority 60) to pureforyou.com does not flow to smartq. Consolidation to a subdirectory (/products/) should be evaluated as a long-term strategic priority.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="tech" data-insights-tab="tech-crawl"></div>
     </div>
 
     <!-- INLINKS TAB -->
@@ -520,38 +440,10 @@
         <div class="chart-card"><div class="chart-card-header"><div><div class="chart-card-title">Inlinks Cluster Distribution</div><div class="chart-card-sub">756 indexable HTML pages by inlink count</div></div></div><canvas id="inlinksChart" height="200"></canvas></div>
         <div class="chart-card">
           <div class="chart-card-header"><div><div class="chart-card-title">Inlinks Coverage Summary</div><div class="chart-card-sub">Internal link equity distribution</div></div></div>
-          <div style="padding:20px 0">
-            <div style="display:flex;flex-direction:column;gap:14px">
-              <div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Zero inlinks (130 pages)</span><span style="font-size:12px;color:var(--c4);font-weight:700">17.2%</span></div>
-                <div style="height:8px;background:var(--lgray);border-radius:4px;overflow:hidden"><div style="height:100%;width:17.2%;background:var(--c4);border-radius:4px"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Low inlinks 1–4 (446 pages)</span><span style="font-size:12px;color:var(--c6);font-weight:700">59.0%</span></div>
-                <div style="height:8px;background:var(--lgray);border-radius:4px;overflow:hidden"><div style="height:100%;width:59%;background:var(--c6);border-radius:4px"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">Medium inlinks 5–49 (159 pages)</span><span style="font-size:12px;color:var(--primary);font-weight:700">21.0%</span></div>
-                <div style="height:8px;background:var(--lgray);border-radius:4px;overflow:hidden"><div style="height:100%;width:21%;background:var(--primary);border-radius:4px"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">High inlinks 50+ (21 pages)</span><span style="font-size:12px;color:var(--teal);font-weight:700">2.8%</span></div>
-                <div style="height:8px;background:var(--lgray);border-radius:4px;overflow:hidden"><div style="height:100%;width:2.8%;background:var(--teal);border-radius:4px"></div></div>
-              </div>
-            </div>
-            <div style="margin-top:20px;padding:14px;background:var(--lgray);border-radius:8px">
-              <div style="font-size:11px;font-weight:700;margin-bottom:4px">Key Stats</div>
-              <div style="font-size:12px;color:var(--mid);line-height:1.7">Avg inlinks per page: <strong style="color:var(--dark)">20.3</strong><br>Max inlinks (homepage): <strong style="color:var(--dark)">2,202</strong><br>Pages with 0 inlinks: <strong style="color:var(--c4)">130 (17.2%)</strong></div>
-            </div>
-          </div>
+          <div id="inlinks-panel"></div>
         </div>
       </div>
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon red">🔗</div><div class="insight-body"><h4>76.2% of Pages Have Fewer Than 5 Inlinks</h4><p>576 pages (130 + 446) have 0–4 internal links pointing to them. This severely limits internal PageRank flow to product and category pages. A structured internal linking strategy — hub pages, category navigation, related products — is needed urgently.</p></div></div>
-        <div class="insight-card"><div class="insight-icon blue">🏠</div><div class="insight-body"><h4>Homepage Receives Disproportionate Internal Links</h4><p>With 2,202 inlinks, the homepage receives far more internal link equity than any other page. Link equity is not being distributed to revenue-driving product pages — an internal linking audit and restructure is recommended to push authority to commercial pages.</p></div></div>
-        <div class="insight-card"><div class="insight-icon amber">📦</div><div class="insight-body"><h4>Only 21 Pages Have 50+ Inlinks</h4><p>2.8% of pages receive meaningful internal link support. Top-performing organic pages need deliberate internal link building from relevant blog posts, category pages, and cross-links — especially the magnesium glycinate, multivitamin, and prenatal product pages.</p></div></div>
-        <div class="insight-card"><div class="insight-icon teal">💡</div><div class="insight-body"><h4>Quick Win: Add Internal Links from Glossary</h4><p>The smartq subdomain has a glossary section with significant crawl volume. Adding contextual internal links from glossary terms (e.g. "magnesium glycinate") directly to product pages is a low-effort, high-impact internal linking opportunity.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="tech" data-insights-tab="tech-inlinks"></div>
     </div>
 
     <!-- IMAGES TAB -->
@@ -559,27 +451,10 @@
       <div class="chart-grid">
         <div class="chart-card"><div class="chart-card-header"><div><div class="chart-card-title">Image Alt Text Coverage</div><div class="chart-card-sub">21,398 total images across site</div></div></div><canvas id="techAltChart" height="180"></canvas></div>
         <div class="chart-card"><div class="chart-card-header"><div><div class="chart-card-title">Image Volume Summary</div><div class="chart-card-sub">Total vs missing alt text</div></div></div>
-          <div style="padding:30px 0;display:flex;flex-direction:column;gap:18px;align-items:center">
-            <div style="text-align:center">
-              <div style="font-family:'DM Serif Display',serif;font-size:48px;color:var(--c4)">75.8%</div>
-              <div style="font-size:13px;color:var(--mid);margin-top:4px">of images missing alt text</div>
-              <div style="font-size:22px;font-weight:700;margin-top:8px">16,222 <span style="font-size:13px;color:var(--mid);font-weight:400">of 21,398 images</span></div>
-            </div>
-            <div style="width:100%;max-width:300px">
-              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Has alt text</span><span style="font-weight:700">5,176</span></div>
-              <div style="height:10px;background:var(--lgray);border-radius:5px;overflow:hidden;margin-bottom:12px"><div style="height:100%;width:24.2%;background:var(--teal);border-radius:5px"></div></div>
-              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Missing alt text</span><span style="font-weight:700;color:var(--c4)">16,222</span></div>
-              <div style="height:10px;background:var(--lgray);border-radius:5px;overflow:hidden"><div style="height:100%;width:75.8%;background:var(--c4);border-radius:5px"></div></div>
-            </div>
-          </div>
+          <div id="images-panel"></div>
         </div>
       </div>
-      <div class="insight-grid">
-        <div class="insight-card"><div class="insight-icon red">🖼️</div><div class="insight-body"><h4>75.8% of Images Have No Alt Text — 16,222 Images</h4><p>This is both an accessibility failure and a significant missed SEO opportunity. Alt text helps Google understand images, enables image search rankings, and is required for WCAG AA compliance. With 21,398 images on the site, manual fixes are not feasible — a template-level solution is needed.</p></div></div>
-        <div class="insight-card"><div class="insight-icon blue">🛒</div><div class="insight-body"><h4>Product Images Are a Ranking Opportunity</h4><p>Pure Encapsulations has hundreds of supplement products with high-intent image searches (e.g. "magnesium glycinate 120 capsules"). Implementing structured alt text with product name, format, and key ingredient can open Google Image Search as a meaningful additional traffic channel.</p></div></div>
-        <div class="insight-card"><div class="insight-icon teal">⚙️</div><div class="insight-body"><h4>Shopify Template Fix — High Leverage</h4><p>Recommend implementing alt text generation in Shopify liquid templates using <code>{{ product.title }} | {{ product.type }} | Pure Encapsulations</code> format. This would fix alt text site-wide without manual intervention and is a one-time development task.</p></div></div>
-        <div class="insight-card"><div class="insight-icon amber">📏</div><div class="insight-body"><h4>Image Size Optimisation — Verify</h4><p>The 2XU audit pattern flagged image size as a key performance lever. Given the catastrophic LCP scores on PFY (avg 27.2s), oversized images are likely a major contributor. A targeted image compression and lazy-loading audit across the top 50 product pages is recommended as a first step.</p></div></div>
-      </div>
+      <div class="insight-grid" data-insights-page="tech" data-insights-tab="tech-images"></div>
     </div>
 
     <!-- PRIORITY ISSUES TAB -->
@@ -625,130 +500,132 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-// CSV LOADER UTILITY
+// CONFIG — Google Sheets data source
 // ══════════════════════════════════════════════════════════════
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.trim().replace(/\r/g, ''));
-  return lines.slice(1).map(line => {
-    // Handle quoted fields with commas inside
-    const values = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === ',' && !inQ) { values.push(cur.trim().replace(/\r/g, '')); cur = ''; }
-      else { cur += ch; }
-    }
-    values.push(cur.trim().replace(/\r/g, ''));
-    const obj = {};
-    headers.forEach((h, i) => obj[h] = values[i] || '');
-    return obj;
-  });
-}
+const SHEET_ID = '__REPLACE_ME__';
+const SHEET_URL = (tab) =>
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}&_=${Date.now()}`;
+// The &_=${Date.now()} cache-buster is for development; safe to keep in prod.
 
-async function loadCSV(path) {
-  const res = await fetch(path);
-  if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
-  return parseCSV(await res.text());
-}
+const TABS = {
+  report_meta:        'report_meta',
+  kpis_benchmark:     'kpis_benchmark',
+  traffic_trend:      'traffic_trend',
+  keywords:           'keywords',
+  pages:              'pages',
+  refdomains:         'refdomains',
+  backlinks_summary:  'backlinks_summary',
+  kpis_tech:          'kpis_tech',
+  cwv_gauges:         'cwv_gauges',
+  tech_charts:        'tech_charts',
+  dup_titles:         'dup_titles',
+  canonicals:         'canonicals',
+  crawl_summary:      'crawl_summary',
+  inlinks_summary:    'inlinks_summary',
+  priority_issues:    'priority_issues',
+  insights:           'insights',
+};
+
+// color token → hex map (matches CSS brand tokens)
+const COLOR = {
+  red:    '#e53e51',
+  red2:   '#f56969',
+  amber:  '#ffb548',
+  teal:   '#4cc3ae',
+  blue:   '#009bff',
+  blue2:  '#076ae2',
+  purple: '#770bff',
+  gray:   '#e8e8e8',
+  gray2:  '#b3b3b3',
+};
 
 // ══════════════════════════════════════════════════════════════
 // STATE — populated by loadAllData()
 // ══════════════════════════════════════════════════════════════
-let DATA = {
-  kpis: [],
-  trend: [],
-  keywords: [],
-  pages: [],
-  refdomains: [],
-  backlinks: [],
-};
+const DATA = {};
+Object.keys(TABS).forEach(k => DATA[k] = []);
 
 // ══════════════════════════════════════════════════════════════
-// LOAD ALL DATA FILES
+// CSV + NUMBER HELPERS
+// ══════════════════════════════════════════════════════════════
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"') {
+        if (text[i+1] === '"') { cur += '"'; i++; }   // escaped quote
+        else inQ = false;
+      } else cur += ch;
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ',') { row.push(cur); cur = ''; }
+      else if (ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+      else if (ch === '\r') { /* skip */ }
+      else cur += ch;
+    }
+  }
+  if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+  if (!rows.length) return [];
+  const headers = rows[0].map(h => h.trim());
+  return rows.slice(1)
+    .filter(r => r.some(c => c.trim() !== ''))   // drop blank lines
+    .map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (r[i] != null ? r[i].trim() : ''));
+      return obj;
+    });
+}
+
+async function loadCSV(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  return parseCSV(await res.text());
+}
+
+// NaN-safe numeric coercion — strips $, %, thousands commas, whitespace.
+// Sheets cell formatting often introduces these.
+function num(v) {
+  if (v == null) return NaN;
+  return parseFloat(String(v).replace(/[$,%\s]/g, ''));
+}
+
+// ══════════════════════════════════════════════════════════════
+// LOAD ALL TABS (parallel, fault-tolerant)
 // ══════════════════════════════════════════════════════════════
 async function loadAllData() {
-  try {
-    const [kpis, trend, keywords, pages, refdomains, backlinks] = await Promise.all([
-      loadCSV('data/kpis.csv'),
-      loadCSV('data/traffic_trend.csv'),
-      loadCSV('data/keywords.csv'),
-      loadCSV('data/pages.csv'),
-      loadCSV('data/refdomains.csv'),
-      loadCSV('data/backlinks.csv'),
-    ]);
-    DATA.kpis       = kpis;
-    DATA.trend      = trend;
-    DATA.keywords   = keywords;
-    DATA.pages      = pages;
-    DATA.refdomains = refdomains;
-    DATA.backlinks  = backlinks;
-  } catch (err) {
-    console.error('Data load error:', err);
-    // Show warning banner if data fails
-    const warn = document.createElement('div');
-    warn.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999;background:#e53e51;color:#fff;padding:10px 20px;font-size:13px;text-align:center';
-    warn.textContent = '⚠ Data files not found — run from repo root (python3 -m http.server 8000) or deploy to Netlify';
-    document.body.prepend(warn);
+  const entries = Object.entries(TABS);
+  const results = await Promise.allSettled(entries.map(([, tab]) => loadCSV(SHEET_URL(tab))));
+  const failed = [];
+  results.forEach((res, i) => {
+    const [key, tab] = entries[i];
+    if (res.status === 'fulfilled') {
+      DATA[key] = res.value;
+    } else {
+      DATA[key] = [];
+      failed.push(tab);
+      console.error('Tab failed to load:', tab, res.reason);
+    }
+  });
+  if (failed.length) {
+    const w = document.getElementById('load-warning');
+    if (w) w.textContent = `⚠ ${failed.length} tab${failed.length > 1 ? 's' : ''} failed: ${failed.join(', ')}`;
   }
+}
+
+// key/value tab → object map
+function kv(rows) {
+  const m = {};
+  (rows || []).forEach(r => { m[r.key] = r.value; });
+  return m;
 }
 
 // ══════════════════════════════════════════════════════════════
-// KPI TILES — update from kpis.csv
+// SMALL DOM HELPERS
 // ══════════════════════════════════════════════════════════════
-function updateKPITiles() {
-  const kMap = {};
-  DATA.kpis.forEach(r => { kMap[r.metric] = r; });
-
-  const ot = kMap['Organic Traffic'];
-  const ok = kMap['Organic Keywords'];
-  const otc = kMap['Organic Traffic Cost'];
-  const pt = kMap['Paid Traffic'];
-
-  if (ot) {
-    setKPI('kpi-organic-traffic',
-      fmt(+ot.current_may26),
-      (ot.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(ot.pct_change_mom) + '% MoM',
-      ot.pct_change_mom > 0 ? 'up' : 'down');
-  }
-  if (ok) {
-    setKPI('kpi-organic-keywords',
-      fmt(+ok.current_may26),
-      (ok.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(ok.pct_change_mom) + '% MoM',
-      ok.pct_change_mom > 0 ? 'up' : 'down');
-  }
-  if (otc) {
-    setKPI('kpi-traffic-value',
-      '$' + fmtK(+otc.current_may26),
-      (otc.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(otc.pct_change_mom) + '% MoM',
-      otc.pct_change_mom > 0 ? 'up' : 'down');
-  }
-  if (pt) {
-    setKPI('kpi-paid-traffic',
-      fmtK(+pt.current_may26),
-      (pt.pct_change_mom > 0 ? '↑ ' : '↓ ') + Math.abs(pt.pct_change_mom) + '% MoM',
-      pt.pct_change_mom > 0 ? 'up' : 'down');
-  }
-}
-
-function setKPI(id, value, delta, dir) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.querySelector('.kpi-value').textContent = value;
-  const d = el.querySelector('.kpi-delta');
-  d.textContent = delta;
-  d.className = 'kpi-delta ' + dir;
-}
-
-function fmt(n) {
-  if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
-  return n.toLocaleString();
-}
-function fmtK(n) {
-  if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
-  return n.toString();
-}
+function setText(id, v) { const e = document.getElementById(id); if (e && v != null) e.textContent = v; }
+function dotClass(c) { return c === 'red' ? 'dot dot-red' : c === 'amber' ? 'dot dot-warn' : 'dot'; }
 
 // ══════════════════════════════════════════════════════════════
 // NAV
@@ -772,36 +649,76 @@ function showTab(id, btn) {
 }
 
 // ══════════════════════════════════════════════════════════════
-// TABLES — built from live CSV data
+// RENDER — meta, KPIs, gauges
+// ══════════════════════════════════════════════════════════════
+function renderReportMeta() {
+  const m = kv(DATA.report_meta);
+  setText('brand-client', m.client_name);
+  setText('brand-url', m.client_url);
+  setText('benchmark-status-label', m.benchmark_status_label);
+  setText('tech-status-label', m.tech_status_label);
+  setText('meta-generated', m.generated_date);
+  setText('meta-source', m.data_source);
+  const bd = document.getElementById('benchmark-status-dot');
+  if (bd) bd.className = dotClass(m.benchmark_status_dot);
+  const td = document.getElementById('tech-status-dot');
+  if (td) td.className = dotClass(m.tech_status_dot);
+}
+
+function renderKPIs(containerId, rows) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = (rows || []).map(r => `
+    <div class="kpi-card ${r.color || 'blue'}">
+      <div class="kpi-label">${r.label || ''}</div>
+      <div class="kpi-value">${r.value || ''}</div>
+      <div class="kpi-delta ${r.delta_dir || 'flat'}">${r.delta || ''}</div>
+      <div class="kpi-sub">${r.sub || ''}</div>
+    </div>`).join('');
+}
+
+function renderCWVGauges() {
+  const el = document.getElementById('cwv-gauges');
+  if (!el) return;
+  const scoreColor = { good: 'var(--teal)', ni: 'var(--c6)', poor: 'var(--c4)' };
+  const statusCls  = { good: 'cwv-good', ni: 'cwv-ni', poor: 'cwv-poor' };
+  el.innerHTML = (DATA.cwv_gauges || []).map(r => `
+    <div class="cwv-card">
+      <div class="cwv-label">${r.label || ''}</div>
+      <div class="cwv-score" style="color:${scoreColor[r.status] || 'var(--c4)'}">${r.value || ''}</div>
+      <div class="cwv-status ${statusCls[r.status] || 'cwv-poor'}">${(r.status || '').toUpperCase()}</div>
+      <div style="font-size:11px;color:var(--mid);margin-top:8px">Target: ${r.target || ''}<br>${r.detail || ''}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER — tables & panels
 // ══════════════════════════════════════════════════════════════
 function intentPill(intent) {
-  const s = (intent||'').toLowerCase();
-  const map = {commercial:'pill-blue', informational:'pill-purple', navigational:'pill-teal', transactional:'pill-amber'};
-  return `<span class="td-pill ${map[s]||'pill-gray'}">${intent||'—'}</span>`;
+  const s = (intent || '').toLowerCase();
+  const map = { commercial: 'pill-blue', informational: 'pill-purple', navigational: 'pill-teal', transactional: 'pill-amber' };
+  return `<span class="td-pill ${map[s] || 'pill-gray'}">${intent || '—'}</span>`;
 }
 function posBadge(pos) {
-  const n = +pos;
-  const cls = n===1?'pos-1':n===2?'pos-2':n===3?'pos-3':'pos-top';
+  const n = num(pos);
+  const cls = n === 1 ? 'pos-1' : n === 2 ? 'pos-2' : n === 3 ? 'pos-3' : 'pos-top';
   return `<span class="pos-badge ${cls}">${pos}</span>`;
 }
 
 function buildKeywordsTable() {
   const tbody = document.getElementById('keywords-table');
   if (!tbody) return;
-  // Show top 50 by traffic desc
-  const sorted = [...DATA.keywords].sort((a,b) => +b.traffic - +a.traffic).slice(0, 50);
+  const sorted = [...DATA.keywords].sort((a, b) => num(b.traffic) - num(a.traffic)).slice(0, 50);
   tbody.innerHTML = sorted.map(k => `
     <tr>
-      <td style="font-weight:500;max-width:260px">${k.keyword}</td>
+      <td style="font-weight:500;max-width:260px">${k.keyword || ''}</td>
       <td>${posBadge(k.position)}</td>
-      <td>${(+k.search_volume).toLocaleString()}</td>
-      <td>${(+k.traffic).toLocaleString()}</td>
-      <td>${(+k.traffic_pct).toFixed(2)}%</td>
+      <td>${num(k.search_volume).toLocaleString()}</td>
+      <td>${num(k.traffic).toLocaleString()}</td>
+      <td>${num(k.traffic_pct).toFixed(2)}%</td>
       <td>${intentPill(k.keyword_intents)}</td>
-      <td style="font-size:10.5px;color:var(--mid);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k.serp_features||'—'}</td>
+      <td style="font-size:10.5px;color:var(--mid);max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k.serp_features || '—'}</td>
     </tr>`).join('');
-
-  // Update badge count
   const badge = document.querySelector('[data-badge="keywords-total"]');
   if (badge) badge.textContent = DATA.keywords.length.toLocaleString() + ' total';
 }
@@ -809,26 +726,23 @@ function buildKeywordsTable() {
 function buildPagesTable() {
   const tbody = document.getElementById('pages-table');
   if (!tbody) return;
-  const top30 = DATA.pages.slice(0, 30);
-  tbody.innerHTML = top30.map(p => {
-    const chg = +p.traffic_change;
+  tbody.innerHTML = DATA.pages.slice(0, 30).map(p => {
+    const chg = num(p.traffic_change);
     const chgColor = chg >= 0 ? 'var(--teal)' : 'var(--c4)';
-    const chgSign  = chg >= 0 ? '+' : '';
+    const chgSign = chg >= 0 ? '+' : '';
     const url = p.url || '';
     const shortUrl = url.length > 52 ? url.slice(0, 52) + '…' : url;
     const ae = p.answer_engines || '';
     const llmCount = ae.split(',').filter(x => x.trim()).length;
-    const llmBadge = llmCount > 0
-      ? `<span style="font-size:10px;color:var(--primary)">🤖 ${llmCount}</span>`
-      : '—';
+    const llmBadge = llmCount > 0 ? `<span style="font-size:10px;color:var(--primary)">🤖 ${llmCount}</span>` : '—';
     return `
       <tr>
         <td class="td-url" title="${url}">${shortUrl}</td>
-        <td>${(+p.traffic_pct).toFixed(2)}%</td>
-        <td>${(+p.traffic).toLocaleString()}</td>
-        <td>${(+p.keywords).toLocaleString()}</td>
+        <td>${num(p.traffic_pct).toFixed(2)}%</td>
+        <td>${num(p.traffic).toLocaleString()}</td>
+        <td>${num(p.keywords).toLocaleString()}</td>
         <td style="color:${chgColor};font-weight:700">${chgSign}${chg.toLocaleString()}</td>
-        <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.top_keyword||'—'}</td>
+        <td style="font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.top_keyword || '—'}</td>
         <td>${llmBadge}</td>
       </tr>`;
   }).join('');
@@ -837,86 +751,147 @@ function buildPagesTable() {
 function buildRefDomainsTable() {
   const tbody = document.getElementById('refdomains-table');
   if (!tbody) return;
-  // Sort by backlinks desc, show top 30
-  const sorted = [...DATA.refdomains].sort((a,b) => +b.backlinks - +a.backlinks).slice(0, 30);
+  const sorted = [...DATA.refdomains].sort((a, b) => num(b.backlinks) - num(a.backlinks)).slice(0, 30);
   tbody.innerHTML = sorted.map(d => {
-    const as = +d.authority_score;
+    const as = num(d.authority_score);
     const c = as >= 70 ? 'var(--teal)' : as >= 40 ? 'var(--primary)' : as >= 20 ? 'var(--mid)' : 'var(--c4)';
-    const country = (d.country||'—').toUpperCase() || '—';
+    const country = (d.country || '—').toUpperCase() || '—';
     return `
       <tr>
-        <td style="font-weight:600">${d.domain}</td>
+        <td style="font-weight:600">${d.domain || ''}</td>
         <td><span style="color:${c};font-weight:800">${as}</span></td>
-        <td>${(+d.backlinks).toLocaleString()}</td>
+        <td>${num(d.backlinks).toLocaleString()}</td>
         <td>${country}</td>
-        <td style="color:var(--mid)">${d.first_seen}</td>
-        <td style="color:var(--mid)">${d.last_seen}</td>
+        <td style="color:var(--mid)">${d.first_seen || ''}</td>
+        <td style="color:var(--mid)">${d.last_seen || ''}</td>
       </tr>`;
   }).join('');
-
-  // Update badge
   const badge = document.querySelector('[data-badge="refdomains-total"]');
   if (badge) badge.textContent = DATA.refdomains.length.toLocaleString() + ' domains';
 }
 
-function buildTechIssuesTable() {
-  const tbody = document.getElementById('tech-issues-table');
+function renderDupTitlesTable() {
+  const tbody = document.getElementById('dup-titles-table');
   if (!tbody) return;
-  const techIssues = [
-    {n:1,issue:'Avg LCP 27.2s — catastrophic page speed across all product pages',volume:'754/755 pages',impact:'HIGH',effort:'HIGH',cat:'Performance'},
-    {n:2,issue:'Avg TBT 1,655ms — excessive main thread blocking',volume:'735/755 pages',impact:'HIGH',effort:'HIGH',cat:'Performance'},
-    {n:3,issue:'Avg CLS 0.670 — severe layout shift on load',volume:'610/755 pages',impact:'HIGH',effort:'MEDIUM',cat:'Performance'},
-    {n:4,issue:'504 pages missing H1 tag (66.7%)',volume:'504 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
-    {n:5,issue:'2,561 orphan URLs — no internal links, unreachable by crawlers',volume:'2,561 URLs',impact:'HIGH',effort:'MEDIUM',cat:'Architecture'},
-    {n:6,issue:'384 pages missing title tag (50.8%)',volume:'384 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
-    {n:7,issue:'267 pages missing canonical tag (35.3%)',volume:'267 pages',impact:'MEDIUM',effort:'LOW',cat:'Metadata'},
-    {n:8,issue:'211 indexable pages missing from XML sitemap',volume:'211 pages',impact:'HIGH',effort:'LOW',cat:'Sitemap'},
-    {n:9,issue:'16,222 images missing alt text (75.8%)',volume:'16,222 images',impact:'MEDIUM',effort:'MEDIUM',cat:'Images'},
-    {n:10,issue:'576 pages with 0–4 inlinks — poor internal link equity',volume:'576 pages',impact:'HIGH',effort:'MEDIUM',cat:'Inlinks'},
-    {n:11,issue:'421 pages missing meta description (55.7%)',volume:'421 pages',impact:'MEDIUM',effort:'LOW',cat:'Metadata'},
-    {n:12,issue:'94 pages share same title tag (Questionnaire page)',volume:'94 pages',impact:'HIGH',effort:'LOW',cat:'Metadata'},
-    {n:13,issue:'85% organic traffic on subdomain — link equity dilution risk',volume:'smartq subdomain',impact:'HIGH',effort:'HIGH',cat:'Architecture'},
-    {n:14,issue:'17 URLs returning 403 Forbidden',volume:'17 URLs',impact:'LOW',effort:'LOW',cat:'Crawlability'},
-  ];
-  const impactColor = i => i==='HIGH'?'var(--c4)':i==='MEDIUM'?'var(--c6)':'var(--mid)';
-  const effortBadge = e => `<span class="td-pill ${e==='LOW'?'pill-teal':e==='MEDIUM'?'pill-blue':'pill-red'}">${e}</span>`;
-  const catBadge = c => { const m={Metadata:'pill-purple',Architecture:'pill-red',Sitemap:'pill-teal',Inlinks:'pill-blue',Images:'pill-amber',Performance:'pill-red',Crawlability:'pill-gray'}; return `<span class="td-pill ${m[c]||'pill-gray'}">${c}</span>`; };
-  tbody.innerHTML = techIssues.map(i => `
+  tbody.innerHTML = (DATA.dup_titles || []).map(d => {
+    const c = num(d.count) > 10;
+    return `
     <tr>
-      <td style="font-weight:800;color:var(--mid)">${i.n}</td>
-      <td style="font-weight:500;max-width:340px;line-height:1.4">${i.issue}</td>
-      <td style="font-size:11px;color:var(--mid)">${i.volume}</td>
-      <td><span style="color:${impactColor(i.impact)};font-weight:800;font-size:11px">${i.impact}</span></td>
-      <td>${effortBadge(i.effort)}</td>
-      <td>${catBadge(i.cat)}</td>
+      <td style="font-weight:500">${d.title || ''}</td>
+      <td><span style="font-weight:800;color:${c ? 'var(--c4)' : 'var(--c6)'}">${d.count}</span></td>
+      <td><span class="td-pill ${c ? 'pill-red' : 'pill-amber'}">${c ? 'Critical' : 'Warning'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCanonicalsTable() {
+  const tbody = document.getElementById('canonicals-table');
+  if (!tbody) return;
+  tbody.innerHTML = (DATA.canonicals || []).map(r => `
+    <tr>
+      <td style="font-weight:600">${r.status || ''}</td>
+      <td>${r.count}</td>
+      <td>${r.pct}</td>
+      <td><span class="td-pill pill-${r.action_pill || 'gray'}">${r.action_label || ''}</span></td>
     </tr>`).join('');
 }
 
-function buildDupTitlesTable() {
-  const tbody = document.getElementById('dup-titles-table');
+function renderCrawlSummaryTable() {
+  const tbody = document.getElementById('crawl-summary-table');
   if (!tbody) return;
-  const dupTitles = [
-    {title:'Personalized Wellness Questionnaire | Pure Encapsulations',count:94},
-    {title:'undefined | Glossary | Pure Encapsulations',count:6},
-    {title:'Bones & Musculoskeletal Health | Pure Encapsulations',count:5},
-    {title:'Mental Health & Stress Support | Pure Encapsulations',count:5},
-    {title:'Multivitamins | Pure Encapsulations',count:5},
-    {title:'Immune | Pure Encapsulations',count:4},
-    {title:'Cardiovascular Health | Pure Encapsulations',count:4},
-    {title:'Gut Health | Pure Encapsulations',count:4},
-    {title:'Vitamins & Minerals | Pure Encapsulations',count:4},
-    {title:'Energy & Fatigue | Pure Encapsulations',count:4},
-  ];
-  tbody.innerHTML = dupTitles.map(d => `
+  tbody.innerHTML = (DATA.crawl_summary || []).map(r => `
     <tr>
-      <td style="font-weight:500">${d.title}</td>
-      <td><span style="font-weight:800;color:${d.count>10?'var(--c4)':'var(--c6)'}">${d.count}</span></td>
-      <td><span class="td-pill ${d.count>10?'pill-red':'pill-amber'}">${d.count>10?'Critical':'Warning'}</span></td>
+      <td style="font-weight:600">${r.area || ''}</td>
+      <td>${r.finding || ''}</td>
+      <td>${r.value || ''}</td>
+      <td><span class="td-pill pill-${r.status_pill || 'gray'}">${r.status || ''}</span></td>
+      <td>${r.priority || ''}</td>
     </tr>`).join('');
+}
+
+function renderPriorityIssuesTable() {
+  const tbody = document.getElementById('tech-issues-table');
+  if (!tbody) return;
+  const impactColor = i => i === 'HIGH' ? 'var(--c4)' : i === 'MEDIUM' ? 'var(--c6)' : 'var(--mid)';
+  const effortBadge = e => `<span class="td-pill ${e === 'LOW' ? 'pill-teal' : e === 'MEDIUM' ? 'pill-blue' : 'pill-red'}">${e}</span>`;
+  const catBadge = c => {
+    const m = { Metadata: 'pill-purple', Architecture: 'pill-red', Sitemap: 'pill-teal', Inlinks: 'pill-blue', Images: 'pill-amber', Performance: 'pill-red', Crawlability: 'pill-gray' };
+    return `<span class="td-pill ${m[c] || 'pill-gray'}">${c}</span>`;
+  };
+  tbody.innerHTML = (DATA.priority_issues || []).map(i => `
+    <tr>
+      <td style="font-weight:800;color:var(--mid)">${i.n}</td>
+      <td style="font-weight:500;max-width:340px;line-height:1.4">${i.issue || ''}</td>
+      <td style="font-size:11px;color:var(--mid)">${i.volume || ''}</td>
+      <td><span style="color:${impactColor(i.impact)};font-weight:800;font-size:11px">${i.impact || ''}</span></td>
+      <td>${effortBadge(i.effort)}</td>
+      <td>${catBadge(i.category)}</td>
+    </tr>`).join('');
+}
+
+function renderInlinksPanel() {
+  const el = document.getElementById('inlinks-panel');
+  if (!el) return;
+  const m = kv(DATA.inlinks_summary);
+  const bar = (label, count, pct, color) => `
+    <div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;font-weight:600">${label} (${count} pages)</span><span style="font-size:12px;color:${color};font-weight:700">${pct}%</span></div>
+      <div style="height:8px;background:var(--lgray);border-radius:4px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${color};border-radius:4px"></div></div>
+    </div>`;
+  el.innerHTML = `
+    <div style="padding:20px 0">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        ${bar('Zero inlinks', m.zero_inlinks_count, m.zero_inlinks_pct, 'var(--c4)')}
+        ${bar('Low inlinks 1–4', m.low_count, m.low_pct, 'var(--c6)')}
+        ${bar('Medium inlinks 5–49', m.medium_count, m.medium_pct, 'var(--primary)')}
+        ${bar('High inlinks 50+', m.high_count, m.high_pct, 'var(--teal)')}
+      </div>
+      <div style="margin-top:20px;padding:14px;background:var(--lgray);border-radius:8px">
+        <div style="font-size:11px;font-weight:700;margin-bottom:4px">Key Stats</div>
+        <div style="font-size:12px;color:var(--mid);line-height:1.7">Avg inlinks per page: <strong style="color:var(--dark)">${m.avg_inlinks}</strong><br>Max inlinks (homepage): <strong style="color:var(--dark)">${num(m.max_inlinks).toLocaleString()}</strong><br>Pages with 0 inlinks: <strong style="color:var(--c4)">${m.zero_inlinks_count} (${m.zero_inlinks_pct}%)</strong></div>
+      </div>
+    </div>`;
+}
+
+function renderImagesPanel() {
+  const el = document.getElementById('images-panel');
+  if (!el) return;
+  const rows = (DATA.tech_charts || []).filter(r => r.chart_id === 'images');
+  const has = num((rows.find(r => /has/i.test(r.label)) || {}).value) || 0;
+  const miss = num((rows.find(r => /missing/i.test(r.label)) || {}).value) || 0;
+  const total = has + miss;
+  const missPct = total ? (miss / total * 100).toFixed(1) : '0';
+  const hasPct = total ? (100 - missPct).toFixed(1) : '0';
+  el.innerHTML = `
+    <div style="padding:30px 0;display:flex;flex-direction:column;gap:18px;align-items:center">
+      <div style="text-align:center">
+        <div style="font-family:'DM Serif Display',serif;font-size:48px;color:var(--c4)">${missPct}%</div>
+        <div style="font-size:13px;color:var(--mid);margin-top:4px">of images missing alt text</div>
+        <div style="font-size:22px;font-weight:700;margin-top:8px">${miss.toLocaleString()} <span style="font-size:13px;color:var(--mid);font-weight:400">of ${total.toLocaleString()} images</span></div>
+      </div>
+      <div style="width:100%;max-width:300px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Has alt text</span><span style="font-weight:700">${has.toLocaleString()}</span></div>
+        <div style="height:10px;background:var(--lgray);border-radius:5px;overflow:hidden;margin-bottom:12px"><div style="height:100%;width:${hasPct}%;background:var(--teal);border-radius:5px"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Missing alt text</span><span style="font-weight:700;color:var(--c4)">${miss.toLocaleString()}</span></div>
+        <div style="height:10px;background:var(--lgray);border-radius:5px;overflow:hidden"><div style="height:100%;width:${missPct}%;background:var(--c4);border-radius:5px"></div></div>
+      </div>
+    </div>`;
+}
+
+function renderInsights() {
+  document.querySelectorAll('[data-insights-page]').forEach(c => c.innerHTML = '');
+  (DATA.insights || []).forEach(r => {
+    const cont = document.querySelector(`[data-insights-page="${r.page}"][data-insights-tab="${r.tab}"]`);
+    if (!cont) return;
+    const div = document.createElement('div');
+    div.className = 'insight-card';
+    div.innerHTML = `<div class="insight-icon ${r.icon_color || 'blue'}">${r.icon || ''}</div><div class="insight-body"><h4>${r.heading || ''}</h4><p>${r.body || ''}</p></div>`;
+    cont.appendChild(div);
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
-// CHARTS — built from live CSV data
+// CHARTS — derived from row-level data (keywords / trend / refdomains)
 // ══════════════════════════════════════════════════════════════
 Chart.defaults.font.family = "'DM Sans', sans-serif";
 Chart.defaults.color = '#b3b3b3';
@@ -931,8 +906,8 @@ const P = {
 };
 
 function trafficTrend() {
-  const labels = DATA.trend.map(r => r.month.replace(/^20/, '').replace('-', '-'));
-  const organic = DATA.trend.map(r => +r['Organic Traffic']);
+  const labels = DATA.traffic_trend.map(r => (r.month || '').replace(/^20/, ''));
+  const organic = DATA.traffic_trend.map(r => num(r.organic));
   new Chart(document.getElementById('trafficTrendChart'), {
     type: 'line',
     data: { labels, datasets: [{
@@ -950,15 +925,13 @@ function trafficTrend() {
 }
 
 function intentChart() {
-  // Compute from keywords data
-  const counts = { informational: 0, commercial: 0, transactional: 0, navigational: 0, unknown: 0 };
+  const counts = { informational: 0, commercial: 0, transactional: 0, navigational: 0 };
   DATA.keywords.forEach(k => {
-    const i = (k.keyword_intents||'').toLowerCase();
+    const i = (k.keyword_intents || '').toLowerCase();
     if (i.includes('informational')) counts.informational++;
     else if (i.includes('commercial')) counts.commercial++;
     else if (i.includes('transactional')) counts.transactional++;
     else if (i.includes('navigational')) counts.navigational++;
-    else counts.unknown++;
   });
   const total = DATA.keywords.length || 1;
   new Chart(document.getElementById('intentChart'), {
@@ -984,9 +957,9 @@ function intentChart() {
 }
 
 function paidOrganicChart() {
-  const labels  = DATA.trend.map(r => r.month.replace(/^20/, '').replace('-', '-'));
-  const organic = DATA.trend.map(r => +r['Organic Traffic']);
-  const paid    = DATA.trend.map(r => +r['Paid Traffic']);
+  const labels  = DATA.traffic_trend.map(r => (r.month || '').replace(/^20/, ''));
+  const organic = DATA.traffic_trend.map(r => num(r.organic));
+  const paid    = DATA.traffic_trend.map(r => num(r.paid));
   new Chart(document.getElementById('paidOrganicChart'), {
     type: 'line',
     data: { labels, datasets: [
@@ -1004,20 +977,19 @@ function paidOrganicChart() {
 }
 
 function posDistChart() {
-  // Compute from live keyword data
-  const buckets = { top3: 0, p4_10: 0, p11_20: 0, p21_50: 0, p51_100: 0 };
+  const b = { top3: 0, p4_10: 0, p11_20: 0, p21_50: 0, p51_100: 0 };
   DATA.keywords.forEach(k => {
-    const p = +k.position;
-    if (p <= 3) buckets.top3++;
-    else if (p <= 10) buckets.p4_10++;
-    else if (p <= 20) buckets.p11_20++;
-    else if (p <= 50) buckets.p21_50++;
-    else buckets.p51_100++;
+    const p = num(k.position);
+    if (p <= 3) b.top3++;
+    else if (p <= 10) b.p4_10++;
+    else if (p <= 20) b.p11_20++;
+    else if (p <= 50) b.p21_50++;
+    else b.p51_100++;
   });
   new Chart(document.getElementById('posDistChart'), {
     type: 'bar',
     data: { labels: ['Top 3','Pos 4–10','Pos 11–20','Pos 21–50','Pos 51–100'],
-      datasets: [{ data: [buckets.top3, buckets.p4_10, buckets.p11_20, buckets.p21_50, buckets.p51_100],
+      datasets: [{ data: [b.top3, b.p4_10, b.p11_20, b.p21_50, b.p51_100],
         backgroundColor: ['#4cc3ae','#009bff','#770bff','#b3b3b3','#e8e8e8'], borderRadius: 5, borderSkipped: false }]
     },
     options: { ...P }
@@ -1025,68 +997,37 @@ function posDistChart() {
 }
 
 function trafficIntentChart() {
-  // Compute traffic by intent
-  const traffic = { informational: 0, commercial: 0, transactional: 0, navigational: 0 };
+  const t = { informational: 0, commercial: 0, transactional: 0, navigational: 0 };
   DATA.keywords.forEach(k => {
-    const i = (k.keyword_intents||'').toLowerCase();
-    const t = +k.traffic || 0;
-    if (i.includes('informational')) traffic.informational += t;
-    else if (i.includes('commercial')) traffic.commercial += t;
-    else if (i.includes('transactional')) traffic.transactional += t;
-    else if (i.includes('navigational')) traffic.navigational += t;
+    const i = (k.keyword_intents || '').toLowerCase();
+    const v = num(k.traffic) || 0;
+    if (i.includes('informational')) t.informational += v;
+    else if (i.includes('commercial')) t.commercial += v;
+    else if (i.includes('transactional')) t.transactional += v;
+    else if (i.includes('navigational')) t.navigational += v;
   });
   new Chart(document.getElementById('trafficIntentChart'), {
     type: 'bar',
     data: { labels: ['Informational','Commercial','Transactional','Navigational'],
-      datasets: [{ data: [traffic.informational, traffic.commercial, traffic.transactional, traffic.navigational],
+      datasets: [{ data: [t.informational, t.commercial, t.transactional, t.navigational],
         backgroundColor: ['#770bff','#009bff','#4cc3ae','#b3b3b3'], borderRadius: 5, borderSkipped: false }]
     },
     options: { ...P }
   });
 }
 
-function blTypesChart() {
-  // Use known totals from Semrush PDF
-  new Chart(document.getElementById('blTypesChart'), {
-    type: 'doughnut',
-    data: { labels: ['Text (95.1%)','Image (4.9%)'],
-      datasets: [{ data: [3583,183], backgroundColor: ['#009bff','#770bff'], borderWidth: 0, hoverOffset: 6 }]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 9, padding: 8 } } }, cutout: '58%' }
-  });
-}
-
-function followChart() {
-  // Use known totals from Semrush for full dataset
-  new Chart(document.getElementById('followChart'), {
-    type: 'doughnut',
-    data: { labels: ['Follow (77%)','Nofollow (23%)'],
-      datasets: [{ data: [3542,1058], backgroundColor: ['#4cc3ae','#e8e8e8'], borderWidth: 0, hoverOffset: 6 }]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 9, padding: 8 } } }, cutout: '58%' }
-  });
-}
-
 function authScoreChart() {
-  // Compute from live refdomains
-  const bins = { b0: 0, b11: 0, b21: 0, b31: 0, b41: 0, b51: 0, b61: 0, b71: 0, b81: 0, b91: 0 };
+  // inclusive upper bounds so boundary scores land in the correctly-labelled bucket
+  const bins = new Array(10).fill(0);
   DATA.refdomains.forEach(d => {
-    const s = +d.authority_score;
-    if (s <= 10) bins.b0++;
-    else if (s <= 20) bins.b11++;
-    else if (s <= 30) bins.b21++;
-    else if (s <= 40) bins.b31++;
-    else if (s <= 50) bins.b41++;
-    else if (s <= 60) bins.b51++;
-    else if (s <= 70) bins.b61++;
-    else if (s <= 80) bins.b71++;
-    else if (s <= 90) bins.b81++;
-    else bins.b91++;
+    const s = num(d.authority_score);
+    const idx = s <= 10 ? 0 : Math.min(Math.ceil(s / 10) - 1, 9);
+    bins[idx]++;
   });
   new Chart(document.getElementById('authScoreChart'), {
     type: 'bar',
     data: { labels: ['0–10','11–20','21–30','31–40','41–50','51–60','61–70','71–80','81–90','91–100'],
-      datasets: [{ data: Object.values(bins),
+      datasets: [{ data: bins,
         backgroundColor: ctx => ctx.raw > 100 ? '#e8e8e8' : ctx.raw > 30 ? '#009bff' : '#e8e8e8',
         borderRadius: 3 }]
     },
@@ -1096,56 +1037,129 @@ function authScoreChart() {
   });
 }
 
-// TECH AUDIT CHARTS (static — from crawl data)
-function perfScoreChart(){new Chart(document.getElementById('perfScoreChart'),{type:'bar',data:{labels:['0–9','10–19','20–29','30–39','40–49','50–89','90+'],datasets:[{data:[480,190,55,15,9,6,0],backgroundColor:['#e53e51','#e53e51','#f56969','#ffb548','#ffb548','#4cc3ae','#076ae2'],borderRadius:4}]},options:{...P,plugins:{legend:{display:false}}}})}
-function lcpChart(){new Chart(document.getElementById('lcpChart'),{type:'doughnut',data:{labels:['Good ≤2.5s (0)','Needs Improvement (1)','Poor >4s (754)'],datasets:[{data:[0,1,754],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-function tbtChart(){new Chart(document.getElementById('tbtChart'),{type:'doughnut',data:{labels:['Good ≤200ms (0)','Needs Improvement (20)','Poor >600ms (735)'],datasets:[{data:[0,20,735],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-function clsChart(){new Chart(document.getElementById('clsChart'),{type:'doughnut',data:{labels:['Good ≤0.1 (122)','Needs Improvement (22)','Poor >0.25 (610)'],datasets:[{data:[122,22,610],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-function cruxChart(){new Chart(document.getElementById('cruxChart'),{type:'bar',data:{labels:['Pass','Fail','No Data'],datasets:[{data:[3,34,718],backgroundColor:['#4cc3ae','#e53e51','#e8e8e8'],borderRadius:5}]},options:{...P,plugins:{legend:{display:false}}}})}
-function cruxLcpChart(){new Chart(document.getElementById('cruxLcpChart'),{type:'bar',data:{labels:['Good','Needs Improvement','Poor','No CrUX Data'],datasets:[{data:[4,29,7,715],backgroundColor:['#4cc3ae','#ffb548','#e53e51','#e8e8e8'],borderRadius:5}]},options:{...P,plugins:{legend:{display:false}}}})}
-function techTitleChart(){new Chart(document.getElementById('techTitleChart'),{type:'doughnut',data:{labels:['Has Title (372)','Missing Title (384)'],datasets:[{data:[372,384],backgroundColor:['#009bff','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-function techDescChart(){new Chart(document.getElementById('techDescChart'),{type:'doughnut',data:{labels:['Has Description (335)','Missing (421)'],datasets:[{data:[335,421],backgroundColor:['#770bff','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-function techH1Chart(){new Chart(document.getElementById('techH1Chart'),{type:'doughnut',data:{labels:['Has H1 (252)','Missing H1 (504)'],datasets:[{data:[252,504],backgroundColor:['#4cc3ae','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-function techMetaSummary(){new Chart(document.getElementById('techMetaSummary'),{type:'bar',data:{labels:['No H1','No Desc','No Title','Long Desc (>160)','Short Desc (<70)','Long Title (>60)','Short Title (<30)'],datasets:[{data:[504,421,384,52,66,43,9],backgroundColor:['#e53e51','#e53e51','#e53e51','#770bff','#770bff','#009bff','#009bff'],borderRadius:4}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(232,232,232,.6)'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}})}
-function techStatusChart(){new Chart(document.getElementById('techStatusChart'),{type:'doughnut',data:{labels:['200 OK (1,637)','403 Forbidden (17)','404 Not Found (3)','301 Redirect (2)'],datasets:[{data:[1637,17,3,2],backgroundColor:['#4cc3ae','#ffb548','#e53e51','#009bff'],borderWidth:0,hoverOffset:8}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'55%'}})}
-function techDepthChart(){new Chart(document.getElementById('techDepthChart'),{type:'bar',data:{labels:['Depth 0','Depth 1','Depth 2','Depth 3','Depth 4','Depth 5+'],datasets:[{data:[1,52,283,180,13,2],backgroundColor:['#4cc3ae','#009bff','#770bff','#770bff','#b3b3b3','#e8e8e8'],borderRadius:4}]},options:{...P}})}
-function techSitemapChart(){new Chart(document.getElementById('techSitemapChart'),{type:'bar',data:{labels:['In Sitemap','Missing from Sitemap','Orphan URLs'],datasets:[{data:[3206,211,2561],backgroundColor:['#4cc3ae','#ffb548','#e53e51'],borderRadius:5}]},options:{...P,scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(232,232,232,.6)'},ticks:{callback:v=>v>=1000?(v/1000)+'K':v}}}}})}
-function techIndexChart(){new Chart(document.getElementById('techIndexChart'),{type:'doughnut',data:{labels:['Indexable (1,501)','Non-Indexable (163)'],datasets:[{data:[1501,163],backgroundColor:['#4cc3ae','#e8e8e8'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
-function inlinksChart(){new Chart(document.getElementById('inlinksChart'),{type:'bar',data:{labels:['0 inlinks','1–4 inlinks','5–49 inlinks','50+ inlinks'],datasets:[{data:[130,446,159,21],backgroundColor:['#e53e51','#ffb548','#009bff','#4cc3ae'],borderRadius:5}]},options:{...P,plugins:{legend:{display:false}}}})}
-function techAltChart(){new Chart(document.getElementById('techAltChart'),{type:'doughnut',data:{labels:['Has Alt Text (5,176)','Missing Alt (16,222)'],datasets:[{data:[5176,16222],backgroundColor:['#4cc3ae','#e53e51'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:10,padding:10}}},cutout:'58%'}})}
+// Backlinks doughnuts — from backlinks_summary tab
+function backlinksSummaryCharts() {
+  const grab = id => DATA.backlinks_summary.filter(r => r.chart_id === id);
+  const mk = (canvasId, rows, colors) => {
+    const total = rows.reduce((s, r) => s + num(r.value), 0) || 1;
+    const labels = rows.map(r => `${r.label} (${(num(r.value)/total*100).toFixed(1)}%)`);
+    new Chart(document.getElementById(canvasId), {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: rows.map(r => num(r.value)), backgroundColor: colors, borderWidth: 0, hoverOffset: 6 }] },
+      options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 9, padding: 8 } } }, cutout: '58%' }
+    });
+  };
+  mk('blTypesChart', grab('types'),  ['#009bff', '#770bff']);
+  mk('followChart',  grab('follow'), ['#4cc3ae', '#e8e8e8']);
+}
 
 // ══════════════════════════════════════════════════════════════
-// INIT — load data, then build everything
+// TECH AUDIT CHARTS — from tech_charts tab (grouped by chart_id)
+// ══════════════════════════════════════════════════════════════
+const TECH_CHART_DEFS = {
+  perf_score:     { canvas: 'perfScoreChart', type: 'bar' },
+  lcp:            { canvas: 'lcpChart',        type: 'doughnut' },
+  tbt:            { canvas: 'tbtChart',        type: 'doughnut' },
+  cls:            { canvas: 'clsChart',        type: 'doughnut' },
+  crux:           { canvas: 'cruxChart',       type: 'bar' },
+  crux_lcp:       { canvas: 'cruxLcpChart',    type: 'bar' },
+  title_coverage: { canvas: 'techTitleChart',  type: 'doughnut' },
+  desc_coverage:  { canvas: 'techDescChart',   type: 'doughnut' },
+  h1_coverage:    { canvas: 'techH1Chart',     type: 'doughnut' },
+  meta_summary:   { canvas: 'techMetaSummary', type: 'hbar' },
+  status_codes:   { canvas: 'techStatusChart', type: 'doughnut' },
+  crawl_depth:    { canvas: 'techDepthChart',  type: 'bar' },
+  sitemap:        { canvas: 'techSitemapChart',type: 'bar' },
+  indexability:   { canvas: 'techIndexChart',  type: 'doughnut' },
+  inlinks:        { canvas: 'inlinksChart',    type: 'bar' },
+  images:         { canvas: 'techAltChart',    type: 'doughnut' },
+};
+
+function renderTechCharts() {
+  const groups = {};
+  (DATA.tech_charts || []).forEach(r => { (groups[r.chart_id] = groups[r.chart_id] || []).push(r); });
+
+  Object.entries(TECH_CHART_DEFS).forEach(([id, def]) => {
+    const rows = groups[id];
+    const el = document.getElementById(def.canvas);
+    if (!rows || !el) return;
+    const values = rows.map(r => num(r.value));
+    const colors = rows.map(r => COLOR[r.color] || COLOR.gray);
+
+    if (def.type === 'doughnut') {
+      const labels = rows.map(r => `${r.label} (${num(r.value).toLocaleString()})`);
+      new Chart(el, {
+        type: 'doughnut',
+        data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 0, hoverOffset: 6 }] },
+        options: { responsive: true, plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 10, padding: 10 } } }, cutout: '57%' }
+      });
+    } else if (def.type === 'hbar') {
+      new Chart(el, {
+        type: 'bar',
+        data: { labels: rows.map(r => r.label), datasets: [{ data: values, backgroundColor: colors, borderRadius: 4 }] },
+        options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+          scales: { x: { grid: { color: 'rgba(232,232,232,.6)' } }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } } }
+      });
+    } else { // vertical bar
+      new Chart(el, {
+        type: 'bar',
+        data: { labels: rows.map(r => r.label), datasets: [{ data: values, backgroundColor: colors, borderRadius: 5, borderSkipped: false }] },
+        options: { ...P }
+      });
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// SETUP BANNER
+// ══════════════════════════════════════════════════════════════
+function showSetupBanner() {
+  const b = document.createElement('div');
+  b.className = 'setup-banner';
+  b.innerHTML = '⚙ Set <code>SHEET_ID</code> at the top of <code>index.html</code>. See README.';
+  document.body.prepend(b);
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
 // ══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
+  if (SHEET_ID === '__REPLACE_ME__') {
+    showSetupBanner();
+    return;
+  }
+
   await loadAllData();
 
-  // Update live KPI tiles
-  updateKPITiles();
+  // Meta, KPIs, gauges
+  renderReportMeta();
+  renderKPIs('kpis-benchmark', DATA.kpis_benchmark);
+  renderKPIs('kpis-tech', DATA.kpis_tech);
+  renderCWVGauges();
 
-  // Build tables from live data
+  // Tables & panels
   buildKeywordsTable();
   buildPagesTable();
   buildRefDomainsTable();
-  buildTechIssuesTable();
-  buildDupTitlesTable();
+  renderDupTitlesTable();
+  renderCanonicalsTable();
+  renderCrawlSummaryTable();
+  renderPriorityIssuesTable();
+  renderInlinksPanel();
+  renderImagesPanel();
+  renderInsights();
 
-  // Charts from live data
+  // Charts derived from row-level data
   trafficTrend();
   intentChart();
   paidOrganicChart();
   posDistChart();
   trafficIntentChart();
-  blTypesChart();
-  followChart();
   authScoreChart();
+  backlinksSummaryCharts();
 
-  // Static tech audit charts (from crawl export, not updated via CSV)
-  perfScoreChart(); lcpChart(); tbtChart(); clsChart();
-  cruxChart(); cruxLcpChart();
-  techTitleChart(); techDescChart(); techH1Chart(); techMetaSummary();
-  techStatusChart(); techDepthChart(); techSitemapChart(); techIndexChart();
-  inlinksChart(); techAltChart();
+  // Tech audit charts from tech_charts tab
+  renderTechCharts();
 });
 </script>
 </body>

@@ -5,15 +5,17 @@ A single, self-contained HTML dashboard deployed via Netlify.
 
 ## What's in the report
 
-`index.html` is a sidebar-navigated dashboard. On load it `fetch()`es the CSV
-files in `data/` and renders them into KPI tiles, [Chart.js](https://www.chartjs.org/)
-charts, and tables. The Benchmark page is fully data-driven; the Tech Audit
-charts are derived from the Screaming Frog crawl and currently hardcoded.
+`index.html` is a sidebar-navigated dashboard. On load it reads **every data
+value** — KPIs, gauges, chart series, table rows, insight cards, dates, status
+pills — from a single **Google Sheet** (one tab per section) and renders KPI
+tiles, [Chart.js](https://www.chartjs.org/) charts, and tables. Nothing is
+hardcoded: an analyst edits a cell in the Sheet and the report reflects it on
+the next page load — no git push, no Netlify build.
 
 | Section | Status | Contents |
 | --- | --- | --- |
-| **Benchmark Data** | Live | KPIs + tabs for Organic Traffic, Keywords, Top Pages, Backlinks (Semrush, as at 1 Jun 2026) |
-| **Tech Audit** | Live | KPIs + tabs for Core Web Vitals, Metadata, Crawlability, Inlinks, Images, and a Priority Issues register (Screaming Frog + PageSpeed Insights / CrUX) |
+| **Benchmark Data** | Live | KPIs + Organic Traffic, Keywords, Top Pages, Backlinks |
+| **Tech Audit** | Live | KPIs + Core Web Vitals, Metadata, Crawlability, Inlinks, Images, Priority Issues |
 | **Competitor Audit** | WIP | Competitive landscape (placeholder) |
 | **WIP Notes** | WIP | Internal working notes (placeholder) |
 | **Delivery** | WIP | Briefs and client deliverables (placeholder) |
@@ -22,32 +24,71 @@ charts are derived from the Screaming Frog crawl and currently hardcoded.
 
 ```
 pfy-seo-report/
-├── index.html     ← the report (no build step; loads CSVs at runtime)
-├── data/          ← data the report reads
-│   ├── kpis.csv            ← benchmark KPI tiles (metric, current, MoM %)
-│   ├── traffic_trend.csv   ← monthly organic/paid traffic trend
-│   ├── keywords.csv        ← ranking keywords (drives table + intent/position charts)
-│   ├── pages.csv           ← top organic pages
-│   ├── refdomains.csv      ← referring domains (drives table + authority chart)
-│   ├── backlinks.csv       ← backlinks export
-│   └── PFY - CRAWLS.xlsx    ← Screaming Frog crawl (source for Tech Audit)
-├── assets/        ← images, logos, charts
-└── README.md      ← this file
+├── index.html         ← the report (no build step; reads from Google Sheets)
+├── sheet_template.md  ← CSV blocks to scaffold the Google Sheet
+├── data/              ← source exports (import keywords/pages/refdomains into the Sheet;
+│                          PFY - CRAWLS.xlsx is the Tech Audit source)
+├── assets/            ← images, logos
+└── README.md          ← this file
 ```
+
+## Data source: Google Sheets
+
+The report pulls each tab as CSV via the `gviz/tq` endpoint:
+
+```
+https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={TAB_NAME}
+```
+
+### One-time setup
+
+1. **Create the Sheet.** Open `sheet_template.md` and create one tab per
+   section, named **exactly** as the heading (`report_meta`, `kpis_benchmark`,
+   `traffic_trend`, `keywords`, `pages`, `refdomains`, `backlinks_summary`,
+   `kpis_tech`, `cwv_gauges`, `tech_charts`, `dup_titles`, `canonicals`,
+   `crawl_summary`, `inlinks_summary`, `priority_issues`, `insights`). Paste
+   each CSV block into cell A1 of its tab.
+   - For the three large tabs (**keywords**, **pages**, **refdomains**) use
+     **File → Import → Upload** with `data/keywords.csv`, `data/pages.csv`,
+     `data/refdomains.csv`. Their headers already match.
+2. **Share it.** Share → General access → **Anyone with the link → Viewer**.
+   (gviz won't return data otherwise.)
+3. **Wire it up.** Copy the Sheet ID from its URL
+   (`docs.google.com/spreadsheets/d/`**`THIS_PART`**`/edit`) and paste it into
+   the `SHEET_ID` constant at the top of the `<script>` block in `index.html`.
+4. Commit and push `index.html` — Netlify redeploys with the live Sheet wired in.
+
+If `SHEET_ID` is left as `__REPLACE_ME__`, the report shows a setup banner and
+renders nothing else.
+
+### Updating the report
+
+Edit a cell in the Sheet and reload the page — that's it. Tab names and column
+headers must stay exactly as scaffolded (the parser keys off header names).
+Add/remove rows freely (e.g. more keywords, more insight cards).
+
+> **Cache caveat:** Google serves gviz responses through a short cache, so
+> edits typically appear within **~1–2 minutes**, not instantly.
+
+### What is *not* in the Sheet
+
+A few Tech Audit values come from the Screaming Frog crawl rather than Semrush
+and live in the `tech_charts` / `cwv_gauges` / `priority_issues` tabs (still
+Sheet-driven). Static descriptive chart sub-captions and section prose remain
+in the HTML. The full backlink profile is summarised to totals in
+`backlinks_summary` (the row-level export is too granular for a Sheet).
 
 ## Viewing locally
 
-Because the report fetches CSVs, it must be served over HTTP — opening
-`index.html` directly via `file://` will trip the "Data files not found"
-banner. Serve the folder from the repo root:
+Serve over HTTP so `fetch()` works (and set `SHEET_ID` first):
 
 ```bash
 python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
-> Note: Chart.js and the DM Sans / DM Serif fonts load from a CDN, so an
-> internet connection is needed for charts and fonts to render.
+> Chart.js and the DM Sans / DM Serif fonts load from a CDN, so an internet
+> connection is needed for charts and fonts to render.
 
 ## Deploying (Netlify)
 
@@ -56,36 +97,9 @@ Connected to Netlify via GitHub — every push to `main` auto-deploys.
 - **Build command:** none
 - **Publish directory:** root (`.`)
 
-## Updating the report
-
-For the **Benchmark** page, just replace the relevant CSV in `data/` with a
-fresh export (keep the same column headers) and push — no code change needed.
-The KPI tiles, tables, intent/position/authority charts and badge counts all
-recompute from the CSVs on load.
-
-Expected CSV columns:
-
-| File | Key columns |
-| --- | --- |
-| `kpis.csv` | `metric, current_may26, pct_change_mom` (rows: Organic Traffic, Organic Keywords, Organic Traffic Cost, Paid Traffic) |
-| `traffic_trend.csv` | `month, Organic Traffic, Paid Traffic` |
-| `keywords.csv` | `keyword, position, search_volume, traffic, traffic_pct, keyword_intents, serp_features` |
-| `pages.csv` | `url, traffic_pct, traffic, keywords, traffic_change, top_keyword, answer_engines` |
-| `refdomains.csv` | `domain, authority_score, backlinks, country, first_seen, last_seen` |
-| `backlinks.csv` | `nofollow` (others optional) |
-
-A few values are still hardcoded in `index.html` (Tech Audit charts, the
-backlink type / follow-vs-nofollow totals, and the narrative insight cards).
-Update those in the markup when the underlying data changes.
-
-For the **Tech Audit** page, refresh `data/PFY - CRAWLS.xlsx` and update the
-corresponding chart values in `index.html`.
-
-Then review, commit, and push — Netlify redeploys automatically.
-
 ## Notes
 
-- The report reads CSVs at runtime, so it must be served over HTTP (locally or
-  on Netlify), not opened via `file://`.
-- Chart.js and Google Fonts load from a CDN.
+- `index.html` carries `noindex, nofollow`.
+- If one Sheet tab fails to load, the rest of the report still renders and a
+  small warning appears in the sidebar footer.
 - Sections marked **WIP** in the sidebar are placeholders awaiting data.
