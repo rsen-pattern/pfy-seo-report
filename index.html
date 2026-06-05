@@ -1042,7 +1042,7 @@ function backlinksSummaryCharts() {
   const grab = id => DATA.backlinks_summary.filter(r => r.chart_id === id);
   const mk = (canvasId, rows, colors) => {
     const total = rows.reduce((s, r) => s + num(r.value), 0) || 1;
-    const labels = rows.map(r => `${r.label} (${(num(r.value)/total*100).toFixed(1)}%)`);
+    const labels = rows.map(r => `${r.label} (${+(num(r.value)/total*100).toFixed(1)}%)`);
     new Chart(document.getElementById(canvasId), {
       type: 'doughnut',
       data: { labels, datasets: [{ data: rows.map(r => num(r.value)), backgroundColor: colors, borderWidth: 0, hoverOffset: 6 }] },
