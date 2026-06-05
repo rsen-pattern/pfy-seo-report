@@ -593,10 +593,44 @@
 
 <!-- ═══════ COMPETITOR (WIP) ═══════ -->
 <div id="page-competitor" class="page">
-  <div class="topbar"><div class="topbar-title">Competitor Audit</div><div class="topbar-meta"><span class="topbar-pill">Coming Soon</span></div></div>
+  <div class="topbar">
+    <div class="topbar-title">Competitor Audit</div>
+    <div class="topbar-meta"><span class="topbar-pill"><span class="dot"></span> US · Semrush</span></div>
+  </div>
   <div class="page-inner">
-    <div class="section-header"><h2>Competitor Audit</h2><p>Competitive landscape analysis across organic, paid, and content dimensions.</p></div>
-    <div class="placeholder-section"><div class="placeholder-icon">🔭</div><div class="placeholder-title">Competitor Audit Coming Soon</div><div class="placeholder-text">Will cover: pureencapsulationspro.com, pureprescriptions.com, supplementfirst.com, pureencapsulations.com, and earthturns.com — top organic competitors identified in Semrush.</div></div>
+    <div class="section-header">
+      <h2>Competitor Audit</h2>
+      <p>Organic competitive landscape for pureforyou.com — domain strength, traffic, keyword overlap, and gap opportunities. Sourced from Semrush.</p>
+    </div>
+
+    <div id="competitor-empty" class="placeholder-section" hidden>
+      <div class="placeholder-icon">🔭</div>
+      <div class="placeholder-title">Competitor data not loaded yet</div>
+      <div class="placeholder-text">Add the <strong>competitors</strong> and <strong>competitor_gaps</strong> tabs to the Sheet (see <code>sheet_template.md</code>) and set their gids in <code>TAB_GIDS</code> at the top of <code>index.html</code>. This page populates automatically once they're present.</div>
+    </div>
+
+    <div id="competitor-content" hidden>
+      <div class="chart-grid full">
+        <div class="chart-card">
+          <div class="chart-card-header"><div><div class="chart-card-title">Organic Traffic — Competitive Landscape</div><div class="chart-card-sub">Monthly US organic visits · pureforyou.com highlighted</div></div></div>
+          <canvas id="competitorTrafficChart" height="130"></canvas>
+        </div>
+      </div>
+
+      <div class="data-table-wrap">
+        <div class="data-table-header"><div><div class="data-table-title">Competitor Comparison</div><div class="data-table-sub">Domain strength, traffic and keyword overlap</div></div><span class="data-badge blue" data-badge="competitors-total"></span></div>
+        <table><thead><tr><th>Domain</th><th>Authority</th><th>Organic Traffic</th><th>Keywords</th><th>Traffic Value</th><th>Keyword Overlap</th></tr></thead>
+        <tbody id="competitors-table"></tbody></table>
+      </div>
+
+      <div class="data-table-wrap">
+        <div class="data-table-header"><div><div class="data-table-title">Keyword Gap Opportunities</div><div class="data-table-sub">Where competitors rank and pureforyou.com trails</div></div><span class="data-badge amber" data-badge="gaps-total"></span></div>
+        <table><thead><tr><th>Keyword</th><th>Volume</th><th>Competitor</th><th>Their Pos</th><th>Our Pos</th></tr></thead>
+        <tbody id="competitor-gaps-table"></tbody></table>
+      </div>
+
+      <div class="insight-grid" data-insights-page="competitor" data-insights-tab="overview"></div>
+    </div>
   </div>
 </div>
 
@@ -673,6 +707,10 @@ const TAB_GIDS = {
   inlinks_summary:   '1179628946',
   priority_issues:   '1640668991',
   insights:          '1964066606',
+  // Optional Competitor Audit tabs — fill in the gids once these tabs exist in
+  // the Sheet (see sheet_template.md). Left blank, the page shows a setup note.
+  competitors:       '',
+  competitor_gaps:   '',
 };
 
 const SHEET_URL = (tab) =>
@@ -697,7 +735,13 @@ const TABS = {
   inlinks_summary:    'inlinks_summary',
   priority_issues:    'priority_issues',
   insights:           'insights',
+  competitors:        'competitors',
+  competitor_gaps:    'competitor_gaps',
 };
+
+// Tabs that may not exist yet — a missing/failed optional tab renders an
+// empty-state instead of polluting the "N tabs failed" warning.
+const OPTIONAL_TABS = new Set(['competitors', 'competitor_gaps']);
 
 // color token → hex map (matches CSS brand tokens)
 const COLOR = {
@@ -788,7 +832,7 @@ async function loadTabs(keys) {
       DATA[key] = res.value;
     } else {
       DATA[key] = [];
-      loadFailures.push(key);
+      if (!OPTIONAL_TABS.has(key)) loadFailures.push(key);
       console.error('Tab failed to load:', key, res.reason);
     }
   });
@@ -1068,6 +1112,77 @@ function renderInsights() {
     div.className = 'insight-card';
     div.innerHTML = `<div class="insight-icon ${r.icon_color || 'blue'}">${r.icon || ''}</div><div class="insight-body"><h4>${r.heading || ''}</h4><p>${r.body || ''}</p></div>`;
     cont.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// COMPETITOR AUDIT — optional tabs; empty-state until populated
+// ══════════════════════════════════════════════════════════════
+function renderCompetitors() {
+  const empty = document.getElementById('competitor-empty');
+  const content = document.getElementById('competitor-content');
+  if (!empty || !content) return;
+  const comps = DATA.competitors || [];
+  if (!comps.length) { empty.hidden = false; content.hidden = true; return; }
+  empty.hidden = true; content.hidden = false;
+
+  // Comparison table (client row highlighted)
+  const sorted = [...comps].sort((a, b) => num(b.organic_traffic) - num(a.organic_traffic));
+  const tbody = document.getElementById('competitors-table');
+  if (tbody) tbody.innerHTML = sorted.map(c => {
+    const client = (c.is_client || '').toLowerCase() === 'yes';
+    const as = num(c.authority_score);
+    const ac = as >= 70 ? 'var(--teal)' : as >= 40 ? 'var(--primary)' : as >= 20 ? 'var(--mid)' : 'var(--c4)';
+    return `<tr${client ? ' style="background:rgba(0,155,255,.06)"' : ''}>
+      <td style="font-weight:${client ? 700 : 600}">${c.domain || '—'}${client ? ' <span class="td-pill pill-blue">You</span>' : ''}</td>
+      <td><span style="color:${ac};font-weight:800">${c.authority_score || '—'}</span></td>
+      <td>${num(c.organic_traffic).toLocaleString()}</td>
+      <td>${num(c.organic_keywords).toLocaleString()}</td>
+      <td>${c.traffic_value || '—'}</td>
+      <td>${c.overlap_pct || '—'}</td>
+    </tr>`;
+  }).join('');
+  const cb = document.querySelector('[data-badge="competitors-total"]');
+  if (cb) cb.textContent = `${comps.length} domains`;
+
+  // Keyword gap table
+  const gaps = DATA.competitor_gaps || [];
+  const gb = document.getElementById('competitor-gaps-table');
+  if (gb) gb.innerHTML = gaps.slice(0, 30).map(g => `<tr>
+      <td style="font-weight:500;max-width:260px">${g.keyword || '—'}</td>
+      <td>${num(g.search_volume).toLocaleString()}</td>
+      <td style="font-size:11px;color:var(--mid)">${g.competitor || '—'}</td>
+      <td>${g.competitor_position ? posBadge(g.competitor_position) : '—'}</td>
+      <td>${g.our_position ? posBadge(g.our_position) : '<span class="td-pill pill-gray">Not ranking</span>'}</td>
+    </tr>`).join('');
+  const gbadge = document.querySelector('[data-badge="gaps-total"]');
+  if (gbadge) gbadge.textContent = `${gaps.length} gaps`;
+
+  competitorChart();
+}
+
+function competitorChart() {
+  const el = document.getElementById('competitorTrafficChart');
+  if (!el) return;
+  const rows = [...(DATA.competitors || [])].sort((a, b) => num(b.organic_traffic) - num(a.organic_traffic));
+  if (!rows.length) return;
+  new Chart(el, {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.domain),
+      datasets: [{
+        data: rows.map(r => num(r.organic_traffic)),
+        backgroundColor: rows.map(r => (r.is_client || '').toLowerCase() === 'yes' ? COLOR.blue : COLOR.gray2),
+        borderRadius: 5,
+      }],
+    },
+    options: {
+      indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(232,232,232,.6)' }, ticks: { callback: v => v >= 1000 ? (v / 1000).toFixed(0) + 'K' : v } },
+        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      },
+    },
   });
 }
 
@@ -1602,6 +1717,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderInlinksPanel();
   renderImagesPanel();
   renderInsights();
+  renderCompetitors();
   trafficTrend();
   paidOrganicChart();
   backlinksSummaryCharts();

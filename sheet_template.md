@@ -281,3 +281,37 @@ Import from `data/` (see note above). Required columns:
 - **keywords**: `keyword, position, search_volume, traffic, traffic_pct, keyword_intents, serp_features`
 - **pages**: `url, traffic_pct, traffic, keywords, traffic_change, top_keyword, answer_engines`
 - **refdomains**: `domain, authority_score, backlinks, country, first_seen, last_seen`
+
+## `competitors` (optional — Competitor Audit page)
+
+Powers the comparison table + landscape chart. Mark the client's own row with `is_client = yes` (it's highlighted and coloured in the chart). Replace the placeholder figures with a real Semrush export.
+
+```csv
+domain,authority_score,organic_traffic,organic_keywords,traffic_value,overlap_pct,is_client
+pureforyou.com,38,33572,8907,$36.6K,100%,yes
+pureencapsulations.com,60,210000,95000,$420K,18%,
+pureencapsulationspro.com,52,68000,41000,$130K,22%,
+pureprescriptions.com,41,15000,9800,$24K,15%,
+supplementfirst.com,44,52000,33000,$88K,12%,
+earthturns.com,39,28000,21000,$47K,9%,
+```
+
+## `competitor_gaps` (optional — Competitor Audit page)
+
+Keyword gap table: terms where a competitor ranks and pureforyou.com trails (leave `our_position` blank if not ranking).
+
+```csv
+keyword,search_volume,competitor,competitor_position,our_position
+magnesium glycinate,40500,pureencapsulations.com,3,12
+best multivitamin,33100,supplementfirst.com,5,
+probiotics for women,27100,earthturns.com,4,18
+prenatal vitamins,49500,pureencapsulationspro.com,6,
+vitamin d3 k2,22200,pureencapsulations.com,2,9
+zinc picolinate,18100,pureprescriptions.com,7,21
+omega 3 fish oil,60500,supplementfirst.com,8,
+l-theanine,33100,earthturns.com,5,14
+```
+
+> **Wiring:** these two tabs are **optional** — until they exist and their gids are set in `TAB_GIDS`, the Competitor Audit page shows a short setup note instead of erroring. After pasting the blocks, publish, then add the gids (from the pubhtml source) to `TAB_GIDS` in `index.html`.
+>
+> **Competitor insight cards** can be added to the `insights` tab with `page = competitor` and `tab = overview` — they render in the grid at the bottom of the Competitor Audit page.
