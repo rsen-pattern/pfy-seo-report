@@ -67,7 +67,13 @@ export async function handler(event) {
 
   const apiKey = getApiKey();
   if (!apiKey) {
-    return reply(500, { error: 'Server not configured: set BIFROST_API_KEY in the Netlify environment.' });
+    // Diagnostic: list BIFROST-named env vars the function can see (names only,
+    // never values) to distinguish a name mismatch from a scope/context issue.
+    const seen = Object.keys(process.env).filter(k => /bifrost|bi.?frost/i.test(k));
+    return reply(500, {
+      error: 'Server not configured: set BIFROST_API_KEY (or BIFROST_KEY) for the Functions scope in the Netlify environment, then redeploy.',
+      bifrost_env_names_seen: seen,
+    });
   }
 
   let payload;
