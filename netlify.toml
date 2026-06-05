@@ -1,0 +1,12 @@
+# Netlify configuration for pfy-seo-report.
+# Static site (no build step) served from the repo root, plus one serverless
+# function that proxies Pattern's Bi Frost gateway for the AI summary.
+
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # Deploy the model catalogue alongside the function so it can read it at runtime.
+  included_files = ["config/models.json"]
