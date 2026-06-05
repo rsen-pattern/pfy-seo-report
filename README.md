@@ -123,13 +123,18 @@ browser → /.netlify/functions/ai-chat    → Bi Frost (/v1/chat/completions) �
 | --- | --- |
 | Summary proxy | `netlify/functions/ai-summary.mjs` |
 | Chat proxy (multi-turn) | `netlify/functions/ai-chat.mjs` |
+| Shared Bi Frost plumbing | `netlify/functions/lib/bifrost.mjs` |
 | Model catalogue + fallback chain | `config/models.json` |
 | Netlify config (publish dir, functions) | `netlify.toml` |
 
-Both functions share the same Bi Frost conventions (chat-completions, `/v1`
-normalisation, `config/models.json` fallback chain, key never logged). The chat
-endpoint additionally clamps the conversation (recent turns only, per-message
-and digest length caps) since it's a public, unauthenticated endpoint.
+Both functions share `lib/bifrost.mjs` (key handling, `/v1` normalisation, the
+`config/models.json` fallback chain, and headers — key never logged). The shared
+`callBifrost()` gives each model attempt a timeout bounded by an overall budget,
+so a stalled provider fails fast and the handler always returns before Netlify's
+function timeout. Both endpoints also enforce an **Origin allowlist** (the site's
+own domains) to deter cross-site abuse of these public endpoints; the chat
+additionally clamps the conversation (recent turns only, per-message and digest
+length caps).
 
 **Setup:** in the Netlify project, set an environment variable
 **`BIFROST_API_KEY`** (the function also accepts `BIFROST_KEY`) to a Bi Frost
