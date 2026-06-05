@@ -442,6 +442,23 @@
       <p>Crawl analysis of pureforyou.com and smartq.pureforyou.com. Data from Screaming Frog. Sources: Screaming Frog, Google PageSpeed Insights, CrUX.</p>
     </div>
 
+    <div class="ai-card" id="tech-ai-summary-card">
+      <div class="ai-card-head">
+        <div>
+          <div class="ai-card-title">✨ AI Technical Summary</div>
+          <div class="ai-card-sub">Generated live from the crawl &amp; Core Web Vitals data via Pattern's Bi Frost gateway</div>
+        </div>
+        <div class="ai-head-actions">
+          <button class="ai-copy" id="tech-ai-copy-btn" onclick="copySummary('tech')" hidden>Copy</button>
+          <button class="ai-btn" id="tech-ai-generate-btn" onclick="generateTechSummary()">Generate summary</button>
+        </div>
+      </div>
+      <div class="ai-card-body" id="tech-ai-summary-body">
+        <div class="ai-placeholder">Click “Generate summary” for a concise overview of the technical health — Core Web Vitals, metadata, crawlability, and the top priority fixes.</div>
+      </div>
+      <div class="ai-card-foot" id="tech-ai-summary-foot"></div>
+    </div>
+
     <div class="kpi-grid" id="kpis-tech"></div>
 
     <div class="tabs-bar">
@@ -1319,6 +1336,35 @@ function buildAIDigest() {
   ].join('\n');
 }
 
+// Technical-only digest for the Tech Audit summary card.
+function buildTechDigest() {
+  const meta = {};
+  (DATA.report_meta || []).forEach(r => { meta[r.key] = r.value; });
+  const kpis = (DATA.kpis_tech || []).map(k => `- ${k.label}: ${k.value} (${k.delta}) — ${k.sub}`).join('\n');
+  const cwv = (DATA.cwv_gauges || []).map(g => `- ${g.label}: ${g.value} (${g.status}; target ${g.target}; ${g.detail})`).join('\n');
+  const canon = (DATA.canonicals || []).map(c => `- ${c.status}: ${c.count} (${c.pct}) — ${c.action_label}`).join('\n');
+  const crawl = (DATA.crawl_summary || []).map(r => `- ${r.area} — ${r.finding}: ${r.value} [${r.status}]`).join('\n');
+  const issues = (DATA.priority_issues || []).slice(0, 10)
+    .map(i => `- [${i.impact} impact / ${i.effort} effort · ${i.category}] ${i.issue} (${i.volume})`).join('\n');
+  const inl = {};
+  (DATA.inlinks_summary || []).forEach(r => { inl[r.key] = r.value; });
+  return [
+    `Client: ${meta.client_name || ''} (${meta.client_url || ''}) — Technical SEO audit (Screaming Frog / PageSpeed / CrUX)`,
+    '',
+    'TECH KPIs:', kpis,
+    '',
+    'CORE WEB VITALS:', cwv,
+    '',
+    'CANONICALS:', canon,
+    '',
+    'CRAWL SUMMARY:', crawl,
+    '',
+    `INLINKS: zero=${inl.zero_inlinks_count} (${inl.zero_inlinks_pct}%), low=${inl.low_count} (${inl.low_pct}%), avg=${inl.avg_inlinks}, max=${inl.max_inlinks}`,
+    '',
+    'TOP PRIORITY ISSUES (highest impact first):', issues,
+  ].join('\n');
+}
+
 // Minimal, XSS-safe markdown → HTML (escape first, then re-introduce only a
 // known set of tags). Supports bold/italic/code, http(s) links, and -/1. lists.
 function renderInlineMd(s) {
@@ -1347,20 +1393,31 @@ function renderMarkdown(src) {
   return html;
 }
 
-let lastSummaryText = '';
-async function copySummary() {
-  if (!lastSummaryText) return;
-  const b = document.getElementById('ai-copy-btn');
+// Two summary cards — Benchmark page (organic focus) and Tech Audit page
+// (technical focus). Same Netlify function; the `focus` field selects the
+// server-side prompt, and each card has its own digest + DOM ids.
+const lastSummary = {};
+const SUMMARY_CARDS = {
+  benchmark: { btn: 'ai-generate-btn',      body: 'ai-summary-body',      foot: 'ai-summary-foot',      copy: 'ai-copy-btn',      focus: 'benchmark', digest: buildAIDigest },
+  tech:      { btn: 'tech-ai-generate-btn', body: 'tech-ai-summary-body', foot: 'tech-ai-summary-foot', copy: 'tech-ai-copy-btn', focus: 'tech',      digest: buildTechDigest },
+};
+
+async function copySummary(key = 'benchmark') {
+  const text = lastSummary[key];
+  if (!text) return;
+  const b = document.getElementById(SUMMARY_CARDS[key].copy);
   try {
-    await navigator.clipboard.writeText(lastSummaryText);
+    await navigator.clipboard.writeText(text);
     if (b) { const o = b.textContent; b.textContent = 'Copied'; setTimeout(() => { b.textContent = o; }, 1500); }
   } catch { if (b) { b.textContent = 'Copy failed'; } }
 }
 
-async function generateAISummary() {
-  const btn  = document.getElementById('ai-generate-btn');
-  const body = document.getElementById('ai-summary-body');
-  const foot = document.getElementById('ai-summary-foot');
+async function runAiSummary(key) {
+  const cfg = SUMMARY_CARDS[key];
+  if (!cfg) return;
+  const btn = document.getElementById(cfg.btn);
+  const body = document.getElementById(cfg.body);
+  const foot = document.getElementById(cfg.foot);
   if (!btn || !body) return;
 
   btn.disabled = true;
@@ -1374,15 +1431,15 @@ async function generateAISummary() {
     const res = await fetch(AI_SUMMARY_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ digest: buildAIDigest(), client: meta.client_name || '' }),
+      body: JSON.stringify({ digest: cfg.digest(), client: meta.client_name || '', focus: cfg.focus }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `Request failed (HTTP ${res.status})`);
 
-    lastSummaryText = String(data.summary || '').trim();
-    body.innerHTML = renderMarkdown(lastSummaryText) || '<div class="ai-placeholder">No summary returned.</div>';
+    lastSummary[key] = String(data.summary || '').trim();
+    body.innerHTML = renderMarkdown(lastSummary[key]) || '<div class="ai-placeholder">No summary returned.</div>';
     if (foot) foot.textContent = data.model ? `Generated by ${data.model} · Pattern Bi Frost` : '';
-    const cp = document.getElementById('ai-copy-btn'); if (cp && lastSummaryText) cp.hidden = false;
+    const cp = document.getElementById(cfg.copy); if (cp && lastSummary[key]) cp.hidden = false;
     btn.textContent = 'Regenerate';
   } catch (err) {
     body.innerHTML = `<div class="ai-error">⚠ ${escapeHtml(err.message)}</div>` +
@@ -1392,6 +1449,9 @@ async function generateAISummary() {
     btn.disabled = false;
   }
 }
+
+function generateAISummary() { return runAiSummary('benchmark'); }
+function generateTechSummary() { return runAiSummary('tech'); }
 
 // ══════════════════════════════════════════════════════════════
 // AI CHAT — multi-turn Q&A over the report data (Netlify → Bi Frost)
