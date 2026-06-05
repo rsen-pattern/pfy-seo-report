@@ -99,26 +99,37 @@ python3 -m http.server 8000
 > Chart.js and the DM Sans / DM Serif fonts load from a CDN, so an internet
 > connection is needed for charts and fonts to render.
 
-## AI executive summary
+## AI features (summary + chat)
 
-The Benchmark page has an **AI Executive Summary** card. Clicking *Generate
-summary* builds a compact digest of the loaded report data (KPIs, Core Web
-Vitals, top priority issues) and sends it to a Netlify function, which calls
-**Pattern's Bi Frost LLM gateway** (`bifrost.pattern.com`, OpenAI-compatible)
-and streams back a three-paragraph summary.
-
+Two AI features sit on top of **Pattern's Bi Frost LLM gateway**
+(`bifrost.pattern.com`, OpenAI-compatible), each via its own Netlify function.
 The API key lives **only on the server** (a Netlify environment variable) — it
 is never shipped to the browser.
 
+- **AI Executive Summary** — a card on the Benchmark page. *Generate summary*
+  builds a compact digest of the loaded data (KPIs, Core Web Vitals, top
+  priority issues) and returns a three-paragraph overview.
+- **Ask AI (chat)** — a floating widget on every page. A multi-turn chat that
+  answers questions about the report; the browser sends the conversation plus a
+  richer context digest (the summary digest + top keywords and top pages), and
+  the function relays it as a Chat Completions conversation.
+
 ```
 browser → /.netlify/functions/ai-summary → Bi Frost (/v1/chat/completions) → summary
+browser → /.netlify/functions/ai-chat    → Bi Frost (/v1/chat/completions) → reply
 ```
 
 | Piece | File |
 | --- | --- |
-| Serverless proxy | `netlify/functions/ai-summary.mjs` |
+| Summary proxy | `netlify/functions/ai-summary.mjs` |
+| Chat proxy (multi-turn) | `netlify/functions/ai-chat.mjs` |
 | Model catalogue + fallback chain | `config/models.json` |
 | Netlify config (publish dir, functions) | `netlify.toml` |
+
+Both functions share the same Bi Frost conventions (chat-completions, `/v1`
+normalisation, `config/models.json` fallback chain, key never logged). The chat
+endpoint additionally clamps the conversation (recent turns only, per-message
+and digest length caps) since it's a public, unauthenticated endpoint.
 
 **Setup:** in the Netlify project, set an environment variable
 **`BIFROST_API_KEY`** (the function also accepts `BIFROST_KEY`) to a Bi Frost
@@ -142,7 +153,7 @@ Connected to Netlify via GitHub — every push to `main` auto-deploys.
 - **Build command:** none
 - **Publish directory:** root (`.`) — pinned in `netlify.toml`
 - **Functions directory:** `netlify/functions` (bundled with esbuild)
-- **Required env var:** `BIFROST_API_KEY` (for the AI summary)
+- **Required env var:** `BIFROST_API_KEY` (for the AI summary and chat)
 
 ## Notes
 
