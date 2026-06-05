@@ -194,6 +194,21 @@
   @keyframes ai-spin { to { transform: rotate(360deg); } }
   .ai-card-foot { margin-top: 12px; font-size: 10px; color: var(--mid); letter-spacing: .03em; }
   .ai-card-foot:empty { display: none; }
+  .ai-head-actions { display: flex; align-items: center; gap: 8px; }
+  .ai-copy { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--lgray); background: #fff; color: var(--mid); cursor: pointer; }
+  .ai-copy:hover { border-color: var(--primary); color: var(--primary); }
+  .ai-copy[hidden] { display: none; }
+  .ai-card-body ul, .ai-card-body ol { margin: 0 0 10px 20px; }
+  .ai-card-body li { margin-bottom: 3px; }
+  .ai-card-body code, .chat-msg code { background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; font-size: .92em; }
+  .ai-card-body a, .chat-msg a { color: var(--primary); }
+  .chat-actions { display: flex; align-items: center; gap: 6px; }
+  .chat-clear { background: none; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.6); font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px; cursor: pointer; }
+  .chat-clear:hover { color: #fff; border-color: rgba(255,255,255,.4); }
+  .chat-msg.bot ul, .chat-msg.bot ol { margin: 4px 0 4px 18px; }
+  .chat-msg.bot li { margin-bottom: 2px; }
+  .chat-msg.bot p { margin-bottom: 6px; }
+  .chat-msg.bot p:last-child { margin: 0; }
 
   /* AI CHAT WIDGET */
   .chat-launcher { position: fixed; right: 22px; bottom: 22px; z-index: 200; display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: none; border-radius: 28px; background: var(--primary); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 20px rgba(0,155,255,.35); transition: background .15s, transform .15s; }
@@ -325,7 +340,10 @@
           <div class="ai-card-title">✨ AI Executive Summary</div>
           <div class="ai-card-sub">Generated live from the report data via Pattern's Bi Frost gateway</div>
         </div>
-        <button class="ai-btn" id="ai-generate-btn" onclick="generateAISummary()">Generate summary</button>
+        <div class="ai-head-actions">
+          <button class="ai-copy" id="ai-copy-btn" onclick="copySummary()" hidden>Copy</button>
+          <button class="ai-btn" id="ai-generate-btn" onclick="generateAISummary()">Generate summary</button>
+        </div>
       </div>
       <div class="ai-card-body" id="ai-summary-body">
         <div class="ai-placeholder">Click “Generate summary” for a concise executive overview of the benchmark and technical findings in this report.</div>
@@ -593,13 +611,16 @@
       <div class="chat-head-title">Ask AI</div>
       <div class="chat-head-sub">Answers from this report · Pattern Bi Frost</div>
     </div>
-    <button class="chat-close" onclick="toggleChat(false)" aria-label="Close chat">×</button>
+    <div class="chat-actions">
+      <button class="chat-clear" id="chat-clear" onclick="clearChat()" title="Clear conversation">Clear</button>
+      <button class="chat-close" onclick="toggleChat(false)" aria-label="Close chat">×</button>
+    </div>
   </div>
   <div class="chat-log" id="chat-log">
     <div class="chat-hint">Ask anything about this report — e.g. “What's the biggest technical risk?” or “How much organic traffic and how is it trending?”</div>
   </div>
   <div class="chat-input-row">
-    <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask about the report…" onkeydown="chatKey(event)"></textarea>
+    <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask about the report…" onkeydown="chatKey(event)" oninput="autoGrowChat(this)"></textarea>
     <button class="chat-send" id="chat-send" onclick="sendChat()">Send</button>
   </div>
 </div>
@@ -1298,6 +1319,44 @@ function buildAIDigest() {
   ].join('\n');
 }
 
+// Minimal, XSS-safe markdown → HTML (escape first, then re-introduce only a
+// known set of tags). Supports bold/italic/code, http(s) links, and -/1. lists.
+function renderInlineMd(s) {
+  return s
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*(?!\s)([^*\n]+?)\*/g, '$1<em>$2</em>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+function renderMarkdown(src) {
+  const lines = escapeHtml(String(src || '').trim()).split('\n');
+  let html = '', list = null, para = [];
+  const flushPara = () => { if (para.length) { html += '<p>' + para.map(renderInlineMd).join('<br>') + '</p>'; para = []; } };
+  const closeList = () => { if (list) { html += '</' + list + '>'; list = null; } };
+  for (const raw of lines) {
+    const line = raw.trim();
+    const ul = line.match(/^[-*]\s+(.*)/);
+    const ol = line.match(/^\d+[.)]\s+(.*)/);
+    if (ul) { flushPara(); if (list !== 'ul') { closeList(); html += '<ul>'; list = 'ul'; } html += '<li>' + renderInlineMd(ul[1]) + '</li>'; }
+    else if (ol) { flushPara(); if (list !== 'ol') { closeList(); html += '<ol>'; list = 'ol'; } html += '<li>' + renderInlineMd(ol[1]) + '</li>'; }
+    else if (line === '') { flushPara(); closeList(); }
+    else { closeList(); para.push(line); }
+  }
+  flushPara(); closeList();
+  return html;
+}
+
+let lastSummaryText = '';
+async function copySummary() {
+  if (!lastSummaryText) return;
+  const b = document.getElementById('ai-copy-btn');
+  try {
+    await navigator.clipboard.writeText(lastSummaryText);
+    if (b) { const o = b.textContent; b.textContent = 'Copied'; setTimeout(() => { b.textContent = o; }, 1500); }
+  } catch { if (b) { b.textContent = 'Copy failed'; } }
+}
+
 async function generateAISummary() {
   const btn  = document.getElementById('ai-generate-btn');
   const body = document.getElementById('ai-summary-body');
@@ -1320,10 +1379,10 @@ async function generateAISummary() {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `Request failed (HTTP ${res.status})`);
 
-    const paras = String(data.summary || '').trim().split(/\n{2,}/)
-      .map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`).join('');
-    body.innerHTML = paras || '<div class="ai-placeholder">No summary returned.</div>';
+    lastSummaryText = String(data.summary || '').trim();
+    body.innerHTML = renderMarkdown(lastSummaryText) || '<div class="ai-placeholder">No summary returned.</div>';
     if (foot) foot.textContent = data.model ? `Generated by ${data.model} · Pattern Bi Frost` : '';
+    const cp = document.getElementById('ai-copy-btn'); if (cp && lastSummaryText) cp.hidden = false;
     btn.textContent = 'Regenerate';
   } catch (err) {
     body.innerHTML = `<div class="ai-error">⚠ ${escapeHtml(err.message)}</div>` +
@@ -1338,8 +1397,36 @@ async function generateAISummary() {
 // AI CHAT — multi-turn Q&A over the report data (Netlify → Bi Frost)
 // ══════════════════════════════════════════════════════════════
 const AI_CHAT_ENDPOINT = '/.netlify/functions/ai-chat';
+const CHAT_STORE_KEY = 'pfy_chat_history_v1';
 let chatHistory = [];   // [{role:'user'|'assistant', content}]
 let chatBusy = false;
+
+function autoGrowChat(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 96) + 'px';
+}
+
+function saveChat() {
+  try { localStorage.setItem(CHAT_STORE_KEY, JSON.stringify(chatHistory.slice(-40))); } catch { /* storage unavailable */ }
+}
+
+function restoreChat() {
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(CHAT_STORE_KEY) || '[]'); } catch { saved = []; }
+  if (!Array.isArray(saved) || !saved.length) return;
+  chatHistory = saved.filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string');
+  const log = document.getElementById('chat-log');
+  const hint = log && log.querySelector('.chat-hint');
+  if (hint) hint.remove();
+  chatHistory.forEach(m => appendChatMessage(m.role === 'assistant' ? 'bot' : 'user', m.content));
+}
+
+function clearChat() {
+  chatHistory = [];
+  try { localStorage.removeItem(CHAT_STORE_KEY); } catch { /* ignore */ }
+  const log = document.getElementById('chat-log');
+  if (log) log.innerHTML = '<div class="chat-hint">Ask anything about this report — e.g. “What\'s the biggest technical risk?” or “How much organic traffic and how is it trending?”</div>';
+}
 
 // Richer context than the summary digest: KPIs/CWV/issues + top keywords/pages.
 function buildChatContext() {
@@ -1371,7 +1458,7 @@ function appendChatMessage(role, text) {
   const log = document.getElementById('chat-log');
   const div = document.createElement('div');
   div.className = 'chat-msg ' + (role === 'user' ? 'user' : role === 'error' ? 'error' : 'bot');
-  div.innerHTML = escapeHtml(text);
+  div.innerHTML = role === 'bot' ? renderMarkdown(text) : escapeHtml(text);
   log.appendChild(div);
   log.scrollTop = log.scrollHeight;
   return div;
@@ -1391,6 +1478,7 @@ async function sendChat() {
   appendChatMessage('user', text);
   chatHistory.push({ role: 'user', content: text });
   input.value = '';
+  autoGrowChat(input);
   chatBusy = true;
   sendBtn.disabled = true;
 
@@ -1412,11 +1500,13 @@ async function sendChat() {
     const answer = String(data.reply || '').trim() || '(no answer)';
     appendChatMessage('bot', answer);
     chatHistory.push({ role: 'assistant', content: answer });
+    saveChat();
   } catch (err) {
     typing.remove();
     appendChatMessage('error', `⚠ ${err.message}`);
     // Don't keep the failed user turn in history, so a retry starts clean.
     chatHistory.pop();
+    saveChat();
   } finally {
     chatBusy = false;
     sendBtn.disabled = false;
@@ -1429,6 +1519,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     showSetupBanner();
     return;
   }
+
+  restoreChat();  // bring back any prior conversation from localStorage
 
   // The keywords tab can be thousands of rows (~MBs). Load the lightweight
   // "core" tabs first and paint the page, then load the heavy tabs and render
