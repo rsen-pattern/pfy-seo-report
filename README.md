@@ -16,7 +16,7 @@ the next page load — no git push, no Netlify build.
 | --- | --- | --- |
 | **Benchmark Data** | Live | KPIs + Organic Traffic, Keywords, Top Pages, Backlinks |
 | **Tech Audit** | Live | KPIs + Core Web Vitals, Metadata, Crawlability, Inlinks, Images, Priority Issues |
-| **Competitor Audit** | WIP | Competitive landscape (placeholder) |
+| **Competitor Audit** | Live¹ | Competitor comparison, landscape chart, keyword-gap table (Sheet-driven) |
 | **WIP Notes** | WIP | Internal working notes (placeholder) |
 | **Delivery** | WIP | Briefs and client deliverables (placeholder) |
 
@@ -172,3 +172,7 @@ Connected to Netlify via GitHub — every push to `main` auto-deploys.
 - If one Sheet tab fails to load, the rest of the report still renders and a
   small warning appears in the sidebar footer.
 - Sections marked **WIP** in the sidebar are placeholders awaiting data.
+- ¹ The Competitor Audit page is driven by two **optional** tabs (`competitors`,
+  `competitor_gaps`). Until they exist and their gids are set in `TAB_GIDS`, the
+  page shows a short setup note (it does not count as a failed tab). See
+  `sheet_template.md` for the schema + sample data.
