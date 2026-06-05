@@ -729,24 +729,32 @@ function num(v) {
 // ══════════════════════════════════════════════════════════════
 // LOAD ALL TABS (parallel, fault-tolerant)
 // ══════════════════════════════════════════════════════════════
-async function loadAllData() {
-  const entries = Object.entries(TABS);
-  const results = await Promise.allSettled(entries.map(([, tab]) => loadCSV(SHEET_URL(tab))));
-  const failed = [];
+let loadFailures = [];
+function renderLoadWarning() {
+  const w = document.getElementById('load-warning');
+  if (!w) return;
+  w.textContent = loadFailures.length
+    ? `⚠ ${loadFailures.length} tab${loadFailures.length > 1 ? 's' : ''} failed: ${loadFailures.join(', ')}`
+    : '';
+}
+
+// Load a subset of tabs (by TABS key) in parallel; fault-tolerant. A tab with no
+// gid in TAB_GIDS is reported as a failure rather than silently fetching gid=undefined.
+async function loadTabs(keys) {
+  const results = await Promise.allSettled(keys.map(key =>
+    TAB_GIDS[key] ? loadCSV(SHEET_URL(key)) : Promise.reject(new Error(`no gid mapped for "${key}" in TAB_GIDS`))
+  ));
   results.forEach((res, i) => {
-    const [key, tab] = entries[i];
+    const key = keys[i];
     if (res.status === 'fulfilled') {
       DATA[key] = res.value;
     } else {
       DATA[key] = [];
-      failed.push(tab);
-      console.error('Tab failed to load:', tab, res.reason);
+      loadFailures.push(key);
+      console.error('Tab failed to load:', key, res.reason);
     }
   });
-  if (failed.length) {
-    const w = document.getElementById('load-warning');
-    if (w) w.textContent = `⚠ ${failed.length} tab${failed.length > 1 ? 's' : ''} failed: ${failed.join(', ')}`;
-  }
+  renderLoadWarning();
 }
 
 // key/value tab → object map
@@ -1422,18 +1430,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  await loadAllData();
+  // The keywords tab can be thousands of rows (~MBs). Load the lightweight
+  // "core" tabs first and paint the page, then load the heavy tabs and render
+  // the views that depend on them — so first paint isn't blocked on a big fetch.
+  const HEAVY_TABS = ['keywords', 'pages', 'refdomains'];
+  const coreKeys = Object.keys(TABS).filter(k => !HEAVY_TABS.includes(k));
 
-  // Meta, KPIs, gauges
+  await loadTabs(coreKeys);
+
+  // Core-data views (paint now)
   renderReportMeta();
   renderKPIs('kpis-benchmark', DATA.kpis_benchmark);
   renderKPIs('kpis-tech', DATA.kpis_tech);
   renderCWVGauges();
-
-  // Tables & panels
-  buildKeywordsTable();
-  buildPagesTable();
-  buildRefDomainsTable();
   renderDupTitlesTable();
   renderCanonicalsTable();
   renderCrawlSummaryTable();
@@ -1441,18 +1450,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderInlinksPanel();
   renderImagesPanel();
   renderInsights();
-
-  // Charts derived from row-level data
   trafficTrend();
-  intentChart();
   paidOrganicChart();
+  backlinksSummaryCharts();
+  renderTechCharts();
+
+  // Heavy tabs + their views (keywords/pages/refdomains tables and charts)
+  await loadTabs(HEAVY_TABS);
+  buildKeywordsTable();
+  buildPagesTable();
+  buildRefDomainsTable();
+  intentChart();
   posDistChart();
   trafficIntentChart();
   authScoreChart();
-  backlinksSummaryCharts();
-
-  // Tech audit charts from tech_charts tab
-  renderTechCharts();
 });
 </script>
 </body>
