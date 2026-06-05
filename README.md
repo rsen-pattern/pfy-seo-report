@@ -90,12 +90,50 @@ python3 -m http.server 8000
 > Chart.js and the DM Sans / DM Serif fonts load from a CDN, so an internet
 > connection is needed for charts and fonts to render.
 
+## AI executive summary
+
+The Benchmark page has an **AI Executive Summary** card. Clicking *Generate
+summary* builds a compact digest of the loaded report data (KPIs, Core Web
+Vitals, top priority issues) and sends it to a Netlify function, which calls
+**Pattern's Bi Frost LLM gateway** (`bifrost.pattern.com`, OpenAI-compatible)
+and streams back a three-paragraph summary.
+
+The API key lives **only on the server** (a Netlify environment variable) — it
+is never shipped to the browser.
+
+```
+browser → /.netlify/functions/ai-summary → Bi Frost (/v1/chat/completions) → summary
+```
+
+| Piece | File |
+| --- | --- |
+| Serverless proxy | `netlify/functions/ai-summary.mjs` |
+| Model catalogue + fallback chain | `config/models.json` |
+| Netlify config (publish dir, functions) | `netlify.toml` |
+
+**Setup:** in the Netlify project, set an environment variable
+**`BIFROST_API_KEY`** (the function also accepts `BIFROST_KEY`) to a Bi Frost
+key. Optionally override `BIFROST_BASE_URL` (defaults to
+`https://bifrost.pattern.com`; the function normalises it to end with `/v1`).
+
+The function tries `config/models.json`'s `default_model`, then walks the
+`fallback_chain` — which deliberately spans providers so an Anthropic-wide rate
+limit cascades to OpenAI. The response notes which model actually answered. To
+add or swap a model, edit `config/models.json` — no code change.
+
+> The summary needs the deployed Netlify function. It won't work from `file://`
+> or a plain `python3 -m http.server` (there's no function locally) — the card
+> shows a friendly notice in that case. Use `netlify dev` to exercise it
+> locally with the env var set.
+
 ## Deploying (Netlify)
 
 Connected to Netlify via GitHub — every push to `main` auto-deploys.
 
 - **Build command:** none
-- **Publish directory:** root (`.`)
+- **Publish directory:** root (`.`) — pinned in `netlify.toml`
+- **Functions directory:** `netlify/functions` (bundled with esbuild)
+- **Required env var:** `BIFROST_API_KEY` (for the AI summary)
 
 ## Notes
 

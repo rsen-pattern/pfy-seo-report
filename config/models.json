@@ -1,0 +1,14 @@
+{
+  "_comment": "Bi Frost model catalogue + cross-provider fallback chain. Bi Frost IDs are {provider}/{model}. The fallback chain deliberately spans providers so an Anthropic-wide rate limit (429) cascades to OpenAI rather than failing. Edit here to add/swap models — no code change needed.",
+  "default_model": "anthropic/claude-sonnet-4-6",
+  "fallback_chain": [
+    "anthropic/claude-sonnet-4-6",
+    "anthropic/claude-haiku-4-5",
+    "openai/gpt-4.1"
+  ],
+  "models": {
+    "anthropic/claude-sonnet-4-6": { "label": "Claude Sonnet 4.6", "max_output": 64000 },
+    "anthropic/claude-haiku-4-5":  { "label": "Claude Haiku 4.5",  "max_output": 64000 },
+    "openai/gpt-4.1":              { "label": "GPT-4.1",           "max_output": 32000 }
+  }
+}
