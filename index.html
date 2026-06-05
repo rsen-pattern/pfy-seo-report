@@ -560,10 +560,39 @@
 // ══════════════════════════════════════════════════════════════
 // CONFIG — Google Sheets data source
 // ══════════════════════════════════════════════════════════════
-const SHEET_ID = '__REPLACE_ME__';
+// Data source: the Google Sheet is "Published to the web" (File → Share →
+// Publish to web). PUBLISH_ID is the token in the published URL
+//   https://docs.google.com/spreadsheets/d/e/<PUBLISH_ID>/pubhtml
+// It is public (not the private file id) and safe to commit. The browser
+// never sees any credential — published CSV is open.
+const PUBLISH_ID = '2PACX-1vRX8CHqUB-L2PKxGo_nNGlhMRVPwLmESXgFF_5nUxhUfFmHaOq7AUUoJoGr6Zzyyt8m9PB4mW8rI4B1';
+
+// Published CSV is addressed by each tab's numeric gid, not its name. To refresh
+// this map (e.g. after recreating a tab), open the pubhtml URL and read the
+// `items.push({name:"…", pageUrl:"…gid=…"})` entries in its source.
+const TAB_GIDS = {
+  report_meta:       '1160333029',
+  kpis_benchmark:    '1352254739',
+  traffic_trend:     '293566549',
+  keywords:          '232429469',
+  pages:             '701377587',
+  refdomains:        '691685516',
+  backlinks_summary: '252556836',
+  kpis_tech:         '394399081',
+  cwv_gauges:        '1039780096',
+  tech_charts:       '1798107429',
+  dup_titles:        '1037333230',
+  canonicals:        '839166093',
+  crawl_summary:     '230527742',
+  inlinks_summary:   '1179628946',
+  priority_issues:   '1640668991',
+  insights:          '1964066606',
+};
+
 const SHEET_URL = (tab) =>
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}&_=${Date.now()}`;
-// The &_=${Date.now()} cache-buster is for development; safe to keep in prod.
+  `https://docs.google.com/spreadsheets/d/e/${PUBLISH_ID}/pub?gid=${TAB_GIDS[tab]}&single=true&output=csv&_=${Date.now()}`;
+// The &_=${Date.now()} cache-buster sidesteps the browser cache. Note: Google's
+// publish-to-web server cache can still lag edits by a few minutes.
 
 const TABS = {
   report_meta:        'report_meta',
@@ -1174,7 +1203,7 @@ function renderTechCharts() {
 function showSetupBanner() {
   const b = document.createElement('div');
   b.className = 'setup-banner';
-  b.innerHTML = '⚙ Set <code>SHEET_ID</code> at the top of <code>index.html</code>. See README.';
+  b.innerHTML = '⚙ Set <code>PUBLISH_ID</code> at the top of <code>index.html</code>. See README.';
   document.body.prepend(b);
 }
 
@@ -1250,7 +1279,7 @@ async function generateAISummary() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (SHEET_ID === '__REPLACE_ME__') {
+  if (PUBLISH_ID === '__REPLACE_ME__') {
     showSetupBanner();
     return;
   }

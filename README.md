@@ -32,13 +32,18 @@ pfy-seo-report/
 └── README.md          ← this file
 ```
 
-## Data source: Google Sheets
+## Data source: a published Google Sheet
 
-The report pulls each tab as CSV via the `gviz/tq` endpoint:
+The report reads each tab as CSV from a **Publish‑to‑web** Google Sheet. Each
+tab is fetched by its numeric `gid`:
 
 ```
-https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={TAB_NAME}
+https://docs.google.com/spreadsheets/d/e/{PUBLISH_ID}/pub?gid={GID}&single=true&output=csv
 ```
+
+`PUBLISH_ID` is the public token in the published URL (`/d/e/<PUBLISH_ID>/pubhtml`) —
+not the private file id — so it's safe to commit. The current report is wired to
+the `pfy-seo-report-data` sheet.
 
 ### One-time setup
 
@@ -51,24 +56,27 @@ https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={TAB
    - For the three large tabs (**keywords**, **pages**, **refdomains**) use
      **File → Import → Upload** with `data/keywords.csv`, `data/pages.csv`,
      `data/refdomains.csv`. Their headers already match.
-2. **Share it.** Share → General access → **Anyone with the link → Viewer**.
-   (gviz won't return data otherwise.)
-3. **Wire it up.** Copy the Sheet ID from its URL
-   (`docs.google.com/spreadsheets/d/`**`THIS_PART`**`/edit`) and paste it into
-   the `SHEET_ID` constant at the top of the `<script>` block in `index.html`.
-4. Commit and push `index.html` — Netlify redeploys with the live Sheet wired in.
+2. **Publish it.** File → Share → **Publish to web** → Entire document → CSV.
+3. **Wire it up** in the `<script>` block of `index.html`:
+   - Set `PUBLISH_ID` to the token from the published URL.
+   - Set `TAB_GIDS` (tab name → gid). Read the gids from the pubhtml source —
+     each tab appears as `items.push({name:"…", pageUrl:"…gid=…"})`.
+4. Commit and push `index.html` — Netlify redeploys with the live data wired in.
 
-If `SHEET_ID` is left as `__REPLACE_ME__`, the report shows a setup banner and
+If `PUBLISH_ID` is left as `__REPLACE_ME__`, the report shows a setup banner and
 renders nothing else.
 
 ### Updating the report
 
-Edit a cell in the Sheet and reload the page — that's it. Tab names and column
-headers must stay exactly as scaffolded (the parser keys off header names).
+Edit a cell in the Sheet and reload the page — that's it. Column headers must
+stay exactly as scaffolded (the parser keys off header names), and a tab's gid
+must stay stable (recreating a tab changes its gid — update `TAB_GIDS` if so).
 Add/remove rows freely (e.g. more keywords, more insight cards).
 
-> **Cache caveat:** Google serves gviz responses through a short cache, so
-> edits typically appear within **~1–2 minutes**, not instantly.
+> **Cache caveat:** publish-to-web is served through Google's cache, so edits
+> can take a few minutes to appear (longer than the live edit grid). The report
+> appends a `&_=<timestamp>` cache-buster to dodge the *browser* cache, but the
+> server-side publish cache still applies.
 
 ### What is *not* in the Sheet
 
@@ -80,7 +88,8 @@ in the HTML. The full backlink profile is summarised to totals in
 
 ## Viewing locally
 
-Serve over HTTP so `fetch()` works (and set `SHEET_ID` first):
+Serve over HTTP so `fetch()` works (the published doc is already wired in, so
+this shows live data):
 
 ```bash
 python3 -m http.server 8000

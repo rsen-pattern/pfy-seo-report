@@ -1,6 +1,6 @@
 # Google Sheet Template — `pfy-seo-report`
 
-Create one tab per section below, named **exactly** as the heading. Paste the CSV block into cell A1 of that tab (Google Sheets auto-splits on paste, or use **Data → Split text to columns**). Then share the Sheet **“Anyone with the link → Viewer”** and copy its ID into `SHEET_ID` in `index.html`.
+Create one tab per section below, named **exactly** as the heading. Paste the CSV block into cell A1 of that tab (Google Sheets auto-splits on paste, or use **Data → Split text to columns**). Then **File → Share → Publish to web** (entire document, CSV) and wire `PUBLISH_ID` + the `TAB_GIDS` map at the top of `index.html`'s `<script>` block — see the README's *Data source* section.
 
 > The three large data tabs — **keywords**, **pages**, **refdomains** — are not inlined here. Create those tabs and import the matching file from `data/` via **File → Import → Upload** (`data/keywords.csv`, `data/pages.csv`, `data/refdomains.csv`). Their headers already match.
 
