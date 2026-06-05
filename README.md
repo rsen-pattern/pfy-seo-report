@@ -132,9 +132,15 @@ Both functions share `lib/bifrost.mjs` (key handling, `/v1` normalisation, the
 `callBifrost()` gives each model attempt a timeout bounded by an overall budget,
 so a stalled provider fails fast and the handler always returns before Netlify's
 function timeout. Both endpoints also enforce an **Origin allowlist** (the site's
-own domains) to deter cross-site abuse of these public endpoints; the chat
-additionally clamps the conversation (recent turns only, per-message and digest
-length caps).
+own domains) and an in-memory **rate limit** (default 12 requests/min per IP,
+plus a per-instance daily backstop) — configurable via `AI_MAX_PER_MIN` and
+`AI_DAILY_CAP` — to throttle abuse that the Origin check can't (e.g. `curl`). The
+chat additionally clamps the conversation (recent turns only, per-message and
+digest length caps).
+
+> The rate-limit state is per warm function instance, not global across
+> instances. It stops single-client floods cheaply; for a **hard, global** spend
+> ceiling use an upstream Bi Frost quota or shared state (e.g. Netlify Blobs).
 
 **Setup:** in the Netlify project, set an environment variable
 **`BIFROST_API_KEY`** (the function also accepts `BIFROST_KEY`) to a Bi Frost

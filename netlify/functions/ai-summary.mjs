@@ -5,7 +5,7 @@
 // browser. Shared Bi Frost plumbing (key handling, /v1 normalisation, model
 // fallback chain with per-attempt timeout, origin allowlist) lives in
 // ./lib/bifrost.mjs.
-import { getApiKey, seenBifrostEnvNames, reply, JSON_HEADERS, originAllowed, callBifrost, loadModels } from './lib/bifrost.mjs';
+import { getApiKey, seenBifrostEnvNames, reply, JSON_HEADERS, originAllowed, rateLimit, tooManyReply, callBifrost, loadModels } from './lib/bifrost.mjs';
 
 const models = loadModels();
 
@@ -31,6 +31,9 @@ export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: JSON_HEADERS, body: '' };
   if (event.httpMethod !== 'POST') return reply(405, { error: 'Method not allowed' });
   if (!originAllowed(event)) return reply(403, { error: 'Forbidden: origin not allowed.' });
+
+  const rl = rateLimit(event);
+  if (!rl.ok) return tooManyReply(rl);
 
   if (!getApiKey()) {
     return reply(500, {

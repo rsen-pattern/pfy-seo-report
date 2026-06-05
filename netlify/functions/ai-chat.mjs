@@ -5,7 +5,7 @@
 // system prompt + the data and relays the turn to Pattern's Bi Frost gateway.
 // Shared Bi Frost plumbing lives in ./lib/bifrost.mjs. The BIFROST_API_KEY is
 // read only on the server, never logged.
-import { getApiKey, seenBifrostEnvNames, reply, JSON_HEADERS, originAllowed, callBifrost, loadModels } from './lib/bifrost.mjs';
+import { getApiKey, seenBifrostEnvNames, reply, JSON_HEADERS, originAllowed, rateLimit, tooManyReply, callBifrost, loadModels } from './lib/bifrost.mjs';
 
 const models = loadModels();
 
@@ -24,6 +24,9 @@ export async function handler(event) {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: JSON_HEADERS, body: '' };
   if (event.httpMethod !== 'POST') return reply(405, { error: 'Method not allowed' });
   if (!originAllowed(event)) return reply(403, { error: 'Forbidden: origin not allowed.' });
+
+  const rl = rateLimit(event);
+  if (!rl.ok) return tooManyReply(rl);
 
   if (!getApiKey()) {
     return reply(500, {

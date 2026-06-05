@@ -59,6 +59,63 @@ export function originAllowed(event) {
   try { return ALLOWED_HOST_RE.test(new URL(src).hostname); } catch { return false; }
 }
 
+// ── Rate limiting ──────────────────────────────────────────────
+// In-memory guards that throttle abuse of these public, unauthenticated
+// endpoints (the Origin allowlist doesn't stop a non-browser client like curl).
+// State lives in the warm function instance, so it is per-instance, not global —
+// a hard, cross-instance spend ceiling needs shared state (Netlify Blobs) or an
+// upstream Bi Frost quota. Limits are configurable via env.
+function clientIp(event) {
+  const h = event.headers || {};
+  return h['x-nf-client-connection-ip'] ||
+    (h['x-forwarded-for'] || '').split(',')[0].trim() ||
+    h['client-ip'] || 'unknown';
+}
+const _hits = new Map();   // ip -> timestamps (ms) within the window
+let _dayKey = '';
+let _dayCount = 0;
+
+export function rateLimit(event, {
+  maxPerMin = Number(process.env.AI_MAX_PER_MIN) || 12,
+  dailyCap  = Number(process.env.AI_DAILY_CAP)  || 1000,
+} = {}) {
+  const now = Date.now();
+
+  // Per-instance daily backstop.
+  const today = new Date().toISOString().slice(0, 10);
+  if (today !== _dayKey) { _dayKey = today; _dayCount = 0; }
+  if (_dayCount >= dailyCap) return { ok: false, retryAfter: 3600, reason: 'daily cap reached' };
+
+  // Per-IP sliding window (60s).
+  const ip = clientIp(event);
+  const arr = (_hits.get(ip) || []).filter(t => now - t < 60000);
+  if (arr.length >= maxPerMin) {
+    _hits.set(ip, arr);
+    return { ok: false, retryAfter: Math.max(1, Math.ceil((60000 - (now - arr[0])) / 1000)), reason: 'rate limit' };
+  }
+  arr.push(now);
+  _hits.set(ip, arr);
+  _dayCount++;
+
+  // Opportunistic cleanup so the map can't grow unbounded.
+  if (_hits.size > 5000) {
+    for (const [k, v] of _hits) {
+      const f = v.filter(t => now - t < 60000);
+      if (f.length) _hits.set(k, f); else _hits.delete(k);
+    }
+  }
+  return { ok: true };
+}
+
+// 429 response with a Retry-After header.
+export function tooManyReply(rl) {
+  return {
+    statusCode: 429,
+    headers: { ...JSON_HEADERS, 'Retry-After': String(rl.retryAfter || 30) },
+    body: JSON.stringify({ error: `Too many requests (${rl.reason}). Please slow down and try again shortly.` }),
+  };
+}
+
 // Walk the model chain — one Bi Frost chat-completions call each — with a
 // per-attempt timeout bounded by an overall budget, so a stalled provider fails
 // fast (and the next model gets a turn) and the handler always returns before
